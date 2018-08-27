@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="__IMG__/favicon.png" type="image/png">
+
+    <title>运营CRM后台</title>
+
+    <link href="__CSS__/style.default.css" rel="stylesheet" />
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="__JS__/html5shiv.js"></script>
+    <script src="__JS__/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+
+
+<!-- Preloader -->
+<div id="preloader">
+    <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+</div>
+
+<section>
+
+    <div class="leftpanel">
+
+        <div class="logopanel">
+            <img src="__IMG__/logo.png" />
+        </div><!-- logopanel -->
+
+        <div class="leftpanelinner">
+
+            <div class="visible-xs hidden-sm hidden-md hidden-lg">
+                <div class="media userlogged">
+                    <img alt="" src="__IMG__/photos/loggeduser.png" class="media-object">
+                    <div class="media-body">
+                        <h4>{$result.name}</h4>
+                    </div>
+                </div>
+                <h5 class="sidebartitle actitle">Account</h5>
+                <ul class="nav nav-pills nav-stacked nav-bracket mb30">
+                    <li><a href=""><i class="fa fa-cog"></i> <span>设置</span></a></li>
+                    <li><a href="signout.html"><i class="fa fa-sign-out"></i> <span>退出</span></a></li>
+                </ul>
+            </div>
+
+            <ul class="nav nav-pills nav-stacked nav-bracket">
+                <li id="channel" ><a href="__ROOT__/channel/channel.html"><i class="fa fa-list"></i> <span>渠道管理</span></a></li>
+                <li id="trade"><a href="__ROOT__/trade/trade.html"><i class="fa fa-usd"></i> <span>入金管理</span></a></li>
+                <li id="glod"><a href="__ROOT__/trade/glod.html"><i class="fa fa-signal"></i> <span>出金管理</span></a></li>
+                <!--<li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>数据统计</span></a>-->
+                    <!--<ul class="children">-->
+                        <!--<li><a href="__ROOT__/data/channellist.html"><i class="fa fa-caret-right"></i> 渠道列表</a></li>-->
+                        <!--<li><a href="__ROOT__/data/performance.html"><i class="fa fa-caret-right"></i> 绩效分析</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            </ul>
+
+
+        </div>
+    </div>
+
+    <div class="mainpanel">
+        <div class="headerbar">
+
+            <div class="header-right">
+                <ul class="headermenu">
+                    <li>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <img src="__IMG__/photos/loggeduser.png" alt="" />
+                                {$arr["auth"]["name"]}
+                                <span class="caret"></span>
+                            </button>
+                            <input type="hidden" value='{$arr["auth"]["manager"]}' id="user_auth"/>
+                            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 设置</a></li>
+                                <li><a href="__ROOT__/Login/login.html"><i class="glyphicon glyphicon-log-out"></i> 退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- header-right -->
+        </div><!-- headerbar -->
+        <div class="lineSpilt">&nbsp;</div>
+        <div class="contentBox"><block name="main"></block></div>
+    </div><!-- mainpanel -->
+
+
+
+</section>
+
+
+<script src="__JS__/jquery-1.11.1.min.js"></script>
+<script src="__JS__/jquery-migrate-1.2.1.min.js"></script>
+<script src="__JS__/jquery-ui-1.10.3.min.js"></script>
+<script src="__JS__/bootstrap.min.js"></script>
+<script src="__JS__/modernizr.min.js"></script>
+<script src="__JS__/jquery.sparkline.min.js"></script>
+<script src="__JS__/toggles.min.js"></script>
+<script src="__JS__/retina.min.js"></script>
+<script src="__JS__/jquery.cookies.js"></script>
+
+<script src="__JS__/morris.min.js"></script>
+<script src="__JS__/raphael-2.1.0.min.js"></script>
+
+<script src="__JS__/custom.js"></script>
+<script src="__JS__/jquery.form.min.js"></script>
+<script src="__JS__/bootstrap-datetimepicker.min.js"></script>
+<script src="__JS__/common.js"></script>
+<link href="__CSS__/bootstrap-datetimepicker.css" rel="stylesheet"/>
+
+<!--分页插件-->
+<script src="__JS__/kkpager.min.js" type="text/javascript"></script>
+<link href="__CSS__/kkpager_orange.css" rel="stylesheet" type="text/css"/>
+</body>
+</html>

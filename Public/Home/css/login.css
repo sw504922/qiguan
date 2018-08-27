@@ -1,0 +1,114 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.login-body {
+    background: #65cea7 url(../images/login-bg.jpg) no-repeat fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.form-signin {
+    max-width: 330px;
+    margin: 100px auto;
+    background: #fff;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+.sign-title {
+    font-size: 24px;
+    color: #fff;
+    position: absolute;
+    top: -60px;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.form-signin .form-signin-heading {
+    margin: 0;
+    padding: 25px 15px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+}
+.text-center {
+    text-align: center;
+}
+
+img {
+    vertical-align: middle;
+    border: 0;
+}
+.login-wrap {
+    padding: 20px;
+    position: relative;
+}
+.form-control {
+    display: block;
+
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+
+    -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.form-signin .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-signin input[type="text"], .form-signin input[type="password"] {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #eaeaec;
+    background: #eaeaec;
+    box-shadow: none;
+    font-size: 12px;
+}
+
+
+.form-signin .btn-login {
+    background: #6bc5a4;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-family: 'Open Sans', sans-serif;
+    margin: 20px 0 5px;
+    width: 100%;
+    border-radius: 5px;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+
+}
+

@@ -1,0 +1,345 @@
+<extend name="layout/main"/>
+<block name="main">
+
+    <ul class="breadcrumb panel">
+        <li><i class="fa fa-list"></i> 渠道管理</li>
+    </ul>
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <div class="selectArea">
+
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectChannel" name="selectChannel">全部渠道类型</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($channel as $val) { ?>
+                        <li class="pointer" onclick="sheChannelType('{$val["channel_type"]}')">{$val["channel_type"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheChannelType('全部渠道类型')">全部渠道类型</li>
+                    </ul>
+                </div>
+
+                <input type="text" class="searchInput" id="channelName" placeholder="渠道名称">
+
+                <div class="serachDate">
+                    <div class="col-md-4">
+                        <div class="input-group input-large custom-date-range">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" class="searchInput" id="dateStart" value="{$arr['startDate']}">
+                            <span class="input-group-addon">To</span>
+                            <input type="text" class="searchInput" id="dateEnd" value="{$arr['endDate']}">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group authAll">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectParent">全部推荐人</span>
+                        <input type="hidden" id="parentHidden" value="全部推荐人"/>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($parent as $val) { ?>
+                        <li class="pointer" onclick="sheParentType('{$val["full_name"]}','{$val["channel_id"]}')">{$val["full_name"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheParentType('全部推荐人','全部推荐人')">全部推荐人</li>
+                    </ul>
+                </div>
+
+                <div class="btn-group authAll authSWAll">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectManager">全部商务人员</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($manger as $val) { ?>
+                        <li class="pointer" onclick="sheManagerType('{$val["name"]}')">{$val["name"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheManagerType('全部商务人员')">全部商务人员</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-success btn-sm pad25" type="button" id="search"
+                            onclick="getData('../Channel/getChannelData')">
+                        <span>查&nbsp;询</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </header>
+
+        <div class="dataAll">
+
+            <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addChannel')"><i
+                    class="fa fa-plus-square-o"></i> 增加渠道/经纪人
+            </button>
+
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+            <div id="get_data_area"></div>
+
+        </div>
+
+    </section>
+
+    <!--蒙层-->
+    <div class="addQA" id="addChannel" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%;min-width: 800px">
+            <section class="panel">
+                <header class="panel-heading">
+                    新增渠道/经纪人
+                    <a class="fa fa-times close" onclick="addLayer('addChannel','close')"></a>
+                </header>
+                <form id="add_new_channel">
+                    <div class="panel-body">
+                        <table class="layTable">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">姓名：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="contact" id="addcontact"
+                                                   placeholder="请输入渠道/经纪人姓名">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">证件号：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="id_number"
+                                                   placeholder="请输入证件号">
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">手机号：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="phone_number"
+                                                   placeholder="请输入手机号">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">账户名称：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="recv_account_name"
+                                                   placeholder="请输入账户名称">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">银行：</label>
+                                        <div class="col-lgJ">
+
+                                            <input type="text" class="form-control" name="recv_bank"
+                                                   placeholder="请输入银行名称">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">收款账号：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="recv_account_code"
+                                                   placeholder="请输入银行卡账号">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">商务：</label>
+                                        <div class="col-lgJ">
+                                            <select name="manager" class="form-control">
+                                                <?php foreach($manger as $val) { ?>
+                                                <option value="{$val['name']}">{$val["name"]}</option>
+                                                <?php } ?>
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">推荐人：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="parent_id"
+                                                   placeholder="请录入推荐人">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">渠道类型：</label>
+                                        <div class="col-lgJ">
+
+                                            <select name="channel_type" class="form-control">
+                                                <?php foreach($channel as $val) { ?>
+                                                <option value="{$val['channel_type']}">{$val["channel_type"]}</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">渠道名称：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" id="addfull_name" name="full_name"
+                                                   placeholder="请输入渠道名称">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">渠道简称：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" id="addshort_name" name="short_name"
+                                                   placeholder="请输入渠道简称">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">奖励条件：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="reward_detail"
+                                                   placeholder="请输入奖励条件">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">奖励方案：</label>
+                                        <div class="col-lgJ">
+                                            <a class="blue pointer" id="reward_plan_span" onclick="setFileClick('reward_plan')">上传文件</a>
+                                            <input type="file" class="form-control hide" name="reward_plan" id="reward_plan_file"/>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">渠道码：</label>
+                                        <div class="col-lgJ">
+
+                                            <input type="text" class="form-control " name="ch_code" id="addch_code"  placeholder="请输入渠道码"/>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">支付方式：</label>
+                                        <div class="col-lgJ">
+
+                                            <select name="payment_mode" class="form-control">
+                                                <option value="个人">个人</option>
+                                                <option value="公司">公司</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">渠道链接：</label>
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control" name="qr_link" id="addqr_link"
+                                                   placeholder="请输入渠道码链接">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-lgJ">
+                                        <a class="blue pointer" id="qr_code_span" onclick="setFileClick('qr_code')">请上传渠道二维码</a>
+                                        <input type="file" class="form-control hide" name="qr_code" id="qr_code_file"/>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <button class="btn btn-warning btn-xs" type="button" onclick="addConversion()" id="addconversion" num_id="2">增加转化人</button>
+                                    <button class="btn btn-danger  btn-xs" type="button" onclick="closeConversion()" >重设</button>
+                                </td>
+                            </tr>
+                            <?php foreach($conversion as $conKey=>$val){ ?>
+                            <tr id="con{$conKey}" class="conver">
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-sm-2 control-label">转化人</label>
+                                        <div class="col-lgJ">
+
+                                            <select name="conversion[]" class="form-control">
+                                                <?php foreach($conversion as $val) { ?>
+                                                <option value="{$val['name']}">{$val["name"]}</option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="col-lgJ">
+                                            <input type="text" class="form-control conversion_bai" name="conversion_bai[]"
+                                                   placeholder="请输入转化比例"
+                                                   style="display: inline-block">%
+                                        </div>
+                                    </div>
+
+
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        </table>
+
+
+                        <div class="btn btn-primary" onclick="submitNewChanne()">&nbsp;确&nbsp;&nbsp;定&nbsp;</div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <div class="meng"></div>
+    </div>
+</block>
+
+
