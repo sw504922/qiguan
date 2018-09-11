@@ -6,10 +6,31 @@
  ***/
 
 
-function getdateYMD($str){
-    return date("Ymd",strtotime($str));
+function getdateYMD($str)
+{
+    return date("Ymd", strtotime($str));
 }
 
-function getdateFormatYMD($str){
-    return date("Y-m-d",strtotime($str));
+function getdateFormatYMD($str)
+{
+    return date("Y-m-d", strtotime($str));
+}
+
+/***
+ * 将数组组成字符串
+ ****/
+function getInArray($arr)
+{
+    $str = implode(",", $arr);
+    $str = str_replace(",", "\",\"", $str);
+    return $str;
+}
+
+/***
+ * 将字符串转成加密的16字符
+ ****/
+function getKey($str)
+{
+    $rowkey = md5($str);
+    return $rowkey;
 }

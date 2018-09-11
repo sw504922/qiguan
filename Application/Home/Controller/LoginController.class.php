@@ -8,14 +8,12 @@ class LoginController extends Controller {
 
     public function login() {
         if (IS_POST) {
-            $user = M('user');
+            $user = M('crm_user');
             $name = I("user");
             $password = I("pwd");
             $map['password'] = md5($password);
             $map['login'] = $name;
-            $map['type'] = 1;
             $result = $user->where($map)->select();
-
             if ($result == true) {
                 session("od_auth", $result);
                 cookie("login-cook-date",md5(date("Y-m-d")));

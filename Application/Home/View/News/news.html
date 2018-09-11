@@ -1,0 +1,98 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="News" id="chiledren"/>
+    <ul class="breadcrumb panel">
+        <li><i class="fa fa-list"></i> 渠道管理</li>
+    </ul>
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <div class="selectArea">
+
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectChannel" name="selectChannel">全部渠道类型</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($channel as $val) { ?>
+                        <li class="pointer" onclick="sheChannelType('{$val["channel_type"]}')">{$val["channel_type"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheChannelType('全部渠道类型')">全部渠道类型</li>
+                    </ul>
+                </div>
+
+                <input type="text" class="searchInput" id="channelName" placeholder="渠道名称">
+
+                <div class="serachDate">
+                    <div class="col-md-4">
+                        <div class="input-group input-large custom-date-range">
+                            <span class="input-group-addon">创建时间</span>
+                            <input type="text" class="searchInput" id="dateStart" value="{$arr['startDate']}">
+                            <span class="input-group-addon">To</span>
+                            <input type="text" class="searchInput" id="dateEnd" value="{$arr['endDate']}">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group authAll">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectParent">全部推荐人</span>
+                        <input type="hidden" id="parentHidden" value="全部推荐人"/>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($parent as $val) { ?>
+                        <li class="pointer" onclick="sheParentType('{$val["full_name"]}','{$val["channel_id"]}')">{$val["full_name"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheParentType('全部推荐人','全部推荐人')">全部推荐人</li>
+                    </ul>
+                </div>
+
+                <div class="btn-group authAll authSWAll">
+                    <button data-toggle="dropdown" class="btn btn-primary  dropdown-toggle btn-sm" type="button">
+                        <span id="selectManager">全部商务人员</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <?php foreach($manger as $val) { ?>
+                        <li class="pointer" onclick="sheManagerType('{$val["name"]}')">{$val["name"]}</li>
+                        <?php } ?>
+                        <li class="divider"></li>
+                        <li class="pointer" onclick="sheManagerType('全部商务人员')">全部商务人员</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-success btn-sm pad25" type="button" id="search"
+                            onclick="getData('../Channel/getChannelData')">
+                        <span>查&nbsp;询</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </header>
+
+        <div class="dataAll">
+
+            <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addChannel')"><i
+                    class="fa fa-plus-square-o"></i> 增加渠道/经纪人
+            </button>
+
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+            <div id="get_data_area"></div>
+
+        </div>
+
+    </section>
+
+
+
+
+</block>
+
+

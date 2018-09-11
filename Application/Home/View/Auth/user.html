@@ -1,0 +1,167 @@
+<extend name="Layout/main"/>
+<block name="main">
+
+    <ul class="breadcrumb panel headTop">
+        <li><i class="fa fa-list"></i> 角色管理</li>
+    </ul>
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addChannel')"><i
+                    class="fa fa-plus-square-o"></i> 添加用户
+            </button>
+
+        </header>
+
+        <div class="dataAll">
+
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+            <table class="dataTable" cellpadding="0" cellspacing="0">
+                <tr class="info">
+                    <th width="5%">序号</th>
+                    <th>姓名</th>
+                    <th width="20%">操作</th>
+                </tr>
+                <?php
+                    foreach($user as $key=>$val){
+                ?>
+                <!--编辑用户信息-->
+                <div class="addQA" id="channel_infor_{$key}" style="display: none;">
+                    <div class="addMouule">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                编辑用户信息
+                                <a class="fa fa-times close" onclick="getChannelInfor('infor','{$key}','close')"></a>
+                            </header>
+                            <div class="panel-body">
+
+                                <div class="form-group">
+                                    <label class="label-width">姓名:</label>
+                                    <input type="text" id="editName{$key}" class="form-control " value="{$val['name']}"
+                                           readonly/>
+                                    <input type="hidden" id="editWechat{$key}" class="form-control"
+                                           value="{$val['id']}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-width">权限管理:</label>
+                                    <select class="form-control" id="editDesc{$key}">
+                                        <?php
+                                            foreach($group as $values){
+                                            ?>
+                                        <option value='{$values["id"]}'>{$values["title"]}</option>
+                                        <?php } ?>
+                                    </select>
+                                    <input value="{$val['group_id']}" id="gid{$key}" type="hidden" class="gids"/>
+                                </div>
+                                <div class="btn btn-primary" onclick="updateProcess('{$key}','updateAuthAccess')">&nbsp;确&nbsp;&nbsp;定&nbsp;</div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="meng"></div>
+                </div>
+                <tr>
+                    <td>{$key+1}</td>
+                    <td>{$val.name}</td>
+                    <td>
+                        <a onclick="getChannelInfor('infor','{$key}')" class="blue pointer">编辑</a>
+                        <a class="blue pointer" onclick="deltedGroup('{$val.id}')">删除</a>
+                    </td>
+                </tr>
+                <?php }?>
+            </table>
+
+
+        </div>
+
+    </section>
+    <!--蒙层-->
+    <div class="addQA" id="addChannel" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%;min-width: 800px">
+            <section class="panel">
+                <header class="panel-heading">
+                    新增用户
+                    <a class="fa fa-times close" onclick="addLayer('addChannel','close')"></a>
+                </header>
+
+                <table class="layTable" style="margin-top: 20px;">
+                    <tr>
+                        <td >
+                            <div class="form-group">
+                                <label class="col-lg-2 col-sm-2 control-label">用户姓名：</label>
+                                <div class="col-lgJ">
+                                    <input type="text" class="form-control" name="userName" id="userName"
+                                           placeholder="请用户姓名">
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 col-sm-2 control-label">用户登录名:</label>
+
+                                <div class="col-lgJ">
+                                    <input type="text" class="form-control" name="login" id="login" placeholder="请输入用户登录名">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-sm-2 control-label">权限管理:</label>
+                                <div class="col-lgJ">
+                                    <select class="form-control" id="groupId">
+                                        <?php
+                                            foreach($group as $values){
+                            ?>
+                                        <option value='{$values["id"]}'>{$values["title"]}</option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                <div class="panel-body">
+                    <div class="btn btn-primary" onclick="addUser('add_user','../Auth/addUser')">
+                        &nbsp;确&nbsp;&nbsp;定&nbsp;
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="meng"></div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".gids").each(function () {
+                var id = $(this).attr("id").replace("gid", "");
+
+                $("#editDesc" + id).val($("#gid" + id).val())
+            })
+        })
+
+        function deltedGroup(id) {
+            $.ajax({
+                type: "GET",
+                url: "deltedUser",
+                data: {
+                    rowkey: id,
+                },
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</block>
+
+

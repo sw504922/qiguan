@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     $("#search").click();
     var url = location.href;
@@ -5,48 +6,20 @@ $(document).ready(function () {
     var lastID = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
     $("#" + lastID).addClass("active");
 
+    //chiledren active
+    var chiledren = $("#chiledren").val();
 
-    var user_auth=$("#user_auth").val();
-    if (user_auth=="转化人员" ){
-        $(".authAll").hide();
+    if (url.indexOf(chiledren) > 0) {
+
+        $("#" + chiledren + ">ul.children").css("display", "block");
+        $("#" + chiledren).addClass("nav-active active");
     }
 
-    if (user_auth=="商务人员" ){
-        $(".authSWAll").hide();
-    }
 
 
 })
 
-/**
- *@navigation set value
- * sheChannelType:渠道
- * sheProcessType:进度
- * sheParentType:推荐人
- * sheManagerType:商务
- *****/
-function sheChannelType(str) {
-    $("#selectChannel").text(str);
-}
 
-function sheProcessType(str, value) {
-    $("#selectProcess").text(str);
-    $("#processHidden").val(value);
-}
-
-function sheParentType(str, value) {
-    $("#selectParent").text(str);
-    $("#parentHidden").val(value);
-
-}
-
-function sheManagerType(str) {
-    $("#selectManager").text(str);
-
-}
-function sheTimeType(str) {
-    $("#selectTime").text(str);
-}
 
 /**
  * @日期
@@ -98,100 +71,27 @@ function getData(targets) {
         },
         success: function (data) {
             $(".loading").hide();
-            $("#get_data_area").html(data);
-            $(".mainpanel").removeAttr("style");
-            $(".mainpanel").css("overflow-x", "scroll");
-            $(".headerbar").css("width",$(".dataTable").width()+110);
-            $(".divBox,.headTop").css("width",$(".dataTable").width()+100);
         }
     });
 }
 
 function submitNewChanne(num) {
 
-    if (typeof num == "undefined") {
-        var id = "add_new_channel";
-        target = "addChannelMethod";
-    } else {
-        var id = "update_new_channel" + num;
-        target = "updateChannelMethod";
-    }
-    var status = checkInput(id, num);
-    if (status == false) {
-        return false;
-    }
 
     var form = new FormData(document.getElementById(id));
     $.ajax({
         type: "post",
-        url: "../Channel/" + target,
+        url: "../News/" + target,
         processData: false,
         contentType: false,
         data: form,
         success: function (data) {
-            if (id != "add_new_channel") {
-                getChannelInfor("update", num, "close");
-            } else {
-                addLayer("addChannel", "close");
-            }
-            window.location.reload();
+
         },
         error: function (data) {
             console.log("this is error");
         }
     })
-}
-
-/**
- *@check
- ****/
-function checkInput(id, num) {
-    if (id == "add_new_channel") {
-        if ($("#addcontact").val() == "") {
-            alert("请输入姓名");
-            return false;
-        }
-
-        if ($("#addfull_name").val() == "") {
-            alert("请输入渠道名称");
-            return false;
-        }
-
-        if ($("#addshort_name").val() == "") {
-            alert("请输入渠道简称");
-            return false;
-        }
-
-        if ($("#addch_code").val() == "") {
-            alert("请输入渠道码");
-            return false;
-        }
-        if ($("#addqr_link").val() == "") {
-            alert("请输入渠道链接");
-            return false;
-        }
-        if ($("#qr_code_file").val() == "") {
-            alert("请上传二维码");
-            return false;
-        }
-    } else {
-        if ($("#update_contact" + num).val() == "") {
-            alert("请输入姓名");
-            return false;
-        }
-
-        if ($("#update_full_name" + num).val() == "") {
-            alert("请输入渠道名称");
-            return false;
-        }
-
-        if ($("#update_short_name" + num).val() == "") {
-            alert("请输入渠道简称");
-            return false;
-        }
-
-    }
-
 }
 
 /**
@@ -243,134 +143,100 @@ function limitPage(TotalPage, Total, targets) {
     }, true);
 }
 
-function getNextPage(targets) {
-    getData(targets);
-}
+
 
 
 
 /**
- *@layer
- * addLayer:多功能展示蒙层
- * getChannelInfor:用户信息编辑
- * addConversion:转化人功能
+ * channel_open
  *****/
-var conversionBegin = 2;
-function addLayer(id, status) {
+var globalConfig = {};
+globalConfig.paramAesKey = "miningaccountH5";
 
-    if (status == "close") {
-        $("#" + id).hide();
-    } else {
-        $("#" + id).show();
-        $(".conversion_bai").val("");
-        for (i = conversionBegin; i < $(".conver").length; i++)
-            $("#con" + i).hide();
+function generateH5Path(type) {
+    var channelCode = $("#addch_code").val().trim();
+    var activity = $("#activity").val().trim();
+    if (activity == null || activity == undefined || activity == '') {
+        activity = '';
+    }
+    if (!channelCode) {
+        alert("请先填写渠道码");
+        return;
+    }
+
+    var baseUrl = "https://accountapi.investassistant.com/miningaccount/accounth5/regist?activity=$$activity$$&channel_open=$$channel_open$$&hmsr=$$channel_open1$$&hmpl=&hmcu=&hmkw=&hmci=";
+    var aesChannelCode = aesEncode(channelCode, globalConfig.paramAesKey).toString();
+
+    aesChannelCode = formatUrlParam(aesChannelCode);
+    var url = baseUrl.replace("$$channel_open$$", aesChannelCode);
+    url = url.replace("$$channel_open1$$", channelCode);
+    url = url.replace("$$activity$$", activity);
+
+    $("#channaeCodeShow").text(channelCode);
+    $("#addqr_link").val(url);
+
+}
+
+
+function formatUrlParam(param) {
+    param = param.replaceAll("\\+", "*");
+    param = param.replaceAll("\\/", "-");
+    param = param.replaceAll("\\=", ".");
+    return param;
+}
+
+function reverseFormatUrlParam(param) {
+    param = param.replaceAll("\\*", "+");
+    param = param.replaceAll("\\-", "/");
+    param = param.replaceAll("\\.", "=");
+    return param;
+}
+
+function aesEncode(data, val) {
+    if (data) {
+        val = format16Key(val);
+        var key = CryptoJS.enc.Latin1.parse(val);
+        var iv = CryptoJS.enc.Latin1.parse(val);
+        var encrypted = CryptoJS.AES.encrypt(data, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        return encrypted;
     }
 }
 
-function getChannelInfor(str, id, status) {
-    if (str == "update" && status != "close") {
-        $("#channel_type_select" + id).val($("#channel_type" + id).val());
-        $("#manager_select" + id).val($("#manager" + id).val());
-
-        //转化人显示
-        for (i = conversionBegin; i < $(".conver" + id).length; i++) {
-            $("#con" + i + id).hide();
-        }
-
-        for (i = 0; i < $(".conver" + id).length; i++) {
-            $("#coverName_select" + i + id).val($("#conversionNameArr" + i + id).val());
-
-        }
-
-    }else if(str == "water" && status != "close"){
-        updateProcess(id,"getFlowerTrade");
-    }
-    if (status == "close") {
-        $("#channel_" + str + "_" + id).hide();
-    } else {
-        $("#channel_" + str + "_" + id).show();
-    }
-
-}
-
-
-function addConversion(num) {
-    if (typeof num == "undefined")
-        num = "";
-
-    var num_id = $("#addconversion" + num).attr("num_id");
-    $("#con" + num_id + num).show();
-    $("#addconversion" + num).attr("num_id", ++num_id);
-
-}
-
-
-/**
- * @conversion reset div
- ******/
-function closeConversion(num) {
-    if (typeof num == "undefined")
-        num = "";
-
-    for (i = conversionBegin; i < $(".conver" + num).length; i++)
-        $("#con" + i + num).hide();
-
-    $("#addconversion" + num).attr("num_id", conversionBegin);
-    $(".conversion_bai" + num).val("");
-
-}
-
-
-
-/**
- * copy url
- * ****/
-function setCopy(id) {
-    var Url2 = document.getElementById(id);
-    Url2.select();
-    if (document.execCommand('copy', false, null)) {
-        document.execCommand("Copy");
-
+// 解密url返回的参数
+function aesDecode(data, val) {
+    if (data) {
+        val = format16Key(val);
+        var key = CryptoJS.enc.Latin1.parse(val);
+        var iv = CryptoJS.enc.Latin1.parse(val);
+        var decrypted = CryptoJS.AES.decrypt(data, key, {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        return decrypted.toString(CryptoJS.enc.Utf8);
     }
 }
 
-/**
- * @button click call input File
- ***/
-function setFileClick(id) {
-    var id = "#" + id;
-    $(id + "_file").click();
-    $(id + "_file").change(function () {
-        console.log($(id + "_file").val());
-        $(id + "_span").text($(id + "_file").val());
-    });
+// 格式化成16位的key
+function format16Key(val) {
+    var len = val.toString().length;
+    var tmp = "0000000000000000";
+    if (len < 16) {
+        val += tmp.substring(0, 16 - len);
+    }
+    if (len > 16) {
+        val = val.substring(0, 16);
+    }
+    return val;
 
 }
 
-
-function updateProcess(num,targets) {
-
-    $.ajax({
-        type: "get",
-        url: targets,
-        data: {
-            process: $("#process"+num).val(),
-            fund_account:$("#fund_account"+num).text(),
-            wechat:$("#editWechat"+num).val(),
-            desc:$("#editDesc"+num).val(),
-        },
-        dataTyep: "json",
-        success: function (data) {
-
-            if (targets=="getFlowerTrade"){
-
-                $("#flowerwater"+num).empty();
-                $("#flowerwater"+num).html(data);
-            }else{
-                window.location.reload();
-            }
-
-        }
-    });
+String.prototype.replaceAll = function (s1, s2) {
+    return this.replace(new RegExp(s1, "gm"), s2);
 }
+
+

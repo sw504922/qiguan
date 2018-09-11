@@ -1,5 +1,7 @@
-<?php if (!defined('THINK_PATH')) exit();?><table class="dataTable" cellpadding="0" cellspacing="0">
-    <tr class="info">
+<?php if (!defined('THINK_PATH')) exit();?><div class='table-cont' id='table-cont'>
+<table class="dataTable" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
         <th>序号</th>
         <th>渠道类型</th>
         <th>渠道名称</th>
@@ -13,7 +15,8 @@
         <th>渠道码</th>
         <th class="authAll">操作</th>
     </tr>
-
+    </thead>
+    <tbody>
     <?php
  if(count($result)>0){ foreach($result as $key=>$val) { $contact=$val['contact']; if($contact==""){ $contact="--"; } $id_number=$val['id_number']; if($id_number==""){ $id_number="--"; } $payment_mode=$val['payment_mode']; if($payment_mode==""){ $payment_mode="--"; } $recv_bank=$val['recv_bank']; $recv_account_name=$val['recv_account_name']; $recv_account_code=$val['recv_account_code']; if($recv_bank==""){ $recv_bank="--"; } if($recv_account_name==""){ $recv_account_name="--"; } if($recv_account_code==""){ $recv_account_code="--"; } $qr_link=$val['qr_link']; if($qr_link==""){ $qr_link="--"; } $urlQ="http://117.121.21.173:8086/miningaccount_manager/file"; $qr_code=$val['qr_code']; if($qr_code==""){ $qr_code="--"; }else{ $qr_code=$urlQ.$qr_code; } if($val['reward_plan']==""){ $reward_plan="--"; }else{ $reward_plan=$urlQ.$val['reward_plan']; } ?>
     <!--个人基本资料-->
@@ -102,25 +105,44 @@
         <div class="meng"></div>
     </div>
 
-
+    <!--奖励条件-->
+    <div class="addQA" id="channel_reward_detail_<?php echo ($key); ?>" style="display: none;">
+        <div class="addMouule">
+            <section class="panel">
+                <header class="panel-heading">
+                    奖励条件
+                    <a class="fa fa-times close" onclick="getChannelInfor('reward_detail','<?php echo ($key); ?>','close')"></a>
+                </header>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <?php echo ($val["reward_detail"]); ?>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="meng"></div>
+    </div>
     <tr>
         <td><?php echo ($count++); ?></td>
         <td><?php echo ($val["channel_type"]); ?></td>
         <td>
             <div class="whiteSpace" style="min-width: 200px"><?php echo ($val["channel_name"]); ?></div>
         </td>
-        <td><?php echo ($val["phone_number"]); ?><span class="material-icons pointer"
-                                        onclick="getChannelInfor('infor','<?php echo ($key); ?>')">...</span>
+        <td><?php echo ($val["phone_number"]); ?>
+            <span class="material-icons pointer" onclick="getChannelInfor('infor','<?php echo ($key); ?>')">...</span>
         </td>
         <td>
-            <div class="whiteSpace"><?php echo ($val["reward_detail"]); ?></div>
+            <span class="reward_detail"><?php echo ($val["reward_detail"]); ?></span>
+            <span class="material-icons pointer hide reward_detail_hide" onclick="getChannelInfor('reward_detail','<?php echo ($key); ?>')">...</span>
         </td>
         <?php if(empty($val["reward_plan"])){?>
         <td>--</td>
         <?php }else{ ?>
         <td><a class="blue pointer" onclick="getChannelInfor('plan','<?php echo ($key); ?>')">查看</a></td>
         <?php } ?>
-        <td><?php echo ($val["create_time"]); ?></td>
+        <td>
+            <?php echo ($val["create_time"]); ?>
+        </td>
         <td><?php echo ($val["manager"]); ?></td>
         <td><?php echo ($val["parent_name"]); ?></td>
         <td><?php echo ($val["ch_code"]); ?></td>
@@ -135,15 +157,16 @@
         <td colspan="12" align="center">暂无数据</td>
     </tr>
     <?php } $pageCount=ceil($resultCount/50); ?>
+    </tbody>
 </table>
-
+</div>
 
 <?php
  foreach($result as $key=>$val) { $conversionNameArr=explode(",",$val["conversion_name"]); $conversionArr=explode(",",$val["conversion"]); ?>
 
 <!--修改渠道/经纪人-->
 <div class="addQA" id="channel_update_<?php echo ($key); ?>" style="display:none ;">
-    <div class="addMouule" style="left: 29%;width: 60%;min-width: 800px">
+    <div class="addMouule" style="left: 29%;width: 60%;min-width: 800px;position: absolute;bottom: 5%;">
         <section class="panel">
             <header class="panel-heading">
                 修改渠道/经纪人
@@ -304,8 +327,10 @@
 
                                     <div class="col-lgJ">
 
-                                        <a class="blue pointer" id="reward_plan_span" onclick="setFileClick('reward_plan<?php echo ($key); ?>')">上传文件</a>
-                                        <input type="file" class="form-control hide" name="reward_plan" id="reward_plan<?php echo ($key); ?>_file"/>
+                                        <a class="blue pointer" id="reward_plan_span"
+                                           onclick="setFileClick('reward_plan<?php echo ($key); ?>')">上传文件</a>
+                                        <input type="file" class="form-control hide" name="reward_plan"
+                                               id="reward_plan<?php echo ($key); ?>_file"/>
                                     </div>
                                 </div>
                             </td>
@@ -340,21 +365,25 @@
                                     <label class="col-lg-2 col-sm-2 control-label">转化人</label>
                                     <div class="col-lgJ">
 
-                                        <select name="conversion[]" class="form-control" id="coverName_select<?php echo ($conKey); echo ($key); ?>">
-                                            <option></option>
+                                        <select name="conversion[]" class="form-control"
+                                                id="coverName_select<?php echo ($conKey); echo ($key); ?>">
+                                            <option value="">默认为空</option>
                                             <?php foreach($conversion as $val) { ?>
                                             <option value="<?php echo ($val['name']); ?>"><?php echo ($val["name"]); ?></option>
                                             <?php } ?>
                                         </select>
 
-                                        <input type="hidden" value="<?php echo ($conversionNameArr[$conKey]); ?>" id="conversionNameArr<?php echo ($conKey); echo ($key); ?>"/>
+                                        <input type="hidden" value="<?php echo ($conversionNameArr[$conKey]); ?>"
+                                               id="conversionNameArr<?php echo ($conKey); echo ($key); ?>"/>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-group">
                                     <div class="col-lgJ">
-                                        <input type="text" class="form-control conversion_bai<?php echo ($key); ?>" name="conversion_bai[]" value="<?php echo ($conversionArr[$conKey]); ?>" style="display: inline-block">%
+                                        <input type="text" class="form-control conversion_bai<?php echo ($key); ?>"
+                                               name="conversion_bai[]" value="<?php echo ($conversionArr[$conKey]); ?>"
+                                               style="display: inline-block">%
                                     </div>
                                 </div>
 
@@ -375,7 +404,9 @@
 <div id="kkpager" style="width:70%"></div>
 
 <script type="text/javascript">
+
     $(document).ready(function () {
+
         //设置显示数据结构名称与数据
         var dataCount = <?php echo ($resultCount); ?>;
         $(".newsNum").html(dataCount);
@@ -384,9 +415,19 @@
             limitPage(pageCount, dataCount, "../Channel/getChannelData");
         }
 
-        var user_auth=$("#user_auth").val();
-        if (user_auth=="转化人员"){
+        $(".reward_detail").each(function () {
+            var reward_detail = $(this).text();
+            if (reward_detail.length > 4){
+                $(this).text(reward_detail.substr(0, 5));
+                $(this).next().removeClass("hide")
+            }
+
+        })
+        var user_auth = $("#user_auth").val();
+        if (user_auth == "18") {
             $(".authAll").hide();
         }
     })
+
+
 </script>

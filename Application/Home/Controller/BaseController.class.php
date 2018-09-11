@@ -7,57 +7,47 @@
  */
 
 namespace Home\Controller;
+
 use Think\Auth;
 use Think\Controller;
 use Home\Model\ChannelInfoModel;
 use Think\Log;
+
 class BaseController extends Controller
 {
-    protected function _initialize(){
-        $session=session("od_auth");
+    protected function _initialize()
+    {
+        $session = session("od_auth");
 
-        if(empty($session)){
+        if (empty($session)) {
             $this->redirect("Login/login");
         }
 
-        $value=$session[0];
+        $value = $session[0];
         $uid = $value['id'];
         $auth = new Auth();
-        if (! $auth->check(MODULE_NAME . '/' . CONTROLLER_NAME , $uid)) {
-            $this->redirect('Login/login');
+
+        if (!$auth->check(MODULE_NAME . '/' . CONTROLLER_NAME, $uid)) {
+           $this->redirect('Login/login');
         }
 
-        $this->list=$value;
         $auth = new Auth();
-        $uid=$value["id"];
-        $model=M("auth_rule");
+        $uid = $value["id"];
+        $model = M("auth_rule");
         $result=$model->select();
 
-        foreach ($result as $val){
-            if ($auth->check( $val["name"], $uid)) {
-                $length=strripos($val["name"],"/");
-                $su=substr($val["name"],$length+1,strlen($val["name"]));
-                $this->$su= $val["id"];
+        foreach ($result as $val) {
+            if ($auth->check($val["name"], $uid)) {
+                $length = strripos($val["name"], "/");
+                $su = substr($val["name"], $length + 1, strlen($val["name"]));
+                $this->$su = $val["id"];
             }
         }
 
 
+        $arr["auth"] =$value;
 
-        $process=array("空白","接听","挂断","待跟进");
-        $arr["auth"]=$session[0];
-        $arr["endDate"] = Date("Y-m-d", strtotime("+1 days"));
-        $arr["startDate"] = Date("Y-m-d", strtotime("-3 month"));
-        $channelModel = new ChannelInfoModel();
-        $channel = $channelModel->getChannelType();
-        $getParent = $this->getParent();
-        $getManger = $channelModel->getManger();
-        $getConversion = $channelModel->getConversion();
         $this->assign("arr", $arr);
-        $this->assign("channel", $channel);
-        $this->assign("parent", $getParent);
-        $this->assign("manger", $getManger);
-        $this->assign("conversion", $getConversion);
-        $this->assign("process", $process);
 
 
 
@@ -67,12 +57,13 @@ class BaseController extends Controller
     /**
      * get exchange rate
      ***/
-    public function getCoinToHK(){
+    public function getCoinToHK()
+    {
         $nowDate = Date("Y-m-d");
         $huilvCache = file_get_contents("http://api.k780.com/?app=finance.rate&scur=USD&tcur=HKD&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4");
         $CNYCache = file_get_contents("http://api.k780.com/?app=finance.rate&scur=CNY&tcur=HKD&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4");
-        S($nowDate."US", $huilvCache, 3600 * 60 * 24);
-        S($nowDate."CN", $CNYCache, 3600 * 60 * 24);
+        S($nowDate . "US", $huilvCache, 3600 * 60 * 24);
+        S($nowDate . "CN", $CNYCache, 3600 * 60 * 24);
     }
 
 
@@ -87,11 +78,12 @@ class BaseController extends Controller
     /**
      * upload imgage
      ***/
-    public function  getBannerImage($Thumbail,$path,$path_subName){
-        foreach($Thumbail as $img) {
+    public function getBannerImage($Thumbail, $path, $path_subName)
+    {
+        foreach ($Thumbail as $img) {
             $name = $img['name'];
         }
-        log::write($path_subName.$path.$name." is thunmail name");
+        log::write($path_subName . $path . $name . " is thunmail name");
         $upload = new \Think\Upload();
         $upload->maxSize = 3145728;
         $upload->exts = array(
@@ -106,4 +98,82 @@ class BaseController extends Controller
         $static_thum = $upload->upload($Thumbail);
 
     }
+
+    /***
+     * @ send SMS
+     * */
+    public function sendSMS($phone_number, $sms_content, $area_id)
+    {
+        $jsonHeader = '{"header": {
+        "version": 1,
+		"imei": "046097B8690EA0D2DDFC76CA05D957C8",
+		"key_code": "1B1D9D39F50EE4302D65A3438FD43067",
+		"ua": {
+			"app_version": "1.6.4",
+			"height": 1280,
+			"model": "HM NOTE 1LTE",
+			"os_version": "19",
+			"platform": "android",
+			"width": 720,
+			"trader": "mining_t"
+		},
+		"user_type": 1,
+		"user_name": "15699885506",
+		"auth_code": "345C51A23487E33CC0E72601B855C1F2",
+		"system_time": 1422263479031
+	        }
+        }';
+
+        $jsonRequest = ' {"request_data" : {"info_type" : 1,"phone_number" : "13051514442","area_id" : "","verify_code" : "","sms_content":"504210"}}';
+
+        $headerArr = json_decode($jsonHeader, true);
+        $requestArr = json_decode($jsonRequest, true);
+        if (!empty($phone_number)){
+            $requestArr["request_data"]["phone_number"] = $phone_number;
+        }
+        if (!empty($sms_content)){
+            $requestArr["request_data"]["sms_content"] = $sms_content;
+        }
+
+        $requestArr["request_data"]["area_id"] = $area_id;
+
+        $newArr = array_merge($requestArr, $headerArr);
+
+        $data = json_encode($newArr);
+        $json = false;
+        $url = "http://push.investassistant.com/miningpush/sms/sysSmsSend";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        //发送JSON数据
+        if ($json) {
+            curl_setopt($curl, CURLOPT_HEADER, 0);
+            curl_setopt($curl, CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type: application/json; charset=utf-8',
+                    'Content-Length:' . strlen($data)));
+        }
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        $res = curl_exec($curl);
+
+        $errorno = curl_errno($curl);
+
+
+
+        if ($errorno) {
+            return array('errorno' => false, 'errmsg' => $errorno);
+        }
+
+        curl_close($curl);
+
+        return json_decode($res, true);
+
+    }
+
+
 }

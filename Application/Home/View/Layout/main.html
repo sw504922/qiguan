@@ -7,10 +7,10 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="__IMG__/favicon.png" type="image/png">
 
-    <title>运营CRM后台</title>
+    <title>今日奇观后台</title>
 
-    <link href="__CSS__/style.default.css" rel="stylesheet" />
-
+    <link href="__CSS__/style.default.css" rel="stylesheet"/>
+    <script src="__JS__/jquery-1.11.1.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
 
 
 <!-- Preloader -->
@@ -33,7 +32,7 @@
     <div class="leftpanel">
 
         <div class="logopanel">
-            <img src="__IMG__/logo.png" />
+            <img src="__IMG__/logo.png"/>
         </div><!-- logopanel -->
 
         <div class="leftpanelinner">
@@ -53,15 +52,21 @@
             </div>
 
             <ul class="nav nav-pills nav-stacked nav-bracket">
-                <li id="channel" ><a href="__ROOT__/channel/channel.html"><i class="fa fa-list"></i> <span>渠道管理</span></a></li>
-                <li id="trade"><a href="__ROOT__/trade/trade.html"><i class="fa fa-usd"></i> <span>入金管理</span></a></li>
-                <li id="glod"><a href="__ROOT__/trade/glod.html"><i class="fa fa-signal"></i> <span>出金管理</span></a></li>
-                <!--<li class="nav-parent"><a href=""><i class="fa fa-edit"></i> <span>数据统计</span></a>-->
-                    <!--<ul class="children">-->
-                        <!--<li><a href="__ROOT__/data/channellist.html"><i class="fa fa-caret-right"></i> 渠道列表</a></li>-->
-                        <!--<li><a href="__ROOT__/data/performance.html"><i class="fa fa-caret-right"></i> 绩效分析</a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
+
+
+                <li class="nav-parent" id="News"><a><i class="fa fa-edit"></i> <span>内容发布模块</span></a>
+                    <ul class="children">
+                        <li id="newsshow"><a href="__ROOT__/News/newsshow.html"><i class="fa fa-caret-right"></i>
+                            渠道列表</a></li>
+                        <li id="performance"><a href="__ROOT__/News/performance.html"><i class="fa fa-caret-right"></i>
+                            绩效分析</a></li>
+                    </ul>
+                </li>
+
+                <neq name="check" value="$Auth">
+                    <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-users"></i> <span>角色管理</span></a>
+                    </li>
+                </neq>
             </ul>
 
 
@@ -70,20 +75,21 @@
 
     <div class="mainpanel">
         <div class="headerbar">
-
+            <a class="menutoggle"><i class="fa fa-bars"></i></a>
             <div class="header-right">
                 <ul class="headermenu">
                     <li>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <img src="__IMG__/photos/loggeduser.png" alt="" />
+                                <img src="__IMG__/photos/loggeduser.png" alt=""/>
                                 {$arr["auth"]["name"]}
                                 <span class="caret"></span>
                             </button>
                             <input type="hidden" value='{$arr["auth"]["manager"]}' id="user_auth"/>
                             <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-                                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 设置</a></li>
-                                <li><a href="__ROOT__/Login/login.html"><i class="glyphicon glyphicon-log-out"></i> 退出</a></li>
+                                <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 修改密码</a></li>
+                                <li><a href="__ROOT__/Login/login.html"><i class="glyphicon glyphicon-log-out"></i>
+                                    退出</a></li>
                             </ul>
                         </div>
                     </li>
@@ -93,15 +99,15 @@
             <!-- header-right -->
         </div><!-- headerbar -->
         <div class="lineSpilt">&nbsp;</div>
-        <div class="contentBox"><block name="main"></block></div>
+        <div class="contentBox">
+            <block name="main"></block>
+        </div>
     </div><!-- mainpanel -->
-
 
 
 </section>
 
 
-<script src="__JS__/jquery-1.11.1.min.js"></script>
 <script src="__JS__/jquery-migrate-1.2.1.min.js"></script>
 <script src="__JS__/jquery-ui-1.10.3.min.js"></script>
 <script src="__JS__/bootstrap.min.js"></script>
@@ -112,6 +118,7 @@
 <script src="__JS__/jquery.cookies.js"></script>
 
 <script src="__JS__/morris.min.js"></script>
+
 <script src="__JS__/raphael-2.1.0.min.js"></script>
 
 <script src="__JS__/custom.js"></script>
@@ -119,9 +126,11 @@
 <script src="__JS__/bootstrap-datetimepicker.min.js"></script>
 <script src="__JS__/common.js"></script>
 <link href="__CSS__/bootstrap-datetimepicker.css" rel="stylesheet"/>
-
+<script src="__JS__/AES.js"></script>
+<script src="__JS__/pad-zeropadding-min.js"></script>
 <!--分页插件-->
 <script src="__JS__/kkpager.min.js" type="text/javascript"></script>
 <link href="__CSS__/kkpager_orange.css" rel="stylesheet" type="text/css"/>
+
 </body>
 </html>
