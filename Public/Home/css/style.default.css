@@ -736,14 +736,20 @@ strong {
 
 /********** 5. MAIN PANEL **********/
 /***********************************/
-
+.anchor {
+    line-height: 48px;
+    display: inline-block;
+}
 .mainpanel {
     margin-left: 14%;
     background: #eff0f4;
     min-height: 500px;
     /*width: 85%;*/
 }
-
+.savebutton{
+    float: right;
+    margin-right: 50px;
+}
 .lineSpilt {
     background: #e4e7ea;
     height: 7px;
@@ -4505,7 +4511,7 @@ div.error label.error:before {
 .contentBox {
     width: 98%;
 
-    white-space: nowrap;
+
     margin: 0 auto;
 }
 

@@ -5,7 +5,7 @@ $(document).ready(function () {
     $(".nav li").removeClass("active");
     var lastID = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
     $("#" + lastID).addClass("active");
-
+    $("#anchorName").text( $("#" + lastID).text());
     //chiledren active
     var chiledren = $("#chiledren").val();
 
@@ -239,4 +239,17 @@ String.prototype.replaceAll = function (s1, s2) {
     return this.replace(new RegExp(s1, "gm"), s2);
 }
 
+
+
+/**
+ * @button click call input File
+ ***/
+function uploadIMG(id) {
+    var id = "#" + id;
+    $(id +"_file").click();
+    $(id).change(function () {
+        $(id + "_span").text($(id ).val());
+    });
+
+}
 

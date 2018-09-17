@@ -41,7 +41,7 @@ class LoginController extends Controller {
     {
         $value = session("od_auth");
         $map["id"]=$value[0]["id"];
-        $api = M('user');
+        $api = M('crm_user');
         $password = I('password');
         $data['password'] =$password;
         $chenk = $api->where($map)->save($data);

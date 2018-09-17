@@ -1,0 +1,111 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="News" id="chiledren"/>
+
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <div class="selectArea">
+
+                <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addDIV')"><i
+                        class="fa fa-plus-square-o"></i> 新建精选专题
+                </button>
+            </div>
+        </header>
+
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <div class="addQA" id="addDIV" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%; position: absolute;top: 5%;">
+            <section class="panel">
+                <header class="panel-heading">
+                    新建精选专题
+                    <a class="fa fa-times close" onclick="addLayer('addDIV','close')"></a>
+                </header>
+
+                <form id="addForm" class="form-horizontal form-bordered">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">标题</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="请输入标题" name="title" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">摘要</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="5" name="summary" placeholder="请输入摘要"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">介绍</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="5" name="desc" placeholder="请输入介绍"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"> 上传专题图</label>
+                        <div class="col-sm-6">
+                            <select class="form-control mb15" id="specialImg" onchange="imgChannge()">
+                                <option value="a">主页背景图</option>
+                                <option value="b">列表缩略图</option>
+                                <option value="c">推荐位缩略图</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">缩略图</label>
+                        <div class="col-sm-6">
+                            <a class="blue pointer" id="qr_code_span" onclick="uploadIMG('qr_code_filea')">上传缩略图</a>
+                            <input type="file" class="form-control hide" name="qr_code[]"
+                                   id="qr_code_filea"/>
+                            <input type="file" class="form-control hide" name="qr_code[]"
+                                   id="qr_code_fileb"/>
+                            <input type="file" class="form-control hide" name="qr_code[]"
+                                   id="qr_code_filec"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn btn-primary savebutton" onclick="submitNewChanne()">&nbsp;保&nbsp;&nbsp;存</div>
+                    </div>
+
+                </form>
+
+            </section>
+        </div>
+
+        <div class="meng"></div>
+    </div>
+    </div>
+    <script>
+        function addLayer(id, status) {
+            if (status == "close") {
+                $("#" + id).hide();
+            } else {
+                $("#" + id).show();
+                $(".conversion_bai").val("");
+                for (i = conversionBegin; i < $(".conver").length; i++)
+                    $("#con" + i).hide();
+            }
+
+        }
+
+        function imgChannge() {
+            var val = $("#specialImg").val();
+            $("#uploadImg").attr("onclick", "uploadIMG('qr_code_file" + val + "')");
+        }
+    </script>
+
+</block>
+
+
