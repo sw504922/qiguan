@@ -60,8 +60,15 @@ class NewsController extends BaseController
 
     //上传路径
     private $path="./Uploads/";
-    private $path_subName="tw_images/";
+    private $tw_images="tw_images/";
+    private $special_subName="special_images/";
     private $jrqgChannel=array("精选"=>"1","闻道"=>"2","博览"=>"3","游历"=>"4","回忆"=>"5");
+
+    /*****
+     *图文内容
+     *  $cacheKey:定义唯一缓存key值
+     ****/
+
     public function addImgAndContent(){
         $arr["title"]=trim(I("title"));
         $arr["summary"]=htmlspecialchars(I("summary"));
@@ -71,11 +78,13 @@ class NewsController extends BaseController
         $arr["channel"]=trim(I("channel"));
 
         if(!empty($thumbnail[0]['name'])) {
-
             $status = $this->uploadMVI($thumbnail,$this->path,$this->path_subName);
         }
     }
-
+    /*****
+     *精选
+     *  $cacheKey:定义唯一缓存key值
+     ****/
     public function jingxuan()
     {
         $StreamInfoModel=new StreamInfoModel();
@@ -86,6 +95,23 @@ class NewsController extends BaseController
         $this->display();
     }
 
+    public function addJXMethod(){
+        $arr["title"]=trim(I("title"));
+        $arr["summary"]=htmlspecialchars(I("summary"));
+        $arr["desc"]=htmlspecialchars(I("desc"));
+        $arr["thumnailChannel"]=htmlspecialchars(I("thumnailChannel"));
+        $thumbnail = array($_FILES['thumbnail']);
+
+        if(!empty($thumbnail[0]['name'])) {
+
+            $status = $this->uploadMVI($thumbnail,$this->path,$this->special_images);
+        }
+    }
+
+    /*****
+     *游历
+     *  $cacheKey:定义唯一缓存key值
+     ****/
     public function youli()
     {
         $StreamInfoModel=new StreamInfoModel();
@@ -93,7 +119,10 @@ class NewsController extends BaseController
         $this->assign("result",$result);
         $this->display();
     }
-
+    /*****
+     *问道
+     *  $cacheKey:定义唯一缓存key值
+     ****/
     public function wendao()
     {
         $StreamInfoModel=new StreamInfoModel();
@@ -103,7 +132,10 @@ class NewsController extends BaseController
         $this->assign("result",$result);
         $this->display();
     }
-
+    /*****
+     *博览
+     *  $cacheKey:定义唯一缓存key值
+     ****/
     public function bolan()
     {
         $StreamInfoModel=new StreamInfoModel();

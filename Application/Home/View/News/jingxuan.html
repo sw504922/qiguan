@@ -118,7 +118,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">专题图类型</label>
                         <div class="col-sm-6">
-                            <select class="form-control mb15" id="specialImg" onchange="thumbnailStatus()">
+                            <select class="form-control mb15" name="thumnailChannel" id="specialImg" onchange="thumbnailStatus()">
                                 <option value="1">主页背景图</option>
                                 <option value="2">列表缩略图</option>
                                 <option value="3">推荐位缩略图</option>
@@ -144,7 +144,7 @@
 
                 </form>
                 <div class="form-group">
-                    <div class="btn btn-primary savebutton" onclick="submitNewChanne()">&nbsp;保&nbsp;&nbsp;存</div>
+                    <div class="btn btn-primary savebutton" onclick="submitNewChanne('addForm','addJXMethod')">&nbsp;保&nbsp;&nbsp;存</div>
                 </div>
             </section>
         </div>
