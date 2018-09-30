@@ -8,7 +8,7 @@ class AuthController extends BaseController
 
     public function user()
     {
-        $model=M("user");
+        $model=M("user_info");
         $accessModel=M("auth_group_access");
         $auth_model=M("auth_group");
 
@@ -42,11 +42,11 @@ class AuthController extends BaseController
      * @$accessModel:添加新用户所属组
      ***/
     public function addUser(){
-        $arr["name"]=I("userName");
+        $arr["user_name"]=I("userName");
         $arr["login"]=I("login");
         $arr["type"]=1;
         $arr["password"]="e10adc3949ba59abbe56e057f20f883e";
-        $userModel=M("user");
+        $userModel=M("user_info");
         $result=$userModel->add($arr);
         if($result!=""){
             $accessModel=M("auth_group_access");
@@ -100,7 +100,7 @@ class AuthController extends BaseController
      ***/
     public function update_asscess_page()
     {
-        $model=M("user");
+        $model=M("user_info");
         $arr["id"]=I("rowkey");
         $user=$model->where($arr)->select();
         $this->assign("user",$user);
@@ -130,7 +130,7 @@ class AuthController extends BaseController
 
 
     public function deltedUser(){
-        $userModel=M("user");
+        $userModel=M("user_info");
         $map["id"]=I("rowkey");
         $map["type"]=1;
         $result=$userModel->where($map)->delete();

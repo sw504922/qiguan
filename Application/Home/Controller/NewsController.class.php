@@ -3,6 +3,7 @@
 namespace Home\Controller;
 
 use Home\Model\ChannelInfoModel;
+use Home\Model\StreamInfoModel;
 use Think\Controller;
 
 class NewsController extends BaseController
@@ -47,25 +48,8 @@ class NewsController extends BaseController
         $this->display();
     }
 
-    public function jingxuan()
-    {
-        $this->display();
-    }
 
-    public function youli()
-    {
-        $this->display();
-    }
 
-    public function wendao()
-    {
-        $this->display();
-    }
-
-    public function bolan()
-    {
-        $this->display();
-    }
 
 
 
@@ -74,6 +58,61 @@ class NewsController extends BaseController
      *
      * */
 
+    //上传路径
+    private $path="./Uploads/";
+    private $path_subName="tw_images/";
+    private $jrqgChannel=array("精选"=>"1","闻道"=>"2","博览"=>"3","游历"=>"4","回忆"=>"5");
+    public function addImgAndContent(){
+        $arr["title"]=trim(I("title"));
+        $arr["summary"]=htmlspecialchars(I("summary"));
+        $arr["content"]=htmlspecialchars(I("content"));
+        $thumbnail = array($_FILES['thumbnail']);
+        $arr["send"]=trim(I("send"));
+        $arr["channel"]=trim(I("channel"));
+
+        if(!empty($thumbnail[0]['name'])) {
+
+            $status = $this->uploadMVI($thumbnail,$this->path,$this->path_subName);
+        }
+    }
+
+    public function jingxuan()
+    {
+        $StreamInfoModel=new StreamInfoModel();
+
+        $result=$StreamInfoModel->getChannel($this->jrqgChannel["精选"]);
+
+        $this->assign("result",$result);
+        $this->display();
+    }
+
+    public function youli()
+    {
+        $StreamInfoModel=new StreamInfoModel();
+        $result=$StreamInfoModel->getChannel($this->jrqgChannel["游历"]);
+        $this->assign("result",$result);
+        $this->display();
+    }
+
+    public function wendao()
+    {
+        $StreamInfoModel=new StreamInfoModel();
+
+        $result=$StreamInfoModel->getChannel($this->jrqgChannel["闻道"]);
+
+        $this->assign("result",$result);
+        $this->display();
+    }
+
+    public function bolan()
+    {
+        $StreamInfoModel=new StreamInfoModel();
+
+        $result=$StreamInfoModel->getChannel($this->jrqgChannel["博览"]);
+
+        $this->assign("result",$result);
+        $this->display();
+    }
 }
 
 ?>

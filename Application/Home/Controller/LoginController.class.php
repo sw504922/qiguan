@@ -8,14 +8,15 @@ class LoginController extends Controller {
 
     public function login() {
         if (IS_POST) {
-            $user = M('crm_user');
+            $user = M('user_info');
             $name = I("user");
             $password = I("pwd");
             $map['password'] = md5($password);
-            $map['login'] = $name;
+            $map['user_name'] = $name;
             $result = $user->where($map)->select();
+
             if ($result == true) {
-                session("od_auth", $result);
+                session("qg_auth", $result);
                 cookie("login-cook-date",md5(date("Y-m-d")));
                 $this->redirect('Index/index');
             } else {
@@ -39,9 +40,9 @@ class LoginController extends Controller {
     */
     public function check()
     {
-        $value = session("od_auth");
+        $value = session("qg_auth");
         $map["id"]=$value[0]["id"];
-        $api = M('crm_user');
+        $api = M('user_info');
         $password = I('password');
         $data['password'] =$password;
         $chenk = $api->where($map)->save($data);

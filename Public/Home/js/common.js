@@ -10,15 +10,13 @@ $(document).ready(function () {
     var chiledren = $("#chiledren").val();
 
     if (url.indexOf(chiledren) > 0) {
-
         $("#" + chiledren + ">ul.children").css("display", "block");
         $("#" + chiledren).addClass("nav-active active");
     }
 
-
+    $(".leftpanel").height($(".mainpanel").height());
 
 })
-
 
 
 /**
@@ -75,7 +73,7 @@ function getData(targets) {
     });
 }
 
-function submitNewChanne(num) {
+function submitNewChanne(id,target) {
 
 
     var form = new FormData(document.getElementById(id));
@@ -89,7 +87,7 @@ function submitNewChanne(num) {
 
         },
         error: function (data) {
-            console.log("this is error");
+           // console.log("this is error");
         }
     })
 }
@@ -147,109 +145,31 @@ function limitPage(TotalPage, Total, targets) {
 
 
 
-/**
- * channel_open
- *****/
-var globalConfig = {};
-globalConfig.paramAesKey = "miningaccountH5";
-
-function generateH5Path(type) {
-    var channelCode = $("#addch_code").val().trim();
-    var activity = $("#activity").val().trim();
-    if (activity == null || activity == undefined || activity == '') {
-        activity = '';
-    }
-    if (!channelCode) {
-        alert("请先填写渠道码");
-        return;
-    }
-
-    var baseUrl = "https://accountapi.investassistant.com/miningaccount/accounth5/regist?activity=$$activity$$&channel_open=$$channel_open$$&hmsr=$$channel_open1$$&hmpl=&hmcu=&hmkw=&hmci=";
-    var aesChannelCode = aesEncode(channelCode, globalConfig.paramAesKey).toString();
-
-    aesChannelCode = formatUrlParam(aesChannelCode);
-    var url = baseUrl.replace("$$channel_open$$", aesChannelCode);
-    url = url.replace("$$channel_open1$$", channelCode);
-    url = url.replace("$$activity$$", activity);
-
-    $("#channaeCodeShow").text(channelCode);
-    $("#addqr_link").val(url);
-
-}
-
-
-function formatUrlParam(param) {
-    param = param.replaceAll("\\+", "*");
-    param = param.replaceAll("\\/", "-");
-    param = param.replaceAll("\\=", ".");
-    return param;
-}
-
-function reverseFormatUrlParam(param) {
-    param = param.replaceAll("\\*", "+");
-    param = param.replaceAll("\\-", "/");
-    param = param.replaceAll("\\.", "=");
-    return param;
-}
-
-function aesEncode(data, val) {
-    if (data) {
-        val = format16Key(val);
-        var key = CryptoJS.enc.Latin1.parse(val);
-        var iv = CryptoJS.enc.Latin1.parse(val);
-        var encrypted = CryptoJS.AES.encrypt(data, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-        return encrypted;
-    }
-}
-
-// 解密url返回的参数
-function aesDecode(data, val) {
-    if (data) {
-        val = format16Key(val);
-        var key = CryptoJS.enc.Latin1.parse(val);
-        var iv = CryptoJS.enc.Latin1.parse(val);
-        var decrypted = CryptoJS.AES.decrypt(data, key, {
-            iv: iv,
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7
-        });
-        return decrypted.toString(CryptoJS.enc.Utf8);
-    }
-}
-
-// 格式化成16位的key
-function format16Key(val) {
-    var len = val.toString().length;
-    var tmp = "0000000000000000";
-    if (len < 16) {
-        val += tmp.substring(0, 16 - len);
-    }
-    if (len > 16) {
-        val = val.substring(0, 16);
-    }
-    return val;
-
-}
-
-String.prototype.replaceAll = function (s1, s2) {
-    return this.replace(new RegExp(s1, "gm"), s2);
-}
-
 
 
 /**
  * @button click call input File
  ***/
-function uploadIMG(id) {
-    var id = "#" + id;
-    $(id +"_file").click();
-    $(id).change(function () {
-        $(id + "_span").text($(id ).val());
+function uploadIMG(id,num) {
+
+    var fileId="#" + id + "_file_"+num;
+    var spanId="#" + id + "_span_"+num;
+    $(fileId).click();
+    $(fileId).change(function () {
+
+        $(spanId).text($(fileId).val());
     });
 
 }
 
+
+function addConversion() {
+    var num = $("#addconversion").attr("num_id");
+    var maxNum = $("#addconversion").attr("max_num");
+    $("#thumbnail_span_" + num).removeClass("hide");
+    if (num<maxNum){
+        $("#addconversion").attr("num_id", ++num);
+    }
+
+
+}

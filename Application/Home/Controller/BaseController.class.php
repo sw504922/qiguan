@@ -15,16 +15,18 @@ use Think\Log;
 
 class BaseController extends Controller
 {
+
+
     protected function _initialize()
     {
-        $session = session("od_auth");
+        $session = session("qg_auth");
 
         if (empty($session)) {
             $this->redirect("Login/login");
         }
 
         $value = $session[0];
-        $uid = $value['id'];
+        $uid = $value['user_id'];
         $auth = new Auth();
 
         if (!$auth->check(MODULE_NAME . '/' . CONTROLLER_NAME, $uid)) {
@@ -32,7 +34,6 @@ class BaseController extends Controller
         }
 
         $auth = new Auth();
-        $uid = $value["id"];
         $model = M("auth_rule");
         $result=$model->select();
 
@@ -54,17 +55,6 @@ class BaseController extends Controller
     }
 
 
-    /**
-     * get exchange rate
-     ***/
-    public function getCoinToHK()
-    {
-        $nowDate = Date("Y-m-d");
-        $huilvCache = file_get_contents("http://api.k780.com/?app=finance.rate&scur=USD&tcur=HKD&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4");
-        $CNYCache = file_get_contents("http://api.k780.com/?app=finance.rate&scur=CNY&tcur=HKD&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4");
-        S($nowDate . "US", $huilvCache, 3600 * 60 * 24);
-        S($nowDate . "CN", $CNYCache, 3600 * 60 * 24);
-    }
 
 
     public function getParent()
@@ -78,19 +68,21 @@ class BaseController extends Controller
     /**
      * upload imgage
      ***/
-    public function getBannerImage($Thumbail, $path, $path_subName)
+    public function uploadMVI($Thumbail, $path, $path_subName)
     {
         foreach ($Thumbail as $img) {
             $name = $img['name'];
         }
         log::write($path_subName . $path . $name . " is thunmail name");
         $upload = new \Think\Upload();
-        $upload->maxSize = 3145728;
+        $upload->maxSize = 0;
         $upload->exts = array(
             'jpg',
             'gif',
             'png',
-            'jpeg'
+            'jpeg',
+            'mp3',
+            'mp4',
         );
         $upload->rootPath = $path;
         $upload->subName = $path_subName;
