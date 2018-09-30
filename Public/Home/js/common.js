@@ -15,7 +15,7 @@ $(document).ready(function () {
     }
 
     $(".leftpanel").height($(".mainpanel").height());
-
+    thumbnailStatus();
 })
 
 
