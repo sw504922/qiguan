@@ -78,7 +78,7 @@ class NewsController extends BaseController
         $arr["channel"]=trim(I("channel"));
 
         if(!empty($thumbnail[0]['name'])) {
-            $status = $this->uploadMVI($thumbnail,$this->path,$this->path_subName);
+            $status = $this->uploadMVI($thumbnail,$this->path,$this->tw_images);
         }
     }
     /*****
@@ -90,23 +90,53 @@ class NewsController extends BaseController
         $StreamInfoModel=new StreamInfoModel();
 
         $result=$StreamInfoModel->getChannel($this->jrqgChannel["精选"]);
-
+        $resultCount=$StreamInfoModel->getChannel($this->jrqgChannel["精选"]);
         $this->assign("result",$result);
+        $this->assign("resultCount",$resultCount);
         $this->display();
     }
 
     public function addJXMethod(){
         $arr["title"]=trim(I("title"));
         $arr["summary"]=htmlspecialchars(I("summary"));
-        $arr["desc"]=htmlspecialchars(I("desc"));
+        $arr["msg_abstract"]=htmlspecialchars(I("desc"));
         $arr["thumnailChannel"]=htmlspecialchars(I("thumnailChannel"));
         $thumbnail = array($_FILES['thumbnail']);
 
-        if(!empty($thumbnail[0]['name'])) {
+        $session = session("qg_auth");
+        $arr["user_id"]= $session[0]['user_id'];
+        $arr["channel"]=trim(I("channel"));
 
-            $status = $this->uploadMVI($thumbnail,$this->path,$this->special_images);
+        $arr["publish_time"]=Date("Y-m-d H:i:s");
+
+        if(!empty($thumbnail[0]['name'])) {
+            $arr["thumbnail_url"] = array($thumbnail[0]['name']);
+            $status = $this->uploadMVI($thumbnail,$this->path,$this->special_subName);
+        }
+        $StreamInfoModel=new StreamInfoModel();
+        $StreamInfoModel->addStreamAction($arr);
+    }
+
+    public function deltedMethod(){
+        $StreamInfoModel=new StreamInfoModel();
+        $map["msg_id"]=I("id");
+        $result=$StreamInfoModel->getStreamInfo($map);
+        if(!empty($result)){
+            $StreamInfoModel->deletedAction($map);
         }
     }
+
+    public function updateStatusMethod(){
+        $StreamInfoModel=new StreamInfoModel();
+        $map["msg_id"]=I("id");
+        $arr["status"]=I("status");
+
+        $result=$StreamInfoModel->getStreamInfo($map);
+        if(!empty($result)){
+            $StreamInfoModel->updateAction($map,$arr);
+        }
+    }
+
 
     /*****
      *游历
@@ -116,7 +146,9 @@ class NewsController extends BaseController
     {
         $StreamInfoModel=new StreamInfoModel();
         $result=$StreamInfoModel->getChannel($this->jrqgChannel["游历"]);
+        $resultCount=$StreamInfoModel->getChannel($this->jrqgChannel["游历"]);
         $this->assign("result",$result);
+        $this->assign("resultCount",$resultCount);
         $this->display();
     }
     /*****
@@ -128,8 +160,9 @@ class NewsController extends BaseController
         $StreamInfoModel=new StreamInfoModel();
 
         $result=$StreamInfoModel->getChannel($this->jrqgChannel["闻道"]);
-
+        $resultCount=$StreamInfoModel->getChannel($this->jrqgChannel["闻道"]);
         $this->assign("result",$result);
+        $this->assign("resultCount",$resultCount);
         $this->display();
     }
     /*****
@@ -141,8 +174,9 @@ class NewsController extends BaseController
         $StreamInfoModel=new StreamInfoModel();
 
         $result=$StreamInfoModel->getChannel($this->jrqgChannel["博览"]);
-
+        $resultCount=$StreamInfoModel->getChannel($this->jrqgChannel["博览"]);
         $this->assign("result",$result);
+        $this->assign("resultCount",$resultCount);
         $this->display();
     }
 }

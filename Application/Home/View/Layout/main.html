@@ -41,7 +41,7 @@
                 <div class="media userlogged">
                     <img alt="" src="__IMG__/photos/loggeduser.png" class="media-object">
                     <div class="media-body">
-                        <h4>{$result.name}</h4>
+                        <h4>{$arr["auth"]["user_name"]}</h4>
                     </div>
                 </div>
                 <h5 class="sidebartitle actitle">Account</h5>
@@ -91,7 +91,7 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 <img src="__IMG__/photos/loggeduser.png" alt=""/>
-                                {$arr["auth"]["name"]}
+                                {$arr["auth"]["user_name"]}
                                 <span class="caret"></span>
                             </button>
                             <input type="hidden" value='{$arr["auth"]["manager"]}' id="user_auth"/>

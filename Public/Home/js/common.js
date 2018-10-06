@@ -39,6 +39,21 @@ $("#dateEnd").datetimepicker({
     autoclose: true,
 })
 
+function updateData(targets,id,status) {
+
+    $.ajax({
+        type: "get",
+        url: targets,
+        data: {
+            id: id,
+            status: status,
+        },
+        dataTyep: "json",
+        success: function (data) {
+          window.location.reload();
+        }
+    });
+}
 
 /**
  * @send data get Json
@@ -84,7 +99,7 @@ function submitNewChanne(id,target) {
         contentType: false,
         data: form,
         success: function (data) {
-
+            window.location.reload();
         },
         error: function (data) {
            // console.log("this is error");

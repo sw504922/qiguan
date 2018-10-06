@@ -8,7 +8,7 @@
             <div class="selectArea">
 
                 <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addDIV')"><i
-                        class="fa fa-plus-square-o"></i> 新建精选专题
+                        class="fa fa-plus-square-o"></i> 新建游历专题
                 </button>
             </div>
         </header>
@@ -65,9 +65,14 @@
                     <td>{$val.user_name}</td>
                     <td>{$val.publish_time}</td>
                     <td>
-                        <a onclick="getChannelInfor('infor','{$key}')" class="blue pointer">编辑</a>
-                        <a onclick="getStatus('infor','{$key}')" class="blue pointer">隐藏</a>
-                        <a class="blue pointer" onclick="deltedGroup('{$val.id}')">删除</a>
+                        <a onclick="getChannelInfor('infor','{$$val.msg_id}')" class="blue pointer">编辑</a>
+                        <?php
+                            if($val["status"]==0){ ?>
+                        <a onclick="updateData('updateStatusMethod','{$val.msg_id}',1)" class="blue pointer">隐藏</a>
+                        <?php }else{ ?>
+                        <a onclick="updateData('updateStatusMethod','{$val.msg_id}',0)" class="blue pointer">显示</a>
+                        <?php } ?>
+                        <a class="blue pointer" onclick="updateData('deltedMethod','{$val.msg_id}')">删除</a>
                     </td>
                 </tr>
                 <?php }?>
@@ -91,7 +96,7 @@
         <div class="addMouule" style="left: 29%;width: 60%; position: absolute;top: 5%;">
             <section class="panel">
                 <header class="panel-heading">
-                    新建精选专题
+                    新建游历专题
                     <a class="fa fa-times close" onclick="addLayer('addDIV','close')"></a>
                 </header>
 
@@ -101,6 +106,7 @@
                         <label class="col-sm-3 control-label">标题</label>
                         <div class="col-sm-6">
                             <input type="text" placeholder="请输入标题" name="title" class="form-control">
+                            <input type="hidden" value="4" name="channel" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
@@ -116,35 +122,36 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 上传专题图</label>
+                        <label class="col-sm-3 control-label">专题图类型</label>
                         <div class="col-sm-6">
-                            <select class="form-control mb15" id="specialImg" onchange="imgChannge()">
-                                <option value="a">主页背景图</option>
-                                <option value="b">列表缩略图</option>
-                                <option value="c">推荐位缩略图</option>
+                            <select class="form-control mb15" name="thumnailChannel" id="specialImg" onchange="thumbnailStatus()">
+                                <option value="1">主页背景图</option>
+                                <option value="2">列表缩略图</option>
+                                <option value="3">推荐位缩略图</option>
                             </select>
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">缩略图</label>
+                        <label class="col-sm-3 control-label">上传专题图</label>
+
+
+                        <?php for($i=1;$i<4;$i++){ ?>
                         <div class="col-sm-6">
-                            <a class="blue pointer" id="qr_code_span" onclick="uploadIMG('qr_code_filea')">上传缩略图</a>
-                            <input type="file" class="form-control hide" name="qr_code[]"
-                                   id="qr_code_filea"/>
-                            <input type="file" class="form-control hide" name="qr_code[]"
-                                   id="qr_code_fileb"/>
-                            <input type="file" class="form-control hide" name="qr_code[]"
-                                   id="qr_code_filec"/>
+                            <a class="blue pointer that hide" id="thumbnail_span_{$i}"
+                               onclick="uploadIMG('thumbnail','{$i}')">上传专题图</a>
+                            <input type="file" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
                         </div>
+                        <?php } ?>
+
                     </div>
-                    <div class="form-group">
-                        <div class="btn btn-primary savebutton" onclick="submitNewChanne()">&nbsp;保&nbsp;&nbsp;存</div>
-                    </div>
+
 
                 </form>
-
+                <div class="form-group">
+                    <div class="btn btn-primary savebutton" onclick="submitNewChanne('addForm','addJXMethod')">&nbsp;保&nbsp;&nbsp;存</div>
+                </div>
             </section>
         </div>
 
@@ -164,9 +171,12 @@
 
         }
 
-        function imgChannge() {
-            var val = $("#specialImg").val();
-            $("#uploadImg").attr("onclick", "uploadIMG('qr_code_file" + val + "')");
+
+        function thumbnailStatus() {
+            var num = $("#specialImg").val();
+            $(".that").addClass("hide");
+            $("#thumbnail_span_" + num).removeClass("hide");
+            $("#thumbnail_span_" + num).attr("onclick", "uploadIMG('thumbnail','" + num + "')");
         }
     </script>
 
