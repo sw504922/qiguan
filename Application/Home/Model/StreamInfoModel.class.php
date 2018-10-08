@@ -47,10 +47,26 @@ class StreamInfoModel extends Model
         $id=$this->getMaxMSGID();
         $arr["msg_id"]=$id;
         $model = M("jrqg.stream_info");
-        $result=$model->add($arr);
-        return $result;
+        $model->add($arr);
+        return $id;
+    }
+    public function getMediaDetail($str){
+        $map["rowkey"]=$str;
+        $model = M("jrqg.media_detail");
+        $id=$model->where($map)->select();
+        return $id;
+    }
+    public function addMediaDetail($arr){
+        $model = M("jrqg.media_detail");
+        $id=$model->add($arr);
+        return $id;
     }
 
+    public function addStreamMedia($arr){
+
+        $model = M("jrqg.stream_media");
+        $model->add($arr);
+    }
     private function getMaxMSGID(){
         $model = M("jrqg.stream_info");
         $sql='select max(msg_id) as max  from jrqg.stream_info ';

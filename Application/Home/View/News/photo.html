@@ -12,7 +12,7 @@
             </div>
 
             <div class="panel-body panel-body-nopadding">
-                <form id="add" class="form-horizontal form-bordered">
+                <form id="addForm" class="form-horizontal form-bordered">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">标题<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
@@ -26,17 +26,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">缩略图</label>
+                        <label class="col-sm-3 control-label">上传图片</label>
                         <div class="col-sm-6">
-                            <a class="blue pointer" id="qr_code_span" onclick="uploadIMG('qr_code')">上传缩略图</a>
-                            <input type="file" class="form-control hide" name="qr_code[]" id="qr_code_file"/>
+
+                            <a class="blue pointer" id="upload_music_span_" onclick="uploadIMG('upload_music','')">上传图片</a>
+                            <input type="file" class="form-control hide" name="upload_pic" id="upload_music_file_"/>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-warning btn-xs" type="button" onclick="thumbnailStatus()" id="addconversion" num_id="3" max_num="10">增加缩略图</button>
+                        <label class="col-sm-3 control-label">封面缩略图</label>
+
+
+                        <div class="col-sm-6">
+                            <?php for($i=1;$i<10;$i++){ ?>
+                            <a class="blue pointer " id="thumbnail_span_{$i}" onclick="uploadIMG('thumbnail','{$i}')">上传缩略图</a>
+                            <input type="file" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
+                            <br/>
+                            <?php } ?>
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">是否立即发布</label>
                         <div class="col-sm-6">
-                            <div class="radio"><label><input type="radio"> 是</label></div>
-                            <div class="radio"><label><input type="radio" checked=""> 否</label></div>
+                            <div class="radio"><label><input type="radio" name="send" value="0" checked="checked" > 是</label></div>
+                            <div class="radio"><label><input type="radio" name="send"  value="1"> 否</label></div>
 
                         </div>
                     </div>
@@ -44,29 +60,34 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label"> 所属频道</label>
                         <div class="col-sm-6">
-                            <select class="form-control mb15" id="specialImg" onchange="imgChannge()">
-                                <option value="a">主题</option>
-                                <option value="b">游历</option>
-                                <option value="c">博览</option>
+                            <select class="form-control mb15" name="channel">
+                                <option value="1">精选</option>
+                                <option value="2">闻道</option>
+                                <option value="3">博览</option>
+                                <option value="4">游历</option>
+                                <option value="5">回忆</option>
+
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <button class="btn btn-primary">保&nbsp;&nbsp;存</button>
 
-                    </div>
+
                 </form>
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="submitNewChanne('addForm','addSetPic')">保&nbsp;&nbsp;存</button>
+
+                </div>
             </div>
         </div>
 
 
     </section>
-    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.all.js"></script>
-    <script type="text/javascript" charset="utf-8" src="__JS__/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script type="text/javascript" charset="utf-8" src="__JS__/upload.js"></script>
 
+    <script type="text/javascript">
+
+
+    </script>
 </block>
 
 

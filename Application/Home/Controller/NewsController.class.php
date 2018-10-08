@@ -61,6 +61,7 @@ class NewsController extends BaseController
     //上传路径
     private $path="./Uploads/";
     private $tw_images="tw_images/";
+    private $pics_images="pics_images/";
     private $special_subName="special_images/";
     private $jrqgChannel=array("精选"=>"1","闻道"=>"2","博览"=>"3","游历"=>"4","回忆"=>"5");
 
@@ -68,19 +69,104 @@ class NewsController extends BaseController
      *图文内容
      *  $cacheKey:定义唯一缓存key值
      ****/
+    private $news="news";
+    private $pics="pics";
+    private $radio="radio";
+    private $vedio="vedio";
+    private $send="发布";
+
 
     public function addImgAndContent(){
+        $session = session("qg_auth");
+        $arr["user_id"]= $session[0]['user_id'];
         $arr["title"]=trim(I("title"));
-        $arr["summary"]=htmlspecialchars(I("summary"));
-        $arr["content"]=htmlspecialchars(I("content"));
+        $arr["msg_abstract"]=htmlspecialchars_decode(I("summary"));
+        $arr["content"]=htmlspecialchars_decode(I("content"));
         $thumbnail = array($_FILES['thumbnail']);
+
         $arr["send"]=trim(I("send"));
         $arr["channel"]=trim(I("channel"));
-
+        $arr["media_type"]=$this->news;
         if(!empty($thumbnail[0]['name'])) {
+           // $arr["thumbnail_url"] = implode(";",$thumbnail[0]['name']);
+            $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
             $status = $this->uploadMVI($thumbnail,$this->path,$this->tw_images);
         }
+
+        $StreamInfoModel=new StreamInfoModel();
+
+        $msgID=$StreamInfoModel->addStreamAction($arr);
+
+        $arr["summary"]=$arr["msg_abstract"];
+        $arr["msg_id"]=$msgID;
+        $arr["layout"]=$this->send;
+        $arr["tags"]="测试";
+
+        $date=Date("Y-m-d H:i:s");
+        $arr["rowkey"]=getKey($arr["title"].$date.$arr["msg_id"]);
+        $StreamInfoModel->addMediaDetail($arr);
+
+        $mediaId=$StreamInfoModel->getMediaDetail($arr["rowkey"]);
+        $map["msg_id"]=$msgID;
+        $map["media_id"]=$mediaId;
+        $map["is_ad"]=0;
+        $map["overview_pic"]=$arr["thumbnail_url"];
+
+        $StreamInfoModel->addStreamMedia($map);
+
     }
+
+
+
+
+
+
+    public function addSetPic(){
+        $session = session("qg_auth");
+        $arr["user_id"]= $session[0]['user_id'];
+        $arr["title"]=trim(I("title"));
+        $arr["msg_abstract"]=htmlspecialchars_decode(I("summary"));
+
+        $thumbnail = array($_FILES['thumbnail']);
+        $upload_pic = array($_FILES['upload_pic']);
+
+        $arr["send"]=trim(I("send"));
+        $arr["channel"]=trim(I("channel"));
+        $arr["media_type"]=$this->pics;
+        if(!empty($thumbnail[0]['name'])) {
+            $arr["thumbnail_url"] = $upload_pic[0]['name'];
+            $this->uploadMVI($thumbnail,$this->path,$this->tw_images);
+            $this->uploadMVI($upload_pic,$this->path,$this->pics_images);
+        }
+
+        $StreamInfoModel=new StreamInfoModel();
+
+        $msgID=$StreamInfoModel->addStreamAction($arr);
+
+        $arr["summary"]=$arr["msg_abstract"];
+        $arr["msg_id"]=$msgID;
+        $arr["layout"]=$this->send;
+
+        $date=Date("Y-m-d H:i:s");
+        $arr["rowkey"]=getKey($arr["title"].$date.$arr["msg_id"]);
+        $StreamInfoModel->addMediaDetail($arr);
+
+        $mediaId=$StreamInfoModel->getMediaDetail($arr["rowkey"]);
+        $map["msg_id"]=$msgID;
+        $map["media_id"]=$mediaId;
+        $map["is_ad"]=0;
+        $map["overview_pic"]=$arr["thumbnail_url"];
+
+        $StreamInfoModel->addStreamMedia($map);
+
+    }
+
+
+
+
+
+
+
     /*****
      *精选
      *  $cacheKey:定义唯一缓存key值
@@ -99,8 +185,8 @@ class NewsController extends BaseController
     public function addJXMethod(){
         $arr["title"]=trim(I("title"));
         $arr["summary"]=htmlspecialchars(I("summary"));
-        $arr["msg_abstract"]=htmlspecialchars(I("desc"));
-        $arr["thumnailChannel"]=htmlspecialchars(I("thumnailChannel"));
+        $arr["msg_abstract"]=htmlspecialchars_decode(I("desc"));
+        $arr["thumnailChannel"]=htmlspecialchars_decode(I("thumnailChannel"));
         $thumbnail = array($_FILES['thumbnail']);
 
         $session = session("qg_auth");
