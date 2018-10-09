@@ -5,18 +5,18 @@ use Think\Model;
 class StreamInfoModel extends Model
 {
 
-    function getChannel($channel){
+    function getChannel($channel,$offset,$limit=20){
         $model=M();
-        $sql='select * from (select * from jrqg.stream_info where channel="'.$channel.'") as stream_info';
+        $sql='select * from (select * from jrqg.stream_info where status="'.$channel.'") as stream_info';
         $sql.=' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
-        $sql.=' limit 0,20';
+        $sql.=' limit '.$offset.','.$limit;
         $result=$model->query($sql);
         return $result;
     }
 
-    function getChanneCountl($channel){
+    function getChanneCount($channel){
         $model=M();
-        $sql='select count(*) cnt from (select * from jrqg.stream_info where channel="'.$channel.'") as stream_info';
+        $sql='select count(*) cnt from (select * from jrqg.stream_info where status="'.$channel.'") as stream_info';
         $sql.=' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
         $result=$model->query($sql);
         return $result[0]["cnt"];
@@ -35,6 +35,8 @@ class StreamInfoModel extends Model
         $result=$model->query($sql);
         return $result;
     }
+
+
 
 
     public function updateAction($map,$arr){
@@ -62,6 +64,7 @@ class StreamInfoModel extends Model
         return $id;
     }
 
+
     public function addStreamMedia($arr){
 
         $model = M("jrqg.stream_media");
@@ -80,5 +83,36 @@ class StreamInfoModel extends Model
         }
 
         return $num.$id;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function addGuzhiInfo($arr){
+        $model = M("jrqg.guanzhi_info");
+        $id=$model->add($arr);
+        return $id;
+    }
+    public function getGuzhiInfor($map){
+
+        $model = M("jrqg.guanzhi_info");
+        $result=$model->where($map)->select();
+        return $result;
+    }
+    function deletedGuzhiAction($map){
+
+        $model = M("jrqg.guanzhi_info");
+        $result=$model->where($map)->delete();
+
+        return $result;
     }
 }

@@ -7,8 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>今日奇观后台-登录</title>
 
-    <link href="/product/qiguan/Public/Home/css/login.css" rel="stylesheet" type="text/css">
-    <script src="/product/qiguan/Public/Home/js/jquery.js" type="text/javascript"></script>
+    <link href="/qiguan/Public/Home/css/login.css" rel="stylesheet" type="text/css">
+    <script src="/qiguan/Public/Home/js/jquery.js" type="text/javascript"></script>
 
 
 </head>
@@ -18,7 +18,7 @@
     <div class="form-signin" id="signForm">
         <div class="form-signin-heading text-center">
             <h1 class="sign-title">Sign In</h1>
-            <img src="/product/qiguan/Public/Home/images/login-logo.png" alt="">
+            <img src="/qiguan/Public/Home/images/login-logo.png" alt="">
         </div>
 
         <form class="login-wrap" action="login" method="post">
