@@ -112,7 +112,12 @@ class StreamInfoModel extends Model
 
         $model = M("jrqg.guanzhi_info");
         $result=$model->where($map)->delete();
-
         return $result;
+    }
+
+    public function addGuanzhiMsg($arr){
+        $model = M("jrqg.guanzhi_msg");
+        $model->add($arr);
+
     }
 }

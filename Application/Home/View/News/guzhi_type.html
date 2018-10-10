@@ -1,0 +1,11 @@
+<?php
+if(!empty($result)){
+?>
+<select class="form-control mb15" name="guanzhi_id" id="guanzhi_id">
+    <?php foreach($result as $val){ ?>
+    <option value="{$val.guanzhi_id}">{$val.title}</option>
+    <?php } ?>
+</select>
+<?php } else{?>
+<input type="text"  value="暂无观止频道数据" class="form-control mb15" name="guzhitype" readonly/>
+<?php }?>

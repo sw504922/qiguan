@@ -68,6 +68,7 @@ function getData(targets) {
         data: {
             status: $("#status").val(),
             new_page: $("#page").val(),
+            channel: $("#channel").val(),
         },
         dataTyep: "json",
         beforeSend: function () {
@@ -77,6 +78,7 @@ function getData(targets) {
         success: function (data) {
             $(".loading").hide();
             $("#get_data_area").html(data);
+            $(".leftpanel").css("height",$(document).height());
         }
     });
 }
