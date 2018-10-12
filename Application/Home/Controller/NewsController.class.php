@@ -66,6 +66,8 @@ class NewsController extends BaseController
     private $send = "发布";
     private $limit = "20";
     private $noGuanzhi = "暂无观止频道数据";
+    private $replaceRPath = '/qiguan/Uploads/tw_images/';
+    private $replaceYPath = 'http://47.92.45.8/qiguan/Uploads/tw_images/';
 
 
     public function addImgAndContent()
@@ -94,17 +96,17 @@ class NewsController extends BaseController
 
         $msgID = $StreamInfoModel->addStreamAction($arr);
 
-        $arr["msg_id"] =$msgID;
+        $arr["msg_id"] = $msgID;
         $arr["layout"] = $this->send;
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
-        $content= htmlspecialchars_decode(I("content"));
+        $content = htmlspecialchars_decode(I("content"));
         preg_match_all("<img.*?src=\"(.*?.*?)\".*?>", $content, $match);
         foreach ($match[1] as $val) {
             $imgsrc[] = basename($val);
         }
-        $content = str_replace($this->path.$this->tw_images,"", $content);
-        $arr["content"]=$content;
+        $content = str_replace($this->replaceRPath, $this->replaceYPath, $content);
+        $arr["content"] = $content;
         $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
         $StreamInfoModel->addMediaDetail($arr);
 
@@ -132,6 +134,7 @@ class NewsController extends BaseController
         $picdesc = I('picdesc');
         $arr["send"] = trim(I("send"));
         $arr["publish_time"] = trim(I("publish_time"));
+        $arr["guanzhi_id"] = trim(I("guanzhi_id"));
         if ($arr["publish_time"] == 0) {
             $arr["publish_time"] = date("Y-m-d H:i:s");
         }
@@ -145,32 +148,35 @@ class NewsController extends BaseController
 
 
         $StreamInfoModel = new StreamInfoModel();
-        $msgID = $StreamInfoModel->addStreamAction($arr);
-        $arr["msg_id"] = $msgID;
-        $arr["layout"] = $this->send;
-        $arr["media_time"] = $arr["publish_time"];
-        $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
-
-        //MediaDetail
-        foreach ($thumbnail[0]['name'] as $key => $val) {
-            if (!empty($val)) {
-                $mediaDetailThumName = $val;
-                $mediaDetailDesc = $picdesc[$key];
-                $arr["summary"] = $mediaDetailDesc;
-                $arr["content"] = $mediaDetailThumName;
-                $StreamInfoModel->addMediaDetail($arr);
+        $opinion_method = I("opinion_method");
+        if ($opinion_method != "update") {
+            $msgID = $StreamInfoModel->addStreamAction($arr);
+            $arr["msg_id"] = $msgID;
+            $arr["layout"] = $this->send;
+            $arr["media_time"] = $arr["publish_time"];
+            $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
+            //MediaDetail
+            foreach ($thumbnail[0]['name'] as $key => $val) {
+                if (!empty($val)) {
+                    $mediaDetailThumName = $val;
+                    $mediaDetailDesc = $picdesc[$key];
+                    $arr["summary"] = $mediaDetailDesc;
+                    $arr["content"] = $mediaDetailThumName;
+                    $StreamInfoModel->addMediaDetail($arr);
+                }
             }
+            //StreamMedia
+            $this->addStreamMedia($arr);
+            //GuanzhiMsg
+
+            if ($arr["guanzhi_id"] != $this->noGuanzhi) {
+                $this->addGuanzhiMsg($arr);
+            }
+        }else{
+            $map["msg_id"]=I("msg_id");
+            dump($arr);
+            dump($map);
         }
-
-        //StreamMedia
-        $this->addStreamMedia($arr);
-
-        //GuanzhiMsg
-        $arr["guanzhi_id"] = trim(I("guanzhi_id"));
-        if ($arr["guanzhi_id"] != $this->noGuanzhi) {
-            $this->addGuanzhiMsg($arr);
-        }
-
     }
 
 
@@ -281,11 +287,8 @@ class NewsController extends BaseController
 
 
     /*****
-     *内容库管理
-     *  $cacheKey:定义唯一缓存key值
+     *内容库管理获取内容
      ****/
-
-
     public function getContent()
     {
         $type = I("status");
@@ -309,7 +312,9 @@ class NewsController extends BaseController
         $data = $this->fetch("News/get_content");
         $this->ajaxReturn($data);
     }
-
+    /*****
+     *内容库管理删除操作
+     ****/
     public function deltedMethod()
     {
         $StreamInfoModel = new StreamInfoModel();
@@ -319,7 +324,9 @@ class NewsController extends BaseController
             $StreamInfoModel->deletedAction($map);
         }
     }
-
+    /*****
+     *内容库管理隐藏操作
+     ****/
     public function updateStatusMethod()
     {
         $StreamInfoModel = new StreamInfoModel();
@@ -332,6 +339,25 @@ class NewsController extends BaseController
         }
     }
 
+
+    public function getUpdateNews()
+    {
+        $map["msg_id"] = I("msg_id");
+        $StreamInfoModel = new StreamInfoModel();
+
+        $streamMedia = $StreamInfoModel->getStreamMedia($map);
+        $streamInfo = $StreamInfoModel->getStreamInfo($map);
+        $guZhiMsg = $StreamInfoModel->getGuanzhiMsg($map);
+        $mediaDetail = $StreamInfoModel->getMediaDetail($streamMedia[0]["final_content"]);
+
+        $result["mediaDetail"] = $mediaDetail;
+        $result["streamMedia"] = $streamMedia;
+        $result["streamInfo"] = $streamInfo;
+        $result["guZhiMsg"] = $guZhiMsg;
+
+        $this->assign("result", $result);
+        $this->display("update_news");
+    }
 
 }
 

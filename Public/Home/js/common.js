@@ -95,7 +95,7 @@ function submitNewChanne(id,target,contro) {
         contentType: false,
         data: form,
         success: function (data) {
-         //   window.location.reload();
+            //window.location.reload();
         },
         error: function (data) {
            // console.log("this is error");

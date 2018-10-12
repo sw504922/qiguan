@@ -22,21 +22,21 @@ class StreamInfoModel extends Model
         return $result[0]["cnt"];
     }
 
-    function getStreamInfo($map){
-        $model = M();
-        $sql='select * from jrqg.stream_info where msg_id="'.$map["msg_id"].'"';
-        $result=$model->query($sql);
-        return $result;
-    }
+
+
 
     function deletedAction($map){
-        $model = M();
-        $sql='delete  from jrqg.stream_info where msg_id="'.$map["msg_id"].'"';
-        $result=$model->query($sql);
-        return $result;
+
+        $model = M("jrqg.stream_info");
+        $model->where($map)->delete();
+
+        $streamModel = M("jrqg.stream_media");
+        $streamModel->where($map)->delete();
+
+        $gzModel = M("jrqg.guanzhi_msg");
+        $gzModel->where($map)->delete();
+
     }
-
-
 
 
     public function updateAction($map,$arr){
@@ -85,8 +85,17 @@ class StreamInfoModel extends Model
         return $num.$id;
     }
 
+    function getStreamInfo($map){
 
-
+        $model = M("jrqg.stream_info");
+        $result=$model->where($map)->select();
+        return $result;
+    }
+    public function getStreamMedia($map){
+        $model = M("jrqg.stream_media");
+        $result=$model->where($map)->select();
+        return $result;
+    }
 
 
 
@@ -118,6 +127,12 @@ class StreamInfoModel extends Model
     public function addGuanzhiMsg($arr){
         $model = M("jrqg.guanzhi_msg");
         $model->add($arr);
+    }
 
+
+    public function getGuanzhiMsg($map){
+        $model = M("jrqg.guanzhi_msg");
+        $result=$model->where($map)->select();
+        return $result;
     }
 }
