@@ -158,7 +158,6 @@ class StreamInfoModel extends Model
 
     public function getGuzhiInfor($map)
     {
-
         $model = M("jrqg.guanzhi_info");
         $result = $model->where($map)->select();
         return $result;
@@ -183,6 +182,24 @@ class StreamInfoModel extends Model
     {
         $model = M("jrqg.guanzhi_msg");
         $result = $model->where($map)->select();
+        return $result;
+    }
+
+    public function getGuanzhiChoiceTopic($map){
+        $model = M("jrqg.guanzhi_choice_topic");
+        $result = $model->where($map)->select();
+        return $result;
+    }
+    public function addGuanzhiChoiceTopic($arr)
+    {
+        $model = M("jrqg.guanzhi_choice_topic");
+        $id = $model->add($arr);
+        return $id;
+    }
+
+    public function updateGuanzhiChoiceTopic($map,$arr){
+        $model = M("jrqg.guanzhi_choice_topic");
+        $result = $model->where($map)->save($arr);
         return $result;
     }
 }

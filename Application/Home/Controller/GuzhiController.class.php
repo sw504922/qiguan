@@ -22,9 +22,9 @@ class GuzhiController extends BaseController
     public function jingxuan()
     {
         $StreamInfoModel = new StreamInfoModel();
-        $map["guanzhi_type"]="zt";
-        $result=$StreamInfoModel->getGuzhiInfor($map);
-        $this->assign("result",$result);
+        $map["guanzhi_type"] = "zt";
+        $result = $StreamInfoModel->getGuzhiInfor($map);
+        $this->assign("result", $result);
         $this->display();
     }
 
@@ -53,8 +53,8 @@ class GuzhiController extends BaseController
     }
 
 
-
-    public function deltedMethod(){
+    public function deltedMethod()
+    {
         $StreamInfoModel = new StreamInfoModel();
         $map["guanzhi_id"] = I("id");
         $result = $StreamInfoModel->getGuzhiInfor($map);
@@ -70,9 +70,9 @@ class GuzhiController extends BaseController
     public function youli()
     {
         $StreamInfoModel = new StreamInfoModel();
-        $map["guanzhi_type"]="yl";
-        $result=$StreamInfoModel->getGuzhiInfor($map);
-        $this->assign("result",$result);
+        $map["guanzhi_type"] = "yl";
+        $result = $StreamInfoModel->getGuzhiInfor($map);
+        $this->assign("result", $result);
         $this->display();
     }
 
@@ -83,9 +83,9 @@ class GuzhiController extends BaseController
     public function wendao()
     {
         $StreamInfoModel = new StreamInfoModel();
-        $map["guanzhi_type"]="wd";
-        $result=$StreamInfoModel->getGuzhiInfor($map);
-        $this->assign("result",$result);
+        $map["guanzhi_type"] = "wd";
+        $result = $StreamInfoModel->getGuzhiInfor($map);
+        $this->assign("result", $result);
         $this->display();
     }
 
@@ -96,10 +96,42 @@ class GuzhiController extends BaseController
     public function bolan()
     {
         $StreamInfoModel = new StreamInfoModel();
-        $map["guanzhi_type"]="bl";
-        $result=$StreamInfoModel->getGuzhiInfor($map);
-        $this->assign("result",$result);
+        $map["guanzhi_type"] = "bl";
+        $result = $StreamInfoModel->getGuzhiInfor($map);
+        $this->assign("result", $result);
         $this->display();
+    }
+
+
+    public function banner()
+    {
+        $StreamInfoModel = new StreamInfoModel();
+        $result = $StreamInfoModel->getGuzhiInfor("");
+        foreach($result as $key=>$val){
+            $map["guanzhi_id"] = $val["guanzhi_id"];
+            $status=$StreamInfoModel->getGuanzhiChoiceTopic($map);
+            $result[$key]["status"]=$status[0]["status"];
+        }
+
+        $this->assign("result", $result);
+        $this->display();
+    }
+
+    public function setStatusBanner()
+    {
+        $arr["status"] = I("status");
+        $map["guanzhi_id"] = I("id");
+        $StreamInfoModel = new StreamInfoModel();
+        $result = $StreamInfoModel->getGuanzhiChoiceTopic($map);
+
+        if (empty($result) && $arr["status"] == 1) {
+            $arr["guanzhi_id"] = $map["guanzhi_id"];
+            $StreamInfoModel->addGuanzhiChoiceTopic($arr);
+        } else if ($arr["status"] == 0) {
+            $StreamInfoModel->updateGuanzhiChoiceTopic($map, $arr);
+        }
+
+
     }
 }
 

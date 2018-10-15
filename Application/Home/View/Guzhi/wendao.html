@@ -30,33 +30,7 @@
                 <?php
                     foreach($result as $key=>$val){
                 ?>
-                <!--编辑用户信息-->
-                <div class="addQA" id="channel_infor_{$key}" style="display: none;">
-                    <div class="addMouule">
-                        <section class="panel">
-                            <header class="panel-heading">
-                                编辑用户信息
-                                <a class="fa fa-times close" onclick="getChannelInfor('infor','{$key}','close')"></a>
-                            </header>
-                            <div class="panel-body">
 
-                                <div class="form-group">
-                                    <label class="label-width">短信主题:</label>
-                                    <input type="text" id="editWechat{$key}" class="form-control "
-                                           value="{$val['sms_title']}"/>
-                                    <input type="hidden" id="user_id{$key}" class="form-control" value="{$val['id']}"/>
-                                </div>
-                                <div class="form-group">
-                                    <label class="label-width">发送短信内容:</label>
-                                    <textarea id="editDesc{$key}" class="form-control">{$val.sms_content}</textarea>
-                                </div>
-
-                                <div class="btn btn-primary" onclick="updateProcess('{$key}','../Sms/updateSms')">&nbsp;确&nbsp;&nbsp;定&nbsp;</div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="meng"></div>
-                </div>
                 <tr>
                     <td>{$key+1}</td>
                     <td>
@@ -65,7 +39,7 @@
 
                     <td>{$val.publish_time}</td>
                     <td>
-                        <a onclick="getChannelInfor('infor','{$$val.guanzhi_id}')" class="blue pointer">编辑</a>
+                        <a href="__ROOT__/News/music.html?guanzhiid={$val.guanzhi_id}&channel=2" class="blue pointer">编辑</a>
                         <?php
                             if($val["status"]==0){ ?>
                         <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)" class="blue pointer">隐藏</a>

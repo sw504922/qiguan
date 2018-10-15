@@ -9,7 +9,7 @@ class IndexController extends BaseController
     public function index()
     {
         $session = session("qg_auth");
-        $this->redirect("../News/newsShow");
+        $this->redirect("../News/newsshow");
     }
 
 }

@@ -2,7 +2,6 @@
 $(document).ready(function () {
     $("#search").click();
     var url = location.href;
-
     var lastID = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
 
     $("#" + lastID).addClass("active");
@@ -49,7 +48,7 @@ function updateData(targets,id,status) {
         },
         dataTyep: "json",
         success: function (data) {
-          window.location.reload();
+         // window.location.reload();
         }
     });
 }

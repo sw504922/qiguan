@@ -13,9 +13,9 @@ class NewsController extends BaseController
     /***
      * display Area
      ***/
-    public function newsShow()
+    public function newsshow()
     {
-        $this->display("news");
+        $this->display();
     }
 
     public function photo()
