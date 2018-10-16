@@ -39,7 +39,7 @@
 
                     <td>{$val.publish_time}</td>
                     <td>
-                        <a  href="__ROOT__/News/newsshow.html?guanzhiid={$val.guanzhi_id}&channel=1" class="blue pointer">编辑</a>
+                        <a  href="__ROOT__/News/newsshow.html?guanzhiid={$val.guanzhi_id}&channel=3" class="blue pointer">编辑</a>
                         <?php
                             if($val["status"]==0){ ?>
                         <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)" class="blue pointer">隐藏</a>

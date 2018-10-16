@@ -5,10 +5,6 @@
     <section class="panel divBox">
 
         <div class="dataAll">
-
-            <?php
-            if($result['streamInfo'][0]['media_type']=="pics"){
-            ?>
             <div class="panel-body panel-body-nopadding">
                 <form id="addFormPics" class="form-horizontal form-bordered">
                     <div class="form-group">
@@ -110,11 +106,7 @@
                     <button class="btn btn-primary savebutton" onclick="submitNewChanne('addFormPics','addSetPic')">保&nbsp;&nbsp;存</button>
                 </div>
             </div>
-
-            <?php } ?>
         </div>
-
-
     </section>
     <script type="text/javascript">
         $(document).ready(function () {

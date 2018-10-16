@@ -1,11 +1,10 @@
-
 $(document).ready(function () {
     $("#search").click();
     var url = location.href;
     var lastID = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
 
     $("#" + lastID).addClass("active");
-    $("#anchorName").text( $("#" + lastID).text());
+    $("#anchorName").text($("#" + lastID).text());
     //chiledren active
     var chiledren = $("#chiledren").val();
     if (url.indexOf(chiledren) > 0) {
@@ -14,7 +13,6 @@ $(document).ready(function () {
     }
 
 })
-
 
 
 /**
@@ -37,7 +35,7 @@ $("#dateEnd").datetimepicker({
     autoclose: true,
 })
 
-function updateData(targets,id,status) {
+function updateData(targets, id, status) {
 
     $.ajax({
         type: "get",
@@ -48,7 +46,7 @@ function updateData(targets,id,status) {
         },
         dataTyep: "json",
         success: function (data) {
-         // window.location.reload();
+            // window.location.reload();
         }
     });
 }
@@ -77,29 +75,45 @@ function getData(targets) {
         success: function (data) {
             $(".loading").hide();
             $("#get_data_area").html(data);
-            $(".leftpanel").css("height",$(document).height());
+            setBackHeight();
         }
     });
 }
 
-function submitNewChanne(id,target,contro) {
-    if (typeof contro=="undefined"){
-        contro="News";
+/**
+ * @set height bak
+ *
+ ********/
+function setBackHeight() {
+    setTimeout(function () {
+        $(".leftpanel").css("height", $(document).height())
+    }, 1000);
+}
+
+function submitNewChanne(id, target, contro) {
+    if (typeof contro == "undefined") {
+        contro = "News";
     }
-    var form = new FormData(document.getElementById(id));
-    $.ajax({
-        type: "post",
-        url: "../"+contro+"/" + target,
-        processData: false,
-        contentType: false,
-        data: form,
-        success: function (data) {
-            //window.location.reload();
-        },
-        error: function (data) {
-           // console.log("this is error");
-        }
-    })
+    var title = $("input[name='title']").val();
+    if (title=="") {
+        alert("标题不能为空")
+        return false;
+    } else {
+        var form = new FormData(document.getElementById(id));
+        $.ajax({
+            type: "post",
+            url: "../" + contro + "/" + target,
+            processData: false,
+            contentType: false,
+            data: form,
+            success: function (data) {
+                //window.location.reload();
+            },
+            error: function (data) {
+                // console.log("this is error");
+            }
+        })
+    }
 }
 
 /**
@@ -152,18 +166,13 @@ function limitPage(TotalPage, Total, targets) {
 }
 
 
-
-
-
-
-
 /**
  * @button click call input File
  ***/
-function uploadIMG(id,num) {
+function uploadIMG(id, num) {
 
-    var fileId="#" + id + "_file_"+num;
-    var spanId="#" + id + "_span_"+num;
+    var fileId = "#" + id + "_file_" + num;
+    var spanId = "#" + id + "_span_" + num;
     $(fileId).click();
     $(fileId).change(function () {
 
@@ -179,19 +188,20 @@ function addConversion() {
     var num = $("#addconversion").attr("num_id");
     var maxNum = $("#addconversion").attr("max_num");
 
-    for (var i=1;i<=num;i++){
+    for (var i = 1; i <= num; i++) {
         $("#thumbnail_span_" + i).removeClass("hide");
         $("#thumbnail_text_" + i).removeClass("hide");
     }
-    if (num<parseInt(maxNum)){
+    if (num < parseInt(maxNum)) {
         $("#addconversion").attr("num_id", ++num);
     }
 }
+
 $(".setPublish").click(function () {
-    var value=$(this).val();
+    var value = $(this).val();
     console.log(value);
     addClass("#publishtime");
-    if (value=="1"){
+    if (value == "1") {
         removeClass("#publishtime");
     }
 })
@@ -219,7 +229,6 @@ $("#publishtime").datetimepicker({
 })
 
 
-
 function addLayer(id, status) {
     if (status == "close") {
         $("#" + id).hide();
@@ -235,7 +244,7 @@ function addLayer(id, status) {
 
 function thumbnailStatus() {
     var num = $("#specialImg").val();
-    var id="#thumbnail_span_" + num;
+    var id = "#thumbnail_span_" + num;
     addClass(".that");
     removeClass(id);
     $(id).attr("onclick", "uploadIMG('thumbnail','" + num + "')");

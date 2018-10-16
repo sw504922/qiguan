@@ -1,4 +1,7 @@
 <?php
+
+use Think\Log;
+
 /**
  * Created by date 2018/8/27.
  * Author: wei.sun
@@ -31,6 +34,8 @@ function getInArray($arr)
  ****/
 function getKey($str)
 {
-    $rowkey = md5($str);
+    $rand=rand();
+    Log::write($rand."swRand".$str);
+    $rowkey = md5($rand.$str);
     return $rowkey;
 }

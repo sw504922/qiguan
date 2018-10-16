@@ -15,6 +15,10 @@ class NewsController extends BaseController
      ***/
     public function newsshow()
     {
+        $result["guanzhi_id"] = I("guanzhiid");
+        $result["channel"] = I("channel");
+
+        $this->assign("result", $result);
         $this->display();
     }
 
@@ -57,7 +61,7 @@ class NewsController extends BaseController
     private $music_images = "music_images/";
     private $special_subName = "special_images/";
     private $jrqgChannel = array("精选" => "1", "闻道" => "2", "博览" => "3", "游历" => "4", "回忆" => "5");
-    private $newsToGunzhiChannel = array("1" => "zt", "2" => "wd", "4" => "bl", "5" => "yl", "6" => "hy");
+    private $newsToGunzhiChannel = array("1" => "zt", "2" => "wd", "3" => "bl", "4" => "yl", "5" => "hy");
     private $mediaType = array("article" => "文章", "pics" => "图集", "audio" => "音频", "radio" => "视频");
     private $news = "article";
     private $pics = "pics";
@@ -67,13 +71,16 @@ class NewsController extends BaseController
     private $limit = "20";
     private $noGuanzhi = "暂无观止频道数据";
     private $replaceRPath = '/qiguan/Uploads/tw_images/';
-    private $replaceYPath = 'http://47.92.45.8/qiguan/Uploads/tw_images/';
+
 
 
     public function addImgAndContent()
     {
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
+        $opinion_method = I("opinion_method");
+
+
         $arr["title"] = trim(I("title"));
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
         $thumbnail = array($_FILES['thumbnail']);
@@ -91,34 +98,64 @@ class NewsController extends BaseController
             $this->uploadMVI($thumbnail, $this->path, $this->tw_images);
         }
 
-        $StreamInfoModel = new StreamInfoModel();
 
-
-        $msgID = $StreamInfoModel->addStreamAction($arr);
-
-        $arr["msg_id"] = $msgID;
-        $arr["layout"] = $this->send;
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
+
+        //content
         $content = htmlspecialchars_decode(I("content"));
         preg_match_all("<img.*?src=\"(.*?.*?)\".*?>", $content, $match);
         foreach ($match[1] as $val) {
             $imgsrc[] = basename($val);
         }
-        $content = str_replace($this->replaceRPath, $this->replaceYPath, $content);
+        $content = str_replace($this->replaceRPath, C("replaceYPath"), $content);
         $arr["content"] = $content;
-        $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
-        $StreamInfoModel->addMediaDetail($arr);
+
+        //rowkey
 
 
-        //StreamMedia
-        $this->addStreamMedia($arr);
-        //GuanzhiMsg
-        $arr["guanzhi_id"] = trim(I("guanzhi_id"));
-        if ($arr["guanzhi_id"] != $this->noGuanzhi) {
-            $this->addGuanzhiMsg($arr);
+        $StreamInfoModel = new StreamInfoModel();
+        if ($opinion_method != "update") {
+            $arr["layout"] = $this->send;
+            $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
+            $arr["details_url"] = $arr["rowkey"] . ".html";
+
+            /***********insert area***********/
+            $msgID = $StreamInfoModel->addStreamAction($arr);
+            $arr["msg_id"] = $msgID;
+            //mediaDetail data
+            $StreamInfoModel->addMediaDetail($arr);
+            //StreamMedia data
+            $this->addStreamMedia($arr);
+            //GuanzhiMsg data
+            $arr["guanzhi_id"] = trim(I("guanzhi_id"));
+            if ($arr["guanzhi_id"] != $this->noGuanzhi) {
+                $this->addGuanzhiMsg($arr);
+            }
+        } else {
+            /***********update area***********/
+
+            $map["msg_id"] = I("msg_id");
+            $result = $StreamInfoModel->getStreamInfo($map);
+            $updateID = $StreamInfoModel->getStreamMedia($map);
+
+            if ($result[0]["content"] != $arr["content"] ||
+                $result[0]["title"] != $arr["title"] ||
+                $result[0]["msg_abstract"] != $arr["msg_abstract"] ||
+                $result[0]["channel"] != $arr["channel"] ||
+                $result[0]["publish_time"] != $arr["publish_time"] ||
+                !empty($arr["thumbnail_url"])) {
+
+                $StreamInfoModel->updateStreamInfo($map, $arr);
+
+                $wmap["rowkey"] = $updateID[0]['final_content'];
+                $StreamInfoModel->updateMediaDetail($wmap, $arr);
+            }
+            if (!empty($arr["thumbnail_url"])) {
+                $arr["overview_pic"] = $arr["thumbnail_url"];
+                $StreamInfoModel->updateStreamMedia($map, $arr);
+            }
         }
-
 
     }
 
@@ -143,7 +180,7 @@ class NewsController extends BaseController
         $arr["channel"] = trim(I("channel"));
         $arr["media_type"] = $this->pics;
 
-        if (!empty($thumbnail[0]['name'])){
+        if (!empty($thumbnail[0]['name'])) {
             $arr["thumbnail_url"] = $thumbnail[0]['name'];
             $this->uploadMVI($thumbnail, $this->path, $this->pics_images);
         }
@@ -164,6 +201,7 @@ class NewsController extends BaseController
             foreach ($upload_pic[0]['name'] as $key => $val) {
                 if (!empty($val)) {
                     $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"] . $picdesc[$key]);
+                    $arr["details_url"] = $arr["rowkey"] . ".html";
                     $mediaDetailThumName = $val;
                     $mediaDetailDesc = $picdesc[$key];
                     $arr["summary"] = $mediaDetailDesc;
@@ -189,8 +227,8 @@ class NewsController extends BaseController
                 $StreamInfoModel->updateStreamInfo($map, $arr);
             }
 
-            if (!empty($arr["thumbnail_url"])){
-                $arr["overview_pic"]=$arr["thumbnail_url"];
+            if (!empty($arr["thumbnail_url"])) {
+                $arr["overview_pic"] = $arr["thumbnail_url"];
                 $StreamInfoModel->updateStreamMedia($map, $arr);
             }
 
@@ -255,6 +293,7 @@ class NewsController extends BaseController
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
         $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
+        $arr["details_url"] = $arr["rowkey"] . ".html";
         $arr["content"] = $upload_music[0]['name'];
         $StreamInfoModel->addMediaDetail($arr);
 
@@ -395,7 +434,17 @@ class NewsController extends BaseController
         $result["guZhiMsg"] = $guZhiMsg;
 
         $this->assign("result", $result);
-        $this->display("update_news");
+        $media_type = $result['streamInfo'][0]['media_type'];
+        if ($media_type == "pics") {
+            $page = "update_pics";
+        } else if ($media_type == "audio") {
+            $page = "update_audio";
+        } else if ($media_type == "radio") {
+            $page = "update_radio";
+        } else if ($media_type == "article") {
+            $page = "update_article";
+        }
+        $this->display($page);
     }
 
 }
