@@ -17,14 +17,28 @@ class DiscoverNoticeModel extends Model
     }
 
 
-    public function getGuanzhiChoiceTopic($map){
-        $model = M("jrqg.guanzhi_choice_topic");
+    public function getDiscoverNotice($map)
+    {
+        $model = M("jrqg.discover_notice");
         $result = $model->where($map)->select();
         return $result;
     }
 
-    public function updateGuanzhiChoiceTopic($map,$arr){
-        $model = M("jrqg.guanzhi_choice_topic");
+    public function getDiscoverNoticeLoop($map){
+        $model = M("jrqg.discover_notice_loop");
+        $result = $model->where($map)->select();
+        return $result;
+    }
+
+    public function addDiscoverNoticeLoop($arr)
+    {
+        $model = M("jrqg.discover_notice_loop");
+        $id = $model->add($arr);
+        return $id;
+    }
+
+    public function updateDiscoverNoticeLoop($map,$arr){
+        $model = M("jrqg.discover_notice_loop");
         $result = $model->where($map)->save($arr);
         return $result;
     }

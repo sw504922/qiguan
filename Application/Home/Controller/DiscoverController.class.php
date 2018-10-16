@@ -20,8 +20,21 @@ class DiscoverController extends BaseController
 
     public function banner_iscover()
     {
+
+        $DiscoverNoticeModel = new DiscoverNoticeModel();
+        $result = $DiscoverNoticeModel->getDiscoverNotice("");
+        foreach($result as $key=>$val){
+            $map["notice_id"] = $val["notice_id"];
+            $status=$DiscoverNoticeModel->getDiscoverNoticeLoop($map);
+            $result[$key]["loop_status"]=$status[0]["status"];
+        }
+
+        $this->assign("result", $result);
         $this->display();
     }
+
+
+
     private $send = "发布";
     private $replaceRPath = '/qiguan/Uploads/tw_images/';
     private $path = "./Uploads/";
@@ -75,6 +88,24 @@ class DiscoverController extends BaseController
         $map["publish_time"]=$arr["publish_time"];
         $map["status"]=1;
         $DiscoverNoticeModel->addDiscoverNotice($map);
+    }
+
+
+    public function setStatusBanner()
+    {
+        $arr["status"] = I("status");
+        $map["notice_id"] = I("id");
+        $DiscoverNoticeModel = new DiscoverNoticeModel();
+        $result = $DiscoverNoticeModel->getDiscoverNoticeLoop($map);
+
+        if (empty($result) && $arr["status"] == 1) {
+            $arr["notice_id"] = $map["notice_id"];
+            $DiscoverNoticeModel->addDiscoverNoticeLoop($arr);
+        } else {
+            $DiscoverNoticeModel->updateDiscoverNoticeLoop($map, $arr);
+        }
+
+
     }
 
 }

@@ -33,13 +33,13 @@
                     </td>
                     <td>{$val.publish_time}</td>
                     <td>
-                        <?php if($val["status"]==0 && $val["status"]!=Null){ ?>
-                        <a onclick="updateData('../Guzhi/setStatusBanner','{$val.guanzhi_id}',1)" class="blue pointer">设置轮播图</a>
-                        <?php }else if($val["status"]==1 && $val["status"]!=Null){ ?>
-                        <a onclick="updateData('../Guzhi/setStatusBanner','{$val.guanzhi_id}',0)" class="blue pointer">取消轮播图</a>
+                        <?php if($val["loop_status"]==0 && $val["loop_status"]!=Null){ ?>
+                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',1)" class="blue pointer">设置轮播图</a>
+                        <?php }else if($val["loop_status"]==1 && $val["loop_status"]!=Null){ ?>
+                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',0)" class="blue pointer">取消轮播图</a>
                         <?php  }else{ ?>
-                        <a onclick="updateData('../Guzhi/setStatusBanner','{$val.guanzhi_id}',1)" class="blue pointer">设置轮播图</a>
-                        <a onclick="updateData('../Guzhi/setStatusBanner','{$val.guanzhi_id}',0)" class="blue pointer">取消轮播图</a>
+                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',1)" class="blue pointer">设置轮播图</a>
+                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',0)" class="blue pointer">取消轮播图</a>
                         <?php  }?>
                     </td>
                 </tr>

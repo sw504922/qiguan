@@ -127,7 +127,7 @@ class GuzhiController extends BaseController
         if (empty($result) && $arr["status"] == 1) {
             $arr["guanzhi_id"] = $map["guanzhi_id"];
             $StreamInfoModel->addGuanzhiChoiceTopic($arr);
-        } else if ($arr["status"] == 0) {
+        } else{
             $StreamInfoModel->updateGuanzhiChoiceTopic($map, $arr);
         }
 

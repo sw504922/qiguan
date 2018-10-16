@@ -28,10 +28,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">上传视频</label>
+                        <label class="col-sm-3 control-label">上传音频</label>
                         <div class="col-sm-6">
 
-                            <a class="blue pointer" id="upload_music_span_" onclick="uploadIMG('upload_music','')">上传视频</a>
+                            <a class="blue pointer" id="upload_music_span_" onclick="uploadIMG('upload_music','')">上传音频</a>
                             <input type="file" class="form-control hide" name="upload_music" id="upload_music_file_"/>
                         </div>
                     </div>
@@ -77,13 +77,12 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">上传专题图</label>
-
+                        <label class="col-sm-3 control-label">上传缩略图</label>
 
                         <?php for($i=0;$i<3;$i++){ ?>
                         <div class="col-sm-6">
                             <a class="blue pointer that hide" id="thumbnail_span_{$i}"
-                               onclick="uploadIMG('thumbnail','{$i}')">上传缩略图图</a>
+                               onclick="uploadIMG('thumbnail','{$i}')">上传缩略图</a>
                             <input type="file" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
                         </div>
                         <?php } ?>
