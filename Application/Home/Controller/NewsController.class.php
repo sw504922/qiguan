@@ -73,14 +73,14 @@ class NewsController extends BaseController
     private $replaceRPath = '/qiguan/Uploads/tw_images/';
 
 
-
     public function addImgAndContent()
     {
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
         $opinion_method = I("opinion_method");
-
-
+        $tags = array_filter(I("tags"));
+        $arr["tags"]=implode("|",$tags);
+        dump($arr);exit();
         $arr["title"] = trim(I("title"));
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
         $thumbnail = array($_FILES['thumbnail']);
@@ -252,6 +252,8 @@ class NewsController extends BaseController
     {
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
+        $opinion_method = I("opinion_method");
+
 
         $arr["title"] = trim(I("title"));
         $arr["type"] = trim(I("sendtype"));
@@ -283,28 +285,52 @@ class NewsController extends BaseController
 
         }
 
-        //Stream
-        $StreamInfoModel = new StreamInfoModel();
-        $msgID = $StreamInfoModel->addStreamAction($arr);
-
-        //mediaDetail
-        $arr["msg_id"] = $msgID;
-        $arr["layout"] = $this->send;
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
-        $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
-        $arr["details_url"] = $arr["rowkey"] . ".html";
-        $arr["content"] = $upload_music[0]['name'];
-        $StreamInfoModel->addMediaDetail($arr);
 
+        $StreamInfoModel = new StreamInfoModel();
+        if ($opinion_method != "update") {
+            /***********insert area***********/
+            $arr["layout"] = $this->send;
+            $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
+            $arr["details_url"] = $arr["rowkey"] . ".html";
+            $arr["content"] = $upload_music[0]['name'];
 
-        //StreamMedia
-        $this->addStreamMedia($arr);
+            //StreamInfor
+            $msgID = $StreamInfoModel->addStreamAction($arr);
+            $arr["msg_id"] = $msgID;
+            //mediaDetail
+            $StreamInfoModel->addMediaDetail($arr);
+            //StreamMedia
+            $this->addStreamMedia($arr);
+            //GuanzhiMsg
+            $arr["guanzhi_id"] = trim(I("guanzhi_id"));
+            if ($arr["guanzhi_id"] != $this->noGuanzhi) {
+                $this->addGuanzhiMsg($arr);
+            }
+        } else {
+            /***********update area***********/
 
-        //GuanzhiMsg
-        $arr["guanzhi_id"] = trim(I("guanzhi_id"));
-        if ($arr["guanzhi_id"] != $this->noGuanzhi) {
-            $this->addGuanzhiMsg($arr);
+            $map["msg_id"] = I("msg_id");
+            $result = $StreamInfoModel->getStreamInfo($map);
+            $updateID = $StreamInfoModel->getStreamMedia($map);
+
+            if ($result[0]["content"] != $arr["content"] ||
+                $result[0]["title"] != $arr["title"] ||
+                $result[0]["msg_abstract"] != $arr["msg_abstract"] ||
+                $result[0]["channel"] != $arr["channel"] ||
+                $result[0]["publish_time"] != $arr["publish_time"] ||
+                !empty($arr["thumbnail_url"])) {
+
+                $StreamInfoModel->updateStreamInfo($map, $arr);
+
+                $wmap["rowkey"] = $updateID[0]['final_content'];
+                $StreamInfoModel->updateMediaDetail($wmap, $arr);
+            }
+            if (!empty($arr["thumbnail_url"])) {
+                $arr["overview_pic"] = $arr["thumbnail_url"];
+                $StreamInfoModel->updateStreamMedia($map, $arr);
+            }
         }
     }
 
@@ -445,6 +471,20 @@ class NewsController extends BaseController
             $page = "update_article";
         }
         $this->display($page);
+    }
+
+
+
+    public function uploadFile(){
+        $thumbnail=array($_FILES['thumbnail']);
+        $subname=I("subname").'/';
+
+        if (!empty($thumbnail[0]['name'])) {
+            $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
+            $this->uploadMVI($thumbnail, $this->path, $subname);
+        }
+        $path='.'.$this->path.$subname.$thumbnail[0]['name'];
+        $this->ajaxReturn($path);
     }
 
 }

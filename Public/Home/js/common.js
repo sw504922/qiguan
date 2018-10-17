@@ -95,7 +95,7 @@ function submitNewChanne(id, target, contro) {
         contro = "News";
     }
     var title = $("input[name='title']").val();
-    if (title=="") {
+    if (title == "") {
         alert("标题不能为空")
         return false;
     } else {
@@ -166,21 +166,32 @@ function limitPage(TotalPage, Total, targets) {
 }
 
 
+
+
+
 /**
  * @button click call input File
  ***/
 function uploadIMG(id, num) {
-
-    var fileId = "#" + id + "_file_" + num;
-    var spanId = "#" + id + "_span_" + num;
-    $(fileId).click();
-    $(fileId).change(function () {
-
-        $(spanId).text($(fileId).val());
-    });
+    $("#thumbnailNum").val(num);
+    $("#thumbnail_file").click();
 
 }
-
+$("#thumbnail_file").bind("change", function (event) {
+    var form = new FormData(document.getElementById("uploadForm"));
+    $.ajax({
+        type: "post",
+        url: "../News/uploadFile" ,
+        processData: false,
+        contentType: false,
+        data: form,
+        success: function (data) {
+            var num= $("#thumbnailNum").val();
+            $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
+            $("#thumbnail_file_"+num).val(data.replace("..",""));
+        },
+    })
+});
 /**
  * @button click add Thumbnail text
  ***/

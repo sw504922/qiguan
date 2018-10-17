@@ -8,19 +8,19 @@
             <div class="panel-body panel-body-nopadding">
                 <form id="addFormPics" class="form-horizontal form-bordered">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">标题<span class="asterisk">*</span></label>
+                        <label class="col-sm-1 control-label">标题<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
                             <input type="text" placeholder="标题" name="title" class="form-control" value="{$result['streamInfo'][0]['title']}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">摘要<span class="asterisk">*</span></label>
+                        <label class="col-sm-1 control-label">摘要<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
                             <textarea class="form-control" rows="5" name="summary">{$result['streamInfo'][0]['msg_abstract']}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">上传图片</label>
+                        <label class="col-sm-1 control-label">上传图片</label>
                         <div class="col-sm-6">
 
                             <a class="blue pointer" id="upload_music_span_" onclick="uploadIMG('upload_music','')">
@@ -29,7 +29,7 @@
                                 ?>
                                 <img src="__Uploads__/tw_images/{$result['streamInfo'][0]['thumbnail_url']}" class="eidtImg" />
                                 <?php }else{ ?>
-                                暂无数据图片
+                                上传缩略图
                                 <?php } ?>
                             </a>
                             <input type="file" class="form-control hide" name="upload_pic" id="upload_music_file_" value="__Uploads__/pics_images/{$result['streamInfo'][0]['thumbnail_url']}"/>
@@ -38,14 +38,14 @@
 
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">发布时间</label>
+                        <label class="col-sm-1 control-label">发布时间</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control " name="publish_time" id="publishtime" value="{$result['streamInfo'][0]['publish_time']}"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 所属频道</label>
+                        <label class="col-sm-1 control-label"> 所属频道</label>
                         <div class="col-sm-6">
                             <select class="form-control mb15" name="channel" id="channel" onchange="getData('../News/getGuzhiChannel')">
                                 <option value="1">精选</option>
@@ -59,15 +59,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 观止频道</label>
+                        <label class="col-sm-1 control-label"> 观止频道</label>
                         <div class="col-sm-6">
                             <div id="get_data_area"></div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 编辑内容</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-1 control-label"> 编辑内容</label>
+                        <div class="col-sm-10">
                             <textarea id="publish_content" name="content" style="height: 300px;">{$result['mediaDetail'][0]['content']}</textarea>
 
                         </div>
