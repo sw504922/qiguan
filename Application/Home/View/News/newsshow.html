@@ -107,14 +107,9 @@
     <script type="text/javascript">
         var ue = UE.getEditor('publish_content');
         $(document).ready(function () {
-            $("#addconversion").click();
-            var channel=$("#hideChannel").val();
-            if (channel!=""){
-                $("#channel").val(channel);
-            }
+            newsoOnload();
             $("#subname").val("tw_images");
-            getData("../News/getGuzhiChannel");
-        })
+
     </script>
 </block>
 

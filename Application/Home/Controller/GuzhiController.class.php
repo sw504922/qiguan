@@ -9,12 +9,6 @@ use Think\Controller;
 class GuzhiController extends BaseController
 {
 
-
-    //上传路径
-    private $path = "./Uploads/";
-    private $jx_images = "jx_images/";
-
-
     /*****
      *精选
      *  $cacheKey:定义唯一缓存key值
@@ -34,7 +28,7 @@ class GuzhiController extends BaseController
         //$arr["summary"] = htmlspecialchars(I("summary"));
         $arr["guanzhi_desc"] = htmlspecialchars_decode(I("desc"));
         $arr["thumnailChannel"] = htmlspecialchars_decode(I("thumnailChannel"));
-        $thumbnail = array($_FILES['thumbnail']);
+        $thumbnail =  array_filter(['thumbnail']);
 
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
@@ -42,10 +36,9 @@ class GuzhiController extends BaseController
 
         $arr["publish_time"] = Date("Y-m-d H:i:s");
 
-        if (!empty($thumbnail[0]['name'][$arr["thumnailChannel"]])) {
-            $arr["pic_url"] = $thumbnail[0]['name'][$arr["thumnailChannel"]];
-            $arr["final_content"] = $thumbnail[0]['name'][$arr["thumnailChannel"]];
-            $this->uploadMVI($thumbnail, $this->path, $this->jx_images);
+        if (!empty($thumbnail[0][$arr["thumnailChannel"]])) {
+            $arr["pic_url"] = $thumbnail[0][$arr["thumnailChannel"]];
+            $arr["final_content"] = $thumbnail[0][$arr["thumnailChannel"]];
         }
 
         $StreamInfoModel = new StreamInfoModel();

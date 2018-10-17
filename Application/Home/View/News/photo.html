@@ -14,43 +14,43 @@
             <div class="panel-body panel-body-nopadding">
                 <form id="addForm" class="form-horizontal form-bordered">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">标题<span class="asterisk">*</span></label>
+                        <label class="col-sm-1 control-label">标题<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
                             <input type="text" placeholder="标题" name="title" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">摘要<span class="asterisk">*</span></label>
+                        <label class="col-sm-1 control-label">摘要<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
                             <textarea class="form-control" rows="5" name="summary"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">上传图片</label>
+                        <label class="col-sm-1 control-label">上传图片</label>
                         <div class="col-sm-6">
 
-                            <a class="blue pointer" id="upload_music_span_" onclick="uploadIMG('upload_music','')">上传图片</a>
-                            <input type="file" class="form-control hide" name="upload_pic" id="upload_music_file_"/>
+                            <a class="blue pointer" id="thumbnail_span_1" onclick="uploadIMG('thumbnail','1')">上传图片</a>
+                            <input type="hidden" class="form-control hide" name="thumbnail" id="thumbnail_file_1"/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-warning btn-xs MRR" type="button" onclick="addConversion()" id="addconversion" num_id="3" max_num="10">增加封面缩略图</button>
-                        <label class="col-sm-3 control-label">封面缩略图</label>
+                        <button class="btn btn-warning btn-xs MRR" type="button" onclick="addConversion()" id="addconversion" num_id="4" max_num="11">增加封面缩略图</button>
+                        <label class="col-sm-1 control-label">封面缩略图</label>
 
 
                         <div class="col-sm-6">
-                            <?php for($i=1;$i<10;$i++){ ?>
+                            <?php for($i=2;$i<11;$i++){ ?>
                             <a class="blue pointer hide" id="thumbnail_span_{$i}" onclick="uploadIMG('thumbnail','{$i}')">上传封面缩略图</a>
                             <input type="text" class="form-control hide" name="picdesc[]" id="thumbnail_text_{$i}" placeholder="请输入介绍文字"/>
-                            <input type="file" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
+                            <input type="hidden" class="form-control hide" name="upload_pic[]" id="thumbnail_file_{$i}"/>
                             <div class="MTS"></div>
                             <?php } ?>
                         </div>
 
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">是否立即发布</label>
+                        <label class="col-sm-1 control-label">立即发布</label>
                         <div class="col-sm-6">
                             <div class="radio"><label><input type="radio" name="send" value="0" checked="checked" class="setPublish" > 是</label></div>
                             <div class="radio"><label><input type="radio" name="send"  value="1"  class="setPublish"> 否</label></div>
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 所属频道</label>
+                        <label class="col-sm-1 control-label"> 所属频道</label>
                         <div class="col-sm-6">
                             <select class="form-control mb15" name="channel" id="channel" onchange="getData('../News/getGuzhiChannel')">
                                 <option value="1">精选</option>
@@ -73,14 +73,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"> 观止频道</label>
+                        <label class="col-sm-1 control-label"> 观止频道</label>
                         <div class="col-sm-6">
                             <div id="get_data_area"></div>
                         </div>
                     </div>
 
 
-
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">标签<span class="asterisk">*</span></label>
+                        <?php for($i=1;$i<6;$i++){ ?>
+                        <div class="col-sm-2">
+                            <input type="text" placeholder="请输入标签" name="tags[]" class="form-control">
+                        </div>
+                        <?php } ?>
+                    </div>
+                    <input type="hidden" id="hideChannel" value="{$result['channel']}" />
+                    <input type="hidden" id="hide_guanzhi_id" value="{$result['guanzhi_id']}"/>
                 </form>
                 <div class="form-group">
                     <button class="btn btn-primary savebutton" onclick="submitNewChanne('addForm','addSetPic')">保&nbsp;&nbsp;存</button>
@@ -94,9 +103,9 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#addconversion").click();
+            newsoOnload();
             $("#subname").val("pics_images");
-            getData('../News/getGuzhiChannel');
+
         })
 
     </script>

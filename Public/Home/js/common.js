@@ -173,6 +173,7 @@ function limitPage(TotalPage, Total, targets) {
  * @button click call input File
  ***/
 function uploadIMG(id, num) {
+    console.log(num);
     $("#thumbnailNum").val(num);
     $("#thumbnail_file").click();
 
@@ -189,9 +190,19 @@ $("#thumbnail_file").bind("change", function (event) {
             var num= $("#thumbnailNum").val();
             $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
             $("#thumbnail_file_"+num).val(data.replace("..",""));
+            $("#thumbnail_file").val("");
         },
     })
 });
+
+function newsoOnload(){
+    $("#addconversion").click();
+    var channel=$("#hideChannel").val();
+    if (channel!=""){
+        $("#channel").val(channel);
+    }
+    getData('../News/getGuzhiChannel');
+}
 /**
  * @button click add Thumbnail text
  ***/
@@ -254,6 +265,7 @@ function addLayer(id, status) {
 
 
 function thumbnailStatus() {
+    $("#subname").val("guanzhi");
     var num = $("#specialImg").val();
     var id = "#thumbnail_span_" + num;
     addClass(".that");

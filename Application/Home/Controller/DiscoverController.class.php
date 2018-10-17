@@ -23,10 +23,10 @@ class DiscoverController extends BaseController
 
         $DiscoverNoticeModel = new DiscoverNoticeModel();
         $result = $DiscoverNoticeModel->getDiscoverNotice("");
-        foreach($result as $key=>$val){
+        foreach ($result as $key => $val) {
             $map["notice_id"] = $val["notice_id"];
-            $status=$DiscoverNoticeModel->getDiscoverNoticeLoop($map);
-            $result[$key]["loop_status"]=$status[0]["status"];
+            $status = $DiscoverNoticeModel->getDiscoverNoticeLoop($map);
+            $result[$key]["loop_status"] = $status[0]["status"];
         }
 
         $this->assign("result", $result);
@@ -34,19 +34,17 @@ class DiscoverController extends BaseController
     }
 
 
-
     private $send = "发布";
     private $replaceRPath = '/qiguan/Uploads/tw_images/';
-    private $path = "./Uploads/";
-    private $discover = "discover/";
 
 
-    public function addDiscover(){
+    public function addDiscover()
+    {
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
 
         //标题
-        $arr["title"]=trim(I("title"));
+        $arr["title"] = trim(I("title"));
         //内容
         $content = htmlspecialchars_decode(I("content"));
         preg_match_all("<img.*?src=\"(.*?.*?)\".*?>", $content, $match);
@@ -62,19 +60,17 @@ class DiscoverController extends BaseController
             $arr["publish_time"] = date("Y-m-d H:i:s");
         }
         //缩略图
-        $thumbnail = array($_FILES['thumbnail']);
-        if (!empty($thumbnail[0]['name'])) {
-            $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
-            $this->uploadMVI($thumbnail, $this->path, $this->discover);
+        $thumbnail = array_filter(['thumbnail']);
+        if (!empty($thumbnail[0])) {
+            $arr["thumbnail_url"] = $thumbnail[0];
         }
-
 
 
         $arr["layout"] = $this->send;
         $arr["media_time"] = $arr["publish_time"];
         $arr["media_type"] = "discover";
         $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
-        $arr["details_url"]=$arr["rowkey"].'.html';
+        $arr["details_url"] = $arr["rowkey"] . '.html';
 
         //添加内容库
         $StreamInfoModel = new StreamInfoModel();
@@ -82,11 +78,11 @@ class DiscoverController extends BaseController
 
         //添加内容库
         $DiscoverNoticeModel = new DiscoverNoticeModel();
-        $map["title"]=$arr["title"];
-        $map["pic_url"]=$arr["thumbnail_url"];
-        $map["content_url"]=$arr["details_url"];
-        $map["publish_time"]=$arr["publish_time"];
-        $map["status"]=1;
+        $map["title"] = $arr["title"];
+        $map["pic_url"] = $arr["thumbnail_url"];
+        $map["content_url"] = $arr["details_url"];
+        $map["publish_time"] = $arr["publish_time"];
+        $map["status"] = 1;
         $DiscoverNoticeModel->addDiscoverNotice($map);
     }
 
