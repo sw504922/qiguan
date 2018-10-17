@@ -28,7 +28,7 @@ class GuzhiController extends BaseController
         //$arr["summary"] = htmlspecialchars(I("summary"));
         $arr["guanzhi_desc"] = htmlspecialchars_decode(I("desc"));
         $arr["thumnailChannel"] = htmlspecialchars_decode(I("thumnailChannel"));
-        $thumbnail =  array_filter(['thumbnail']);
+        $thumbnail =  array_filter(I(['thumbnail']));
 
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];

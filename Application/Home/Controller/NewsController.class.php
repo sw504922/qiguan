@@ -186,7 +186,7 @@ class NewsController extends BaseController
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
 
         $thumbnail = array_filter(I("thumbnail"));
-        $upload_pic = array_filter(['upload_pic']);
+        $upload_pic = array_filter(I('upload_pic'));
         $picdesc = array_filter(I('picdesc'));
 
 
@@ -285,8 +285,8 @@ class NewsController extends BaseController
         $arr["thumnailChannel"] = trim(I("thumnailChannel"));
 
 
-        $thumbnail =  array_filter(['thumbnail']);
-        $upload_music =  array_filter(['upload_music']);
+        $thumbnail =  array_filter(I('thumbnail'));
+        $upload_music =  array_filter(I('upload_music'));
 
 
         if (!empty($thumbnail[$arr["thumnailChannel"]])) {

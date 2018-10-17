@@ -60,11 +60,10 @@ class DiscoverController extends BaseController
             $arr["publish_time"] = date("Y-m-d H:i:s");
         }
         //缩略图
-        $thumbnail = array_filter(['thumbnail']);
-        if (!empty($thumbnail[0])) {
+        $thumbnail = array_filter(I('thumbnail'));
+        if (!empty($thumbnail)) {
             $arr["thumbnail_url"] = $thumbnail[0];
         }
-
 
         $arr["layout"] = $this->send;
         $arr["media_time"] = $arr["publish_time"];
