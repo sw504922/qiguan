@@ -126,7 +126,6 @@ class StreamInfoModel extends Model
     }
 
 
-
     public function updateStreamInfo($map, $arr)
     {
         $model = M("jrqg.stream_info");
@@ -137,11 +136,12 @@ class StreamInfoModel extends Model
     public function updateStreamMedia($map, $arr)
     {
         $model = M("jrqg.stream_media");
-        $model->where($map)->save();
+        $model->where($map)->save($arr);
 
     }
 
-    public function updateMediaDetail($map, $arr){
+    public function updateMediaDetail($map, $arr)
+    {
         $model = M("jrqg.media_detail");
 
         $model->where($map)->save($arr);
@@ -185,11 +185,21 @@ class StreamInfoModel extends Model
         return $result;
     }
 
-    public function getGuanzhiChoiceTopic($map){
+    public function updateGuanzhiMsg($map,$arr)
+    {
+
+        $model = M("jrqg.guanzhi_msg");
+        $result = $model->where($map)->save($arr);
+        return $result;
+    }
+
+    public function getGuanzhiChoiceTopic($map)
+    {
         $model = M("jrqg.guanzhi_choice_topic");
         $result = $model->where($map)->select();
         return $result;
     }
+
     public function addGuanzhiChoiceTopic($arr)
     {
         $model = M("jrqg.guanzhi_choice_topic");
@@ -197,9 +207,31 @@ class StreamInfoModel extends Model
         return $id;
     }
 
-    public function updateGuanzhiChoiceTopic($map,$arr){
+    public function updateGuanzhiChoiceTopic($map, $arr)
+    {
         $model = M("jrqg.guanzhi_choice_topic");
         $result = $model->where($map)->save($arr);
+        return $result;
+    }
+
+
+    public function addTagMedia($arr)
+    {
+        $model = M("jrqg.tag_media");
+        $id = $model->add($arr);
+        return $id;
+    }
+    public function getTagMedia($map)
+    {
+        $model = M("jrqg.tag_media");
+        $result = $model->where($map)->select();
+        return $result;
+    }
+
+    public function delTagMedia($map)
+    {
+        $model = M("jrqg.tag_media");
+        $result = $model->where($map)->delete();
         return $result;
     }
 }

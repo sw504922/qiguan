@@ -94,6 +94,9 @@ function submitNewChanne(id, target, contro) {
     if (typeof contro == "undefined") {
         contro = "News";
     }
+    if (target=="addVideo"){
+        getVidDur();
+    }
     var title = $("input[name='title']").val();
     if (title == "") {
         alert("标题不能为空")
@@ -188,13 +191,30 @@ $("#thumbnail_file").bind("change", function (event) {
         data: form,
         success: function (data) {
             var num= $("#thumbnailNum").val();
-            $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
+            var subname=$("#subname").val();
+            if (subname=="video_images"){
+                $("#thumbnail_span_"+num).html("<video style='width: 300px' id='videodd' controls='controls' ><source src='"+data+"' type='video/mp4'></video>");
+
+            }else if(subname=="music_images"){
+                $("#thumbnail_span_"+num).html("<audio src='"+data+"' class='eidtImg' controls='controls'></audio>");
+            }else{
+                $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
+            }
+
+
             $("#thumbnail_file_"+num).val(data.replace("..",""));
             $("#thumbnail_file").val("");
+
         },
     })
 });
 
+function getVidDur()
+{
+    var videoAudio=document.getElementById("videodd").duration;
+    $("#videoLength").val(videoAudio);
+    console.log(videoAudio);
+}
 function newsoOnload(){
     $("#addconversion").click();
     var channel=$("#hideChannel").val();

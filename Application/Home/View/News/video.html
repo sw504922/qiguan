@@ -98,6 +98,7 @@
                     </div>
                     <input type="hidden" id="hideChannel" value="{$result['channel']}" />
                     <input type="hidden" id="hide_guanzhi_id" value="{$result['guanzhi_id']}"/>
+                    <input type="text" id="videoLength" value=""/>
                 </form>
                 <div class="form-group">
                     <button class="btn btn-primary savebutton" onclick="submitNewChanne('addForm','addVideo')">保&nbsp;&nbsp;存</button>
@@ -114,7 +115,7 @@
         $(document).ready(function () {
             thumbnailStatus();
             newsoOnload();
-            $("#subname").val("music_images");
+            $("#subname").val("video_images");
 
         })
     </script>

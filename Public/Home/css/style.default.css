@@ -747,8 +747,9 @@ strong {
     /*width: 85%;*/
 }
 .savebutton{
-    float: right;
-    margin-right: 50px;
+    position: fixed;
+    right: 30px;
+    bottom: 10px;
 }
 .lineSpilt {
     background: #e4e7ea;
