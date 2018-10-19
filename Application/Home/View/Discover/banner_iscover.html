@@ -29,7 +29,14 @@
                         <div class="whiteSpace">{$val.title}</div>
                     </td>
                     <td align="center">
-                        <img src="{$val.pic_url}" width="100px"/>
+                        <?php
+                            $pic_url=$val["pic_url"];
+                             $posSta=strrpos($pic_url,"http");
+                            if($posSta==0){
+                                $pic_url="..".$pic_url;
+                            }
+                        ?>
+                        <img src="{$pic_url}" width="100px"/>
                     </td>
                     <td>{$val.publish_time}</td>
                     <td>

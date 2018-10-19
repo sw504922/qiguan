@@ -13,7 +13,7 @@
 
             <div class="panel-body panel-body-nopadding">
                 <form id="addForm" class="form-horizontal form-bordered">
-                    <input type="hidden" value="audio" name="sendtype" />
+
                     <div class="form-group">
                         <label class="col-sm-1 control-label">标题<span class="asterisk">*</span></label>
                         <div class="col-sm-6">
@@ -32,6 +32,7 @@
                         <div class="col-sm-6">
 
                             <a class="blue pointer" id="thumbnail_span_1" onclick="uploadIMG('thumbnail','1')">上传音频</a>
+
                             <input type="hidden" class="form-control hide" name="upload_music" id="thumbnail_file_1"/>
                         </div>
                     </div>
@@ -83,7 +84,7 @@
                         <div class="col-sm-6">
                             <a class="blue pointer that hide" id="thumbnail_span_{$i}"
                                onclick="uploadIMG('thumbnail','{$i}')">上传缩略图</a>
-                            <input type="hidden" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
+                            <input type="hidden" class="form-control" name="thumbnail[]" id="thumbnail_file_{$i}"/>
                         </div>
                         <?php } ?>
                     </div>
@@ -96,6 +97,7 @@
                         </div>
                         <?php } ?>
                     </div>
+                    <input type="hidden" value="audio" name="sendtype" />
                     <input type="hidden" id="hideChannel" value="{$result['channel']}" />
                     <input type="hidden" id="hide_guanzhi_id" value="{$result['guanzhi_id']}"/>
                 </form>

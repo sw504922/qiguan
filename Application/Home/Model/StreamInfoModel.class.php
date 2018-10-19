@@ -26,6 +26,25 @@ class StreamInfoModel extends Model
         return $result[0]["cnt"];
     }
 
+    function getChannelAll( $offset, $limit = 20)
+    {
+        $model = M();
+        $sql = 'select * from (select * from jrqg.stream_info ) as stream_info';
+        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
+        $sql .= ' limit ' . $offset . ',' . $limit;
+        $result = $model->query($sql);
+        return $result;
+    }
+
+    function getChanneAllCount()
+    {
+        $model = M();
+        $sql = 'select count(*) cnt from (select * from jrqg.stream_info  ) as stream_info';
+        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
+        $result = $model->query($sql);
+        return $result[0]["cnt"];
+    }
+
 
     function deletedAction($map)
     {
@@ -143,7 +162,6 @@ class StreamInfoModel extends Model
     public function updateMediaDetail($map, $arr)
     {
         $model = M("jrqg.media_detail");
-
         $model->where($map)->save($arr);
 
     }

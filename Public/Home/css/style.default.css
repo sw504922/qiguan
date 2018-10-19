@@ -751,6 +751,11 @@ strong {
     right: 30px;
     bottom: 10px;
 }
+.buttonLayout{
+    float: right;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
 .lineSpilt {
     background: #e4e7ea;
     height: 7px;

@@ -192,11 +192,11 @@ $("#thumbnail_file").bind("change", function (event) {
         success: function (data) {
             var num= $("#thumbnailNum").val();
             var subname=$("#subname").val();
-            if (subname=="video_images"){
+            if (subname=="video_images" && num==1){
                 $("#thumbnail_span_"+num).html("<video style='width: 300px' id='videodd' controls='controls' ><source src='"+data+"' type='video/mp4'></video>");
 
-            }else if(subname=="music_images"){
-                $("#thumbnail_span_"+num).html("<audio src='"+data+"' class='eidtImg' controls='controls'></audio>");
+            }else if(subname=="music_images" && num==1){
+                $("#thumbnail_span_"+num).html("<audio id='videodd' controls='controls'><source src='"+data+"' type='audio/map3'></audio>");
             }else{
                 $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
             }
@@ -213,7 +213,6 @@ function getVidDur()
 {
     var videoAudio=document.getElementById("videodd").duration;
     $("#videoLength").val(videoAudio);
-    console.log(videoAudio);
 }
 function newsoOnload(){
     $("#addconversion").click();
@@ -285,7 +284,6 @@ function addLayer(id, status) {
 
 
 function thumbnailStatus() {
-    $("#subname").val("guanzhi");
     var num = $("#specialImg").val();
     var id = "#thumbnail_span_" + num;
     addClass(".that");

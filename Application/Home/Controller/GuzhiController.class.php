@@ -22,39 +22,7 @@ class GuzhiController extends BaseController
         $this->display();
     }
 
-    public function addJXMethod()
-    {
-        $arr["title"] = trim(I("title"));
-        //$arr["summary"] = htmlspecialchars(I("summary"));
-        $arr["guanzhi_desc"] = htmlspecialchars_decode(I("desc"));
-        $arr["thumnailChannel"] = htmlspecialchars_decode(I("thumnailChannel"));
-        $thumbnail =  array_filter(I(['thumbnail']));
 
-        $session = session("qg_auth");
-        $arr["user_id"] = $session[0]['user_id'];
-        $arr["guanzhi_type"] = trim(I("channel"));
-
-        $arr["publish_time"] = Date("Y-m-d H:i:s");
-
-        if (!empty($thumbnail[0][$arr["thumnailChannel"]])) {
-            $arr["pic_url"] = $thumbnail[0][$arr["thumnailChannel"]];
-            $arr["final_content"] = $thumbnail[0][$arr["thumnailChannel"]];
-        }
-
-        $StreamInfoModel = new StreamInfoModel();
-        $StreamInfoModel->addGuzhiInfo($arr);
-    }
-
-
-    public function deltedMethod()
-    {
-        $StreamInfoModel = new StreamInfoModel();
-        $map["guanzhi_id"] = I("id");
-        $result = $StreamInfoModel->getGuzhiInfor($map);
-        if (!empty($result)) {
-            $StreamInfoModel->deletedGuzhiAction($map);
-        }
-    }
 
     /*****
      *游历
@@ -96,6 +64,49 @@ class GuzhiController extends BaseController
     }
 
 
+
+
+    /***
+     * @添加观止频道
+     ****/
+    public function addJXMethod()
+    {
+        $arr["title"] = trim(I("title"));
+        //$arr["summary"] = htmlspecialchars(I("summary"));
+        $arr["guanzhi_desc"] = htmlspecialchars_decode(I("desc"));
+        $arr["thumnailChannel"] = trim(I("thumnailChannel"));
+        $thumbnail =  array_filter(I('thumbnail'));
+
+        $session = session("qg_auth");
+        $arr["user_id"] = $session[0]['user_id'];
+        $arr["guanzhi_type"] = trim(I("channel"));
+
+        $arr["publish_time"] = Date("Y-m-d H:i:s");
+
+        if (!empty($thumbnail[$arr["thumnailChannel"]])) {
+            $arr["pic_url"] = $thumbnail[$arr["thumnailChannel"]];
+            $arr["final_content"] = $thumbnail[$arr["thumnailChannel"]];
+        }
+
+        $StreamInfoModel = new StreamInfoModel();
+        $StreamInfoModel->addGuzhiInfo($arr);
+    }
+
+
+    public function deltedMethod()
+    {
+        $StreamInfoModel = new StreamInfoModel();
+        $map["guanzhi_id"] = I("id");
+        $result = $StreamInfoModel->getGuzhiInfor($map);
+        if (!empty($result)) {
+            $StreamInfoModel->deletedGuzhiAction($map);
+        }
+    }
+
+
+
+
+
     public function banner()
     {
         $StreamInfoModel = new StreamInfoModel();
@@ -123,9 +134,8 @@ class GuzhiController extends BaseController
         } else{
             $StreamInfoModel->updateGuanzhiChoiceTopic($map, $arr);
         }
-
-
     }
+
 }
 
 ?>

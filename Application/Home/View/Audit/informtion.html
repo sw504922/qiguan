@@ -1,0 +1,25 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="Audit" id="chiledren"/>
+
+
+    <section class="panel divBox">
+
+
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+            <div id="get_data_area"></div>
+            <input type="hidden" value="0" name="status" id="status"/>
+        </div>
+    </section>
+
+
+    <script>
+        $(document).ready(function () {
+            getData("../Audit/getContent");
+        })
+
+    </script>
+</block>

@@ -70,7 +70,6 @@ class DiscoverController extends BaseController
         $arr["media_type"] = "discover";
         $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
         $arr["details_url"] = $arr["rowkey"] . '.html';
-
         //添加内容库
         $StreamInfoModel = new StreamInfoModel();
         $StreamInfoModel->addMediaDetail($arr);
@@ -82,6 +81,7 @@ class DiscoverController extends BaseController
         $map["content_url"] = $arr["details_url"];
         $map["publish_time"] = $arr["publish_time"];
         $map["status"] = 1;
+
         $DiscoverNoticeModel->addDiscoverNotice($map);
     }
 

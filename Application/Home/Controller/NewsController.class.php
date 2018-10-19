@@ -262,10 +262,8 @@ class NewsController extends BaseController
         if ($opinion_method != "update") {
             $msgID = $StreamInfoModel->addStreamAction($arr);
             $arr["msg_id"] = $msgID;
-
             //MediaDetail
             foreach ($upload_pic as $key => $val) {
-
                 $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
                 $arr["details_url"] = $arr["rowkey"] . ".html";
                 $mediaDetailThumName = $val;
@@ -273,20 +271,19 @@ class NewsController extends BaseController
                 $arr["summary"] = $mediaDetailDesc;
                 $arr["content"] = $mediaDetailThumName;
                 $StreamInfoModel->addMediaDetail($arr);
-
                 //StreamMedia
                 $this->addStreamMedia($arr);
 
             }
-
             //GuanzhiMsg
             if ($arr["guanzhi_id"] != $this->noGuanzhi) {
                 $this->addGuanzhiMsg($arr);
             }
+            //tag
             $this->addTagsMedia($arr, $msgID);
+
         } else {
-
-
+            /***********update area***********/
             $map["msg_id"] = I("msg_id");
             $result = $StreamInfoModel->getStreamInfo($map);
             $updateID = $StreamInfoModel->getStreamMedia($map);
@@ -356,25 +353,24 @@ class NewsController extends BaseController
 
 
         $thumbnail = array_filter(I('thumbnail'));
-        $upload_music = array_filter(I('upload_music'));
+        $arr["content"] =I('upload_music');
 
 
-        if (!empty($thumbnail[$arr["thumnailChannel"]])) {
-            $arr["thumbnail_url"] = $thumbnail[$arr["thumnailChannel"]];
+
+        if (!empty($thumbnail[$arr["thumnailChannel"]-2])) {
+
+            $arr["thumbnail_url"] = $thumbnail[$arr["thumnailChannel"]-2];
             if ($arr["type"] == $this->vedio) {
                 $arr["media_type"] = $this->vedio;
-                $this->uploadMVI($thumbnail, $this->path, $this->video_images);
-                $this->uploadMVI($upload_music, $this->path, $this->video_images);
             } else {
                 $arr["media_type"] = $this->music;
-                $this->uploadMVI($thumbnail, $this->path, $this->music_images);
-                $this->uploadMVI($upload_music, $this->path, $this->music_images);
             }
 
         }
 
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
+        $arr["guanzhi_id"] = trim(I("guanzhi_id"));
 
         $StreamInfoModel = new StreamInfoModel();
         if ($opinion_method != "update") {
@@ -382,7 +378,7 @@ class NewsController extends BaseController
             $arr["layout"] = $this->send;
             $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
             $arr["details_url"] = $arr["rowkey"] . ".html";
-            $arr["content"] = $upload_music[0]['name'];
+
 
             //StreamInfor
             $msgID = $StreamInfoModel->addStreamAction($arr);
@@ -392,16 +388,20 @@ class NewsController extends BaseController
             //StreamMedia
             $this->addStreamMedia($arr);
             //GuanzhiMsg
-            $arr["guanzhi_id"] = trim(I("guanzhi_id"));
+
             if ($arr["guanzhi_id"] != $this->noGuanzhi) {
                 $this->addGuanzhiMsg($arr);
             }
+            //tag
+            $this->addTagsMedia($arr, $msgID);
         } else {
             /***********update area***********/
+
 
             $map["msg_id"] = I("msg_id");
             $result = $StreamInfoModel->getStreamInfo($map);
             $updateID = $StreamInfoModel->getStreamMedia($map);
+            $GuanZhiID = $StreamInfoModel->getGuanzhiMsg($map);
 
             if ($result[0]["content"] != $arr["content"] ||
                 $result[0]["title"] != $arr["title"] ||
@@ -420,6 +420,12 @@ class NewsController extends BaseController
                 $arr["overview_pic"] = $arr["thumbnail_url"];
                 $StreamInfoModel->updateStreamMedia($map, $arr);
             }
+
+            if ($GuanZhiID[0]["guanzhi_id"] != $arr["guanzhi_id"]) {
+                $guanArr["guanzhi_id"] = $arr["guanzhi_id"];
+                $StreamInfoModel->updateGuanzhiMsg($map, $guanArr);
+            }
+            $this->checkTagsMedisStatus($arr, $map["msg_id"]);
         }
     }
 
