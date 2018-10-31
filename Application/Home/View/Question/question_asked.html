@@ -1,0 +1,50 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="Question" id="chiledren"/>
+    <header class="panel-heading tab-dark ">
+        <ul class="nav nav-tabs nav-dark tradeNav">
+            <li><a href="#register" data-toggle="tab"><strong>已发布</strong></a></li>
+            <li><a href="#account" data-toggle="tab"><strong>审核未通过</strong></a></li>
+            <li><a href="#trade" data-toggle="tab"><strong>已下架</strong></a></li>
+            <li><a href="#regAndAcc" data-toggle="tab"><strong>草稿</strong></a></li>
+            <li><a href="#regAndAcc" data-toggle="tab"><strong>待审核</strong></a></li>
+        </ul>
+    </header>
+    <input type="hidden" value="0" name="status" id="status"/>
+
+    <section class="panel divBox">
+
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+            <div id="get_data_area"></div>
+
+        </div>
+    </section>
+    <script>
+        $(document).ready(function () {
+            $(".tradeNav li:first").click();
+            $(".tradeNav li:first").attr("class", "active");
+        })
+
+        $(".tradeNav li").click(function () {
+            var val = $(this).text();
+            if (val == "已发布") {
+                $("#status").val(0)
+            } else if (val == "审核未通过") {
+                $("#status").val(2)
+            } else if (val == "已下架") {
+                $("#status").val(1)
+            } else if (val == "草稿") {
+                $("#status").val(3)
+            } else {
+                $("#status").val(4)
+            }
+            getData("getAnswer")
+        })
+    </script>
+</block>
+
+
