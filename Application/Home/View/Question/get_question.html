@@ -31,8 +31,16 @@
         <td>{$val.comment}</td>
         <td>{$val.pv}</td>
         <td>
-            <a onclick="updateData('..//setStatusBanner','{$val.answer_id}',1)" class="blue pointer">下架</a>
-            <a onclick="updateData('..//setStatusBanner','{$val.answer_id}',1)" class="blue pointer">删除</a>
+            <?php
+                $status=$val["status"];
+                if($status==0){
+            ?>
+            <a onclick="updateData('../Question/setStatus','{$val.answer_id}',1)" class="blue pointer">下架</a>
+            <?php
+                }else if($status==1){
+            ?>
+            <a onclick="updateData('../Question/setStatus','{$val.answer_id}',0)" class="blue pointer">发布</a>
+            <?php } ?>
         </td>
 
     </tr>

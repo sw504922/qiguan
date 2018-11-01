@@ -33,7 +33,7 @@ class QuestionController extends BaseController
         $offset = ($new_page - 1) * $this->limit;
         $answerModel = new AnswerInfoModel();
         $streamer = new StreamInfoModel();
-        $answerResult = $answerModel->getAnswerInfo($status, $offset, $limit = 20);
+        $answerResult = $answerModel->getAnswerInfo($status, $offset, $this->limit);
         foreach ($answerResult as $key => $val) {
             $result[$key] = $val;
             $strMap["msg_id"] = $val["msg_id"];
@@ -42,8 +42,8 @@ class QuestionController extends BaseController
         }
 
         $this->result = $result;
-        $this->resultCount = $answerModel->getAnswerInfoCount($status);
 
+        $this->resultCount=$answerModel->getAnswerInfoCount($status);
 
         $this->new_page = $new_page;
         $this->viewCount = $this->limit;
@@ -51,15 +51,13 @@ class QuestionController extends BaseController
         $this->ajaxReturn($data);
     }
 
-    public function setStatusBanner()
+    public function setStatus()
     {
         $arr["status"] = I("status");
-        $map["notice_id"] = I("id");
+        $map["answer_id"] = I("id");
         $AnswerInfoModel = new AnswerInfoModel();
 
         $AnswerInfoModel->updateAnswerInfo($map, $arr);
-
-
 
     }
 
