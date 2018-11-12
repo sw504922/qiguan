@@ -46,7 +46,7 @@ function updateData(targets, id, status) {
         },
         dataTyep: "json",
         success: function (data) {
-            // window.location.reload();
+            window.location.reload();
         }
     });
 }
@@ -110,7 +110,7 @@ function submitNewChanne(id, target, contro) {
             contentType: false,
             data: form,
             success: function (data) {
-                //window.location.reload();
+                window.location.reload();
             },
             error: function (data) {
                 // console.log("this is error");
@@ -140,30 +140,6 @@ function limitPage(TotalPage, Total, targets) {
             getData(targets);
             this.selectPage(n);
             return true;
-        }
-        , lang: {
-            firstPageText: '首页',
-            firstPageTipText: '首页',
-            lastPageText: '尾页',
-            lastPageTipText: '尾页',
-            prePageText: '上一页',
-            prePageTipText: '上一页',
-            nextPageText: '下一页',
-            nextPageTipText: '下一页',
-            totalPageBeforeText: '共',
-            totalPageAfterText: '页',
-            currPageBeforeText: '第',
-            currPageAfterText: '页',
-            totalInfoSplitStr: '/',
-            totalRecordsBeforeText: '共',
-            totalRecordsAfterText: '条数据',
-            gopageBeforeText: '',
-            gopageButtonOkText: '确定',
-            gopageAfterText: '页',
-            buttonTipBeforeText: '第',
-            buttonTipAfterText: '页'
-
-
         }
     }, true);
 }
