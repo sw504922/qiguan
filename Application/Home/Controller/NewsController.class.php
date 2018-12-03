@@ -120,7 +120,7 @@ class NewsController extends BaseController
     private $send = "发布";
     private $limit = "20";
     private $noGuanzhi = "暂无观止频道数据";
-    private $replaceRPath = '/qiguan/Uploads/tw_images/';
+    private $replaceRPath = '/qiguan/Uploads/discover/';
 
 
     public function addImgAndContent()
@@ -583,7 +583,8 @@ class NewsController extends BaseController
     public function uploadFile()
     {
         $thumbnail = array($_FILES['thumbnail']);
-        $subname = I("subname") . '/';
+        //$subname = I("subname") . '/';
+        $subname ='discover/';
 
         if (!empty($thumbnail[0]['name'])) {
             $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
