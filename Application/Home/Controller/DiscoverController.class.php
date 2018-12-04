@@ -35,7 +35,7 @@ class DiscoverController extends BaseController
 
 
     private $send = "发布";
-    private $replaceRPath = '/qiguan/Uploads/tw_images/';
+    private $replaceRPath = '/qiguan/discover/';
 
 
     public function addDiscover()

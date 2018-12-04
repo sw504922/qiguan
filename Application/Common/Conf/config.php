@@ -23,6 +23,6 @@ return array(
     'MODULE_ALLOW_LIST' => array('Home','Admin'),
 
 
-    'replaceYPath'=>'/qiguan/Uploads/tw_images/',
+    'replaceYPath'=>'/qiguan/discover/',
 
 );

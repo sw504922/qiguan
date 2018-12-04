@@ -109,7 +109,7 @@ class NewsController extends BaseController
     }
 
     //上传路径
-    private $path = "./Uploads/";
+    private $path = "./discover/";
     private $jrqgChannel = array("精选" => "1", "闻道" => "2", "博览" => "3", "游历" => "4", "回忆" => "5");
     private $newsToGunzhiChannel = array("1" => "zt", "2" => "wd", "3" => "bl", "4" => "yl", "5" => "hy");
     private $mediaType = array("article" => "文章", "pics" => "图集", "audio" => "音频", "radio" => "视频");
@@ -120,7 +120,7 @@ class NewsController extends BaseController
     private $send = "发布";
     private $limit = "20";
     private $noGuanzhi = "暂无观止频道数据";
-    private $replaceRPath = '/qiguan/Uploads/discover/';
+    private $replaceRPath = '/qiguan/discover/';
 
 
     public function addImgAndContent()
@@ -584,7 +584,7 @@ class NewsController extends BaseController
     {
         $thumbnail = array($_FILES['thumbnail']);
         //$subname = I("subname") . '/';
-        $subname ='discover/';
+        $subname ='';
 
         if (!empty($thumbnail[0]['name'])) {
             $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
