@@ -82,7 +82,7 @@ class NewsController extends BaseController
         $guZhiMsg = $StreamInfoModel->getGuanzhiMsg($map);
         $tagMsg = $StreamInfoModel->getTagMedia($map);
         foreach ($streamMedia as $val) {
-            $mediaDetailResult = $StreamInfoModel->getMediaDetail($val["final_content"]);
+            $mediaDetailResult = $StreamInfoModel->getMediaDetail(strReplace($val["final_content"]));
             $mediaDetailArr[] = $mediaDetailResult[0];
         }
 
@@ -205,7 +205,7 @@ class NewsController extends BaseController
 
                 $StreamInfoModel->updateStreamInfo($map, $arr);
 
-                $wmap["rowkey"] = $updateID[0]['final_content'];
+                $wmap["rowkey"] = strReplace($updateID[0]['final_content']);
                 $StreamInfoModel->updateMediaDetail($wmap, $arr);
             }
 
@@ -307,7 +307,7 @@ class NewsController extends BaseController
 
             foreach ($picdesc as $key => $val) {
                 $arr["summary"] = $val;
-                $wmap["rowkey"] = $updateID[$key]['final_content'];
+                $wmap["rowkey"] = strReplace($updateID[$key]['final_content']);
                 if (!empty($wmap["rowkey"])) {
                     $StreamInfoModel->updateMediaDetail($wmap, $arr);
                 } else {
@@ -413,7 +413,7 @@ class NewsController extends BaseController
 
                 $StreamInfoModel->updateStreamInfo($map, $arr);
 
-                $wmap["rowkey"] = $updateID[0]['final_content'];
+                $wmap["rowkey"] = strReplace($updateID[0]['final_content']);
                 $StreamInfoModel->updateMediaDetail($wmap, $arr);
             }
             if ($result[0]["thumbnail_url"] != $arr["thumbnail_url"]) {
