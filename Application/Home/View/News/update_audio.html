@@ -99,8 +99,12 @@
                                 <?php
                                 $thumbnail_url=$result['streamInfo'][$i-2]['thumbnail_url'];
                                 if(!empty($thumbnail_url)){
+                                    $thumurls=strpos($thumbnail_url,"http");
+                                    if($thumurls===false){
+                                        $thumbnail_url="..".$thumbnail_url;
+                                    }
                              ?>
-                                <img src="..{$thumbnail_url}" class="eidtImg"/>
+                                <img src="{$thumbnail_url}" class="eidtImg"/>
                                 <?php }else{ ?>
                                 上传缩略图
                                 <?php } ?>

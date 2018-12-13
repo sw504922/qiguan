@@ -25,9 +25,17 @@
                         <div class="col-sm-6">
                             <a class="blue pointer" id="thumbnail_span_0" onclick="uploadIMG('thumbnail','0')">
                             <?php
-                                    if(!empty($result['streamInfo'][0]['thumbnail_url'])){
+                                    $strThu=$result['streamInfo'][0]['thumbnail_url'];
+                                    if(!empty($strThu)){
+                                     $thumurls=strpos($strThu,"http");
+
+                                        if($thumurls!==false){
+                                            $str_thum=$strThu;
+                                        }else{
+                                            $str_thum="..".$strThu;
+                                        }
                                 ?>
-                            <img src="..{$result['streamInfo'][0]['thumbnail_url']}" class="eidtImg" />
+                            <img src="{$str_thum}" class="eidtImg" />
                             <?php }else{ ?>
                             上传缩略图
                             <?php } ?>
@@ -56,8 +64,15 @@
                                onclick="uploadIMG('thumbnail','{$i}')">
                                 <?php
                                     if(!empty($picsThum)){
+                                        $thumurls=strpos($picsThum,"http");
+
+                                        if($thumurls!==false){
+                                            $picsThum=$picsThum;
+                                        }else{
+                                            $picsThum="..".$picsThum;
+                                        }
                                 ?>
-                                <img src="..{$picsThum}" class="eidtImg"/>
+                                <img src="{$picsThum}" class="eidtImg"/>
                                 <?php }else{ ?>
                                 封面缩略图
                                 <?php } ?>

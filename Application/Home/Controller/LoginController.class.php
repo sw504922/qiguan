@@ -16,7 +16,11 @@ class LoginController extends Controller {
             $result = $user->where($map)->select();
 
             if ($result == true) {
+                $group=M("auth_group_access");
+                $gMap["uid"]=$result[0]["user_id"];
+                $groupId=$group->where($gMap)->select();
                 session("qg_auth", $result);
+                session("qg_group", $groupId[0]);
                 cookie("login-cook-date",md5(date("Y-m-d")));
                 $this->redirect('Index/index');
             } else {

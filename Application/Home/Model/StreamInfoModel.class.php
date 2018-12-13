@@ -7,10 +7,17 @@ use Think\Model;
 class StreamInfoModel extends Model
 {
 
+
     function getChannel($channel, $user_id, $offset, $limit = 20)
     {
+        $qg_group = session("qg_group");
         $model = M();
-        $sql = 'select * from (select * from jrqg.stream_info where status="' . $channel . '" and user_id="' . $user_id . '") as stream_info';
+        $sql = 'select * from (select * from jrqg.stream_info where status="' . $channel . '"';
+        if ($qg_group["group_id"]!="1"){
+            $sql.='  and user_id="' . $user_id . '"';
+        }
+
+        $sql.=' ) as stream_info';
         $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
         $sql .= ' limit ' . $offset . ',' . $limit;
         $result = $model->query($sql);
@@ -19,8 +26,14 @@ class StreamInfoModel extends Model
 
     function getChanneCount($channel, $user_id)
     {
+        $qg_group = session("qg_group");
         $model = M();
-        $sql = 'select count(*) cnt from (select * from jrqg.stream_info where status="' . $channel . '"  and user_id="' . $user_id . '") as stream_info';
+        $sql = 'select count(*) cnt from (select * from jrqg.stream_info where status="' . $channel . '"';
+        if ($qg_group["group_id"]!="1"){
+            $sql.='  and user_id="' . $user_id . '"';
+        }
+
+        $sql.=' ) as stream_info';
         $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
         $result = $model->query($sql);
         return $result[0]["cnt"];

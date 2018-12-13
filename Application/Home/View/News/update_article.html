@@ -25,6 +25,8 @@
                     <div class="form-group">
                         <?php
                             $articleThum=explode("||",$result['streamInfo'][0]['thumbnail_url']);
+
+
                             $articleThumCount=count($articleThum);
                         ?>
                         <button class="btn btn-warning btn-xs MRR" type="button" onclick="addConversion()"
@@ -40,8 +42,15 @@
                                onclick="uploadIMG('thumbnail','{$i}')">
                                 <?php
                                     if(!empty($articleThum[$i-1])){
+                                        $thumurls=strpos($articleThum[$i-1],"http");
+
+                                        if($thumurls!==false){
+                                            $str_thum=$articleThum[$i-1];
+                                        }else{
+                                            $str_thum="..".$articleThum[$i-1];
+                                        }
                                 ?>
-                                <img src="..{$articleThum[$i-1]}" class="eidtImg"/>
+                                <img src="{$str_thum}" class="eidtImg"/>
 
                                 <?php }else{ ?>
                                 上传缩略图
