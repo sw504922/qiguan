@@ -68,7 +68,7 @@ class BaseController extends Controller
     /**
      * upload imgage
      ***/
-    public function uploadMVI($Thumbail, $path, $path_subName)
+    public function uploadMVI($Thumbail, $path, $path_subName,$saveName)
     {
         foreach ($Thumbail as $img) {
             $name = $img['name'];
@@ -86,7 +86,7 @@ class BaseController extends Controller
         );
         $upload->rootPath = $path;
         $upload->subName = $path_subName;
-        $upload->saveName = '';
+        $upload->saveName = $saveName;
         $static_thum = $upload->upload($Thumbail);
 
     }
@@ -168,4 +168,8 @@ class BaseController extends Controller
     }
 
 
+    function getMD($str){
+        $rand=rand(1,1000);
+        return strtolower(substr(md5($str.$rand),0,16));
+    }
 }

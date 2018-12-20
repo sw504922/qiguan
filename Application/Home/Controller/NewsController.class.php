@@ -583,14 +583,16 @@ class NewsController extends BaseController
     public function uploadFile()
     {
         $thumbnail = array($_FILES['thumbnail']);
-        //$subname = I("subname") . '/';
-        $subname ='';
+        $name=$thumbnail[0]['name'];
 
-        if (!empty($thumbnail[0]['name'])) {
-            $arr["thumbnail_url"] = $thumbnail[0]['name'][0];
-            $this->uploadMVI($thumbnail, $this->path, $subname);
+        $subname ='';
+        if (!empty($name)) {
+            $type=substr($name,strrpos($name,"."),strlen($name));
+            $saveName=$this->getMD($name);
+            $arr["thumbnail_url"] = $saveName.$type;
+            $this->uploadMVI($thumbnail, $this->path, $subname,$saveName);
         }
-        $path = '.' . $this->path . $subname . $thumbnail[0]['name'];
+        $path = '.' . $this->path . $subname . $saveName.$type;
         $this->ajaxReturn($path);
     }
 
