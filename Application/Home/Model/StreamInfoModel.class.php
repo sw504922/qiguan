@@ -8,7 +8,7 @@ class StreamInfoModel extends Model
 {
 
 
-    function getChannel($channel, $user_id, $offset, $limit = 20)
+    function getChannel($channel, $user_id,$article, $offset, $limit = 20)
     {
         $qg_group = session("qg_group");
         $model = M();
@@ -16,10 +16,11 @@ class StreamInfoModel extends Model
         if ($qg_group["group_id"]!="1"){
             $sql.='  and user_id="' . $user_id . '"';
         }
-
+        $sql.=' and media_type="'.$article.'"';
         $sql.=' ) as stream_info';
         $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
         $sql .= ' limit ' . $offset . ',' . $limit;
+
         $result = $model->query($sql);
         return $result;
     }

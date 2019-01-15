@@ -10,6 +10,33 @@ class NewsController extends BaseController
 {
 
 
+    public function gettwnews(){
+        $session = session("qg_auth");
+        $arr["user_id"] = $session[0]['user_id'];
+        $type = I("status");
+        $new_page = I('new_page');
+        if ($new_page == 0) {
+            $new_page = 1;
+        }
+        $offset = ($new_page - 1) * $this->limit;
+        $media_type="article";
+        $StreamInfoModel = new StreamInfoModel();
+        $dataResult = $StreamInfoModel->getChannel($type, $arr["user_id"],$media_type, $offset, $this->limit);
+
+        foreach ($dataResult as $val) {
+            $val["ch_media_type"] = $this->mediaType[$val["media_type"]];
+            $result[] = $val;
+        }
+        $this->assign("result",$result);
+        $this->assign("resultCount", $StreamInfoModel->getChanneCount($type, $arr["user_id"]));
+        $this->assign("new_page ",$new_page);
+
+        $this->display();
+    }
+
+
+
+
     /***
      * display Area
      ***/

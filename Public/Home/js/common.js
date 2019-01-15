@@ -94,7 +94,7 @@ function submitNewChanne(id, target, contro) {
     if (typeof contro == "undefined") {
         contro = "News";
     }
-    if (target=="addVideo"){
+    if (target == "addVideo") {
         getVidDur();
     }
     var title = $("input[name='title']").val();
@@ -145,9 +145,6 @@ function limitPage(TotalPage, Total, targets) {
 }
 
 
-
-
-
 /**
  * @button click call input File
  ***/
@@ -157,47 +154,49 @@ function uploadIMG(id, num) {
     $("#thumbnail_file").click();
 
 }
+
 $("#thumbnail_file").bind("change", function (event) {
     var form = new FormData(document.getElementById("uploadForm"));
     $.ajax({
         type: "post",
-        url: "../News/uploadFile" ,
+        url: "../News/uploadFile",
         processData: false,
         contentType: false,
         data: form,
         success: function (data) {
-            var num= $("#thumbnailNum").val();
-            var subname=$("#subname").val();
-            if (subname=="video_images" && num==1){
-                $("#thumbnail_span_"+num).html("<video style='width: 300px' id='videodd' controls='controls' ><source src='"+data+"' type='video/mp4'></video>");
+            var num = $("#thumbnailNum").val();
+            var subname = $("#subname").val();
+            if (subname == "video_images" && num == 1) {
+                $("#thumbnail_span_" + num).html("<video style='width: 300px' id='videodd' controls='controls' ><source src='" + data + "' type='video/mp4'></video>");
 
-            }else if(subname=="music_images" && num==1){
-                $("#thumbnail_span_"+num).html("<audio id='videodd' controls='controls'><source src='"+data+"' type='audio/map3'></audio>");
-            }else{
-                $("#thumbnail_span_"+num).html("<img src='"+data+"' class='eidtImg'>");
+            } else if (subname == "music_images" && num == 1) {
+                $("#thumbnail_span_" + num).html("<audio id='videodd' controls='controls'><source src='" + data + "' type='audio/map3'></audio>");
+            } else {
+                $("#thumbnail_span_" + num).html("<img src='" + data + "' class='eidtImg'>");
             }
 
 
-            $("#thumbnail_file_"+num).val(data.replace("..",""));
+            $("#thumbnail_file_" + num).val(data.replace("..", ""));
             $("#thumbnail_file").val("");
 
         },
     })
 });
 
-function getVidDur()
-{
-    var videoAudio=document.getElementById("videodd").duration;
+function getVidDur() {
+    var videoAudio = document.getElementById("videodd").duration;
     $("#videoLength").val(videoAudio);
 }
-function newsoOnload(){
+
+function newsoOnload() {
     $("#addconversion").click();
-    var channel=$("#hideChannel").val();
-    if (channel!=""){
+    var channel = $("#hideChannel").val();
+    if (channel != "") {
         $("#channel").val(channel);
     }
     getData('../News/getGuzhiChannel');
 }
+
 /**
  * @button click add Thumbnail text
  ***/
@@ -265,4 +264,38 @@ function thumbnailStatus() {
     addClass(".that");
     removeClass(id);
     $(id).attr("onclick", "uploadIMG('thumbnail','" + num + "')");
+}
+
+
+function getChannelInfor(str, id, status) {
+    if (status == "close") {
+        $("#channel_" + str + "_" + id).hide();
+    } else {
+        $("#channel_" + str + "_" + id).show();
+        if (status == "group") {
+            checkBoxCheced(id);
+        }
+    }
+
+}
+
+function userMethod(target, num) {
+    var form = new FormData(document.getElementById("formid" + num));
+console.log(JSON.stringify(form))
+    $.ajax({
+        type: "post",
+        url: target,
+        processData: false,
+        contentType: false,
+        data: form,
+        beforeSend: function () {
+            $("#loading_" + num).show();
+        },
+
+        success: function (data) {
+            getChannelInfor('infor', num, 'close');
+           // self.location = document.referrer;
+        }
+    });
+
 }

@@ -56,7 +56,7 @@
                 <neq name="check" value="$News">
                     <li class="nav-parent" id="News"><a><i class="fa fa-edit"></i> <span>内容发布模块</span></a>
                         <ul class="children">
-                            <li id="newsshow"><a href="__ROOT__/News/newsshow.html"><i class="fa fa-caret-right"></i>图文内容编辑器</a>
+                            <li id="newsshow"><a href="__ROOT__/News/gettwnews.html"><i class="fa fa-caret-right"></i>图文内容编辑器</a>
                             </li>
                             <li id="photo"><a href="__ROOT__/News/photo.html"><i class="fa fa-caret-right"></i>发布图集</a>
                             </li>
@@ -130,8 +130,14 @@
 
 
                 <neq name="check" value="$Auth">
-                    <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-users"></i> <span>角色管理</span></a>
+                    <li class="nav-parent" id="Auth"><a><i class="fa fa-user"></i> <span>角色管理</span></a>
+                        <ul class="children">
+                            <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-caret-right"></i>采集用户</a></li>
+                            <li id="auth_user"><a href="__ROOT__/Auth/auth_user.html"><i class="fa fa-caret-right"></i>权限管理</a>
+                        </li>
+                        </ul>
                     </li>
+
                 </neq>
             </ul>
 
