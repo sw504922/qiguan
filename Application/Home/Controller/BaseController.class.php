@@ -172,4 +172,15 @@ class BaseController extends Controller
         $rand=rand(1,1000);
         return strtolower(substr(md5($str.$rand),0,16));
     }
+
+
+    function getPlayTime($path){
+        Vendor('getid3.getid3');
+        $getID3 = new \getID3 ();
+
+        $ThisFileInfo = $getID3->analyze($path); //分析文件，$path为音频文件的地址
+        $fileduration=$ThisFileInfo['playtime_seconds']; //这个获得的便是音频文件的时长
+        $time = (int)ceil($fileduration);
+        return $time;
+    }
 }
