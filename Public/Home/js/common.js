@@ -14,6 +14,27 @@ $(document).ready(function () {
 
 })
 
+$(".tradeNav li").click(function () {
+    var val = $(this).text();
+    if (val == "已发布") {
+        $("#status").val(0);
+        getData("getContent");
+    } else if (val == "审核未通过") {
+        $("#status").val(2)
+        getData("getContent");
+    } else if (val == "已下架") {
+        $("#status").val(1)
+        getData("getContent");
+    }else if(val == "草稿"){
+        $("#status").val(3)
+        getData("getContent");
+    }else if(val.indexOf("添加")==0){
+        getData("getAddMethod");
+    }
+
+
+})
+
 
 /**
  * @日期
@@ -58,7 +79,6 @@ function updateData(targets, id, status) {
  * ****/
 
 function getData(targets) {
-
     $.ajax({
         type: "get",
         url: targets,
@@ -80,6 +100,22 @@ function getData(targets) {
     });
 }
 
+
+function getSelectData(targets) {
+    $.ajax({
+        type: "get",
+        url: targets,
+        data: {
+            status: $("#status").val(),
+            new_page: $("#page").val(),
+            channel: $("#channel").val(),
+        },
+        dataTyep: "json",
+        success: function (data) {
+            $("#select_data_area").html(data);
+        }
+    });
+}
 /**
  * @set height bak
  *
@@ -90,10 +126,17 @@ function setBackHeight() {
     }, 1000);
 }
 
-function submitNewChanne(id, target, contro) {
+function submitNewChanne(id, target, contro,type) {
     if (typeof contro == "undefined") {
         contro = "News";
     }
+
+    if (type=="save"){
+        $("#send_status").val(3);
+    }
+
+
+
     if (target == "addVideo") {
         getVidDur();
     }
@@ -110,7 +153,11 @@ function submitNewChanne(id, target, contro) {
             contentType: false,
             data: form,
             success: function (data) {
-                window.location.reload();
+                $(".btn-primary").removeAttr("onclick");
+                $(".btn-primary").css("background" ,"#efefef");
+                $(".btn-primary").css("border" ,"1px solid #efefef");
+
+                //window.location.reload();
             },
             error: function (data) {
                 // console.log("this is error");
@@ -194,7 +241,7 @@ function newsoOnload() {
     if (channel != "") {
         $("#channel").val(channel);
     }
-    getData('../News/getGuzhiChannel');
+    getSelectData('../News/getGuzhiChannel');
 }
 
 /**

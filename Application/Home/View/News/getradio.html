@@ -1,0 +1,33 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="News" id="chiledren"/>
+    <header class="panel-heading tab-dark ">
+        <ul class="nav nav-tabs nav-dark tradeNav">
+            <li><a href="#register" data-toggle="tab"><strong>已发布</strong></a></li>
+            <li><a href="#account" data-toggle="tab"><strong>审核未通过</strong></a></li>
+            <li><a href="#trade" data-toggle="tab"><strong>已下架</strong></a></li>
+            <li><a href="#regAndAcc" data-toggle="tab"><strong>草稿</strong></a></li>
+            <li><a href="#regAndAcc" data-toggle="tab"><strong>添加</strong></a></li>
+        </ul>
+    </header>
+
+    <section class="panel divBox">
+
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+            <div id="get_data_area"></div>
+            <input type="hidden" value="0" name="status" id="status"/>
+            <input type="hidden" value="radio" name="channel" id="channel"/>
+        </div>
+    </section>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".tradeNav li:first").click();
+            $(".tradeNav li:first").attr("class", "active");
+        })
+    </script>
+</block>

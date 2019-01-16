@@ -9,43 +9,69 @@ use Think\Controller;
 class NewsController extends BaseController
 {
 
+    /***
+     * display Area
+     ***/
+    public function getarticle()
+    {
 
-    public function gettwnews(){
-        $session = session("qg_auth");
-        $arr["user_id"] = $session[0]['user_id'];
-        $type = I("status");
-        $new_page = I('new_page');
-        if ($new_page == 0) {
-            $new_page = 1;
-        }
-        $offset = ($new_page - 1) * $this->limit;
-        $media_type="article";
-        $StreamInfoModel = new StreamInfoModel();
-        $dataResult = $StreamInfoModel->getChannel($type, $arr["user_id"],$media_type, $offset, $this->limit);
+        $this->display();
+    }
 
-        foreach ($dataResult as $val) {
-            $val["ch_media_type"] = $this->mediaType[$val["media_type"]];
-            $result[] = $val;
-        }
-        $this->assign("result",$result);
-        $this->assign("resultCount", $StreamInfoModel->getChanneCount($type, $arr["user_id"]));
-        $this->assign("new_page ",$new_page);
+    public function getpics()
+    {
 
+        $this->display();
+    }
+
+    public function getaudio()
+    {
+        $this->display();
+    }
+
+    public function getradio()
+    {
         $this->display();
     }
 
 
 
+    /*****
+     *内容库管理获取内容
+     ****/
 
-    /***
-     * display Area
-     ***/
-    public function newsshow()
+    public function getContent()
     {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
+        $session = session("qg_auth");
+        $user_id = $session[0]['user_id'];
+        $type = I("status");
+        $media_type = I("channel");
+        $new_page = I('new_page');
+        if ($new_page == 0) {
+            $new_page = 1;
+        }
+        $offset = ($new_page - 1) * $this->limit;
+
+        $StreamInfoModel = new StreamInfoModel();
+        $result = $StreamInfoModel->getChannel($type, $user_id, $media_type, $offset, $this->limit);
+        $resultcount = $StreamInfoModel->getChanneCount($type, $user_id, $media_type);
+
+
+        $this->result = $result;
+        $this->resultCount = $resultcount;
+        $this->new_page = $new_page;
+        $this->viewCount = $this->limit;
+        $data = $this->fetch("News/get_content");
+        $this->ajaxReturn($data);
+    }
+
+
+
+    public function getAddMethod(){
+        $media_type = I("channel");
+        $page="News/add_".$media_type;
+        $data = $this->fetch($page);
+        $this->ajaxReturn($data);
     }
 
     public function photo()
@@ -159,6 +185,7 @@ class NewsController extends BaseController
 
 
         $arr["title"] = trim(I("title"));
+        $arr["status"] = trim(I("send_status"));
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
         $thumbnail = array_filter(I("thumbnail"));
         $arr["send"] = trim(I("send"));
@@ -189,8 +216,8 @@ class NewsController extends BaseController
         $arr["guanzhi_id"] = trim(I("guanzhi_id"));
 
         //rowkey
-
-
+dump($arr);
+exit();
         $StreamInfoModel = new StreamInfoModel();
         if ($opinion_method != "update") {
             $arr["layout"] = $this->send;
@@ -380,13 +407,12 @@ class NewsController extends BaseController
 
 
         $thumbnail = array_filter(I('thumbnail'));
-        $arr["content"] =I('upload_music');
+        $arr["content"] = I('upload_music');
 
 
+        if (!empty($thumbnail[$arr["thumnailChannel"] - 2])) {
 
-        if (!empty($thumbnail[$arr["thumnailChannel"]-2])) {
-
-            $arr["thumbnail_url"] = $thumbnail[$arr["thumnailChannel"]-2];
+            $arr["thumbnail_url"] = $thumbnail[$arr["thumnailChannel"] - 2];
             if ($arr["type"] == $this->vedio) {
                 $arr["media_type"] = $this->vedio;
             } else {
@@ -494,47 +520,22 @@ class NewsController extends BaseController
 
     public function getGuzhiChannel()
     {
-        $channel = trim(I("channel"));
+         $channel = trim(I("channel"));
+
         $guzhiChannel = $this->newsToGunzhiChannel[$channel];
         if (!empty($guzhiChannel)) {
             $map["guanzhi_type"] = $guzhiChannel;
+            $StreamInfoModel = new StreamInfoModel();
+            $this->result = $StreamInfoModel->getGuzhiInfor($map);
+        }else{
+            $this->result ="";
         }
-        $StreamInfoModel = new StreamInfoModel();
-        $this->result = $StreamInfoModel->getGuzhiInfor($map);
+
+
         $data = $this->fetch("News/guzhi_type");
         $this->ajaxReturn($data);
     }
 
-
-    /*****
-     *内容库管理获取内容
-     ****/
-
-    public function getContent()
-    {
-        $session = session("qg_auth");
-        $arr["user_id"] = $session[0]['user_id'];
-        $type = I("status");
-        $new_page = I('new_page');
-        if ($new_page == 0) {
-            $new_page = 1;
-        }
-        $offset = ($new_page - 1) * $this->limit;
-
-        $StreamInfoModel = new StreamInfoModel();
-        $dataResult = $StreamInfoModel->getChannel($type, $arr["user_id"], $offset, $this->limit);
-
-        foreach ($dataResult as $val) {
-            $val["ch_media_type"] = $this->mediaType[$val["media_type"]];
-            $result[] = $val;
-        }
-        $this->result = $result;
-        $this->resultCount = $StreamInfoModel->getChanneCount($type, $arr["user_id"]);
-        $this->new_page = $new_page;
-        $this->viewCount = $this->limit;
-        $data = $this->fetch("News/get_content");
-        $this->ajaxReturn($data);
-    }
 
     /*****
      *内容库管理删除操作
@@ -610,16 +611,16 @@ class NewsController extends BaseController
     public function uploadFile()
     {
         $thumbnail = array($_FILES['thumbnail']);
-        $name=$thumbnail[0]['name'];
+        $name = $thumbnail[0]['name'];
 
-        $subname ='';
+        $subname = '';
         if (!empty($name)) {
-            $type=substr($name,strrpos($name,"."),strlen($name));
-            $saveName=$this->getMD($name);
-            $arr["thumbnail_url"] = $saveName.$type;
-            $this->uploadMVI($thumbnail, $this->path, $subname,$saveName);
+            $type = substr($name, strrpos($name, "."), strlen($name));
+            $saveName = $this->getMD($name);
+            $arr["thumbnail_url"] = $saveName . $type;
+            $this->uploadMVI($thumbnail, $this->path, $subname, $saveName);
         }
-        $path = '.' . $this->path . $subname . $saveName.$type;
+        $path = '.' . $this->path . $subname . $saveName . $type;
         $this->ajaxReturn($path);
     }
 

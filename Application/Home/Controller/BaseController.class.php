@@ -10,7 +10,7 @@ namespace Home\Controller;
 
 use Think\Auth;
 use Think\Controller;
-use Home\Model\ChannelInfoModel;
+
 use Think\Log;
 
 class BaseController extends Controller
@@ -34,14 +34,14 @@ class BaseController extends Controller
         }
 
         $auth = new Auth();
-        $model = M("auth_rule");
+        $model = M("jrqg.auth_rule");
         $result=$model->select();
 
-        foreach ($result as $val) {
-            if ($auth->check($val["name"], $uid)) {
-                $length = strripos($val["name"], "/");
-                $su = substr($val["name"], $length + 1, strlen($val["name"]));
-                $this->$su = $val["id"];
+        foreach ($result as $val){
+            if ($auth->check( $val["name"], $uid)) {
+                $length=strripos($val["name"],"/");
+                $su=substr($val["name"],$length+1,strlen($val["name"]));
+                $this->$su= $val["id"];
             }
         }
 
@@ -57,12 +57,6 @@ class BaseController extends Controller
 
 
 
-    public function getParent()
-    {
-        $channelModel = new ChannelInfoModel();
-        $getParent = $channelModel->getParent();
-        return $getParent;
-    }
 
 
     /**

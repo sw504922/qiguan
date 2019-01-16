@@ -8,39 +8,29 @@ class StreamInfoModel extends Model
 {
 
 
-    function getChannel($channel, $user_id,$article, $offset, $limit = 20)
+    function getChannel($channel, $user_id, $media_type, $offset, $limit = 20)
     {
-        $qg_group = session("qg_group");
         $model = M();
-        $sql = 'select * from (select * from jrqg.stream_info where status="' . $channel . '"';
-        if ($qg_group["group_id"]!="1"){
-            $sql.='  and user_id="' . $user_id . '"';
-        }
-        $sql.=' and media_type="'.$article.'"';
-        $sql.=' ) as stream_info';
-        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
-        $sql .= ' limit ' . $offset . ',' . $limit;
+        $sql = 'select * from jrqg.stream_info where status="' . $channel . '"';
+        $sql .= ' and user_id="' . $user_id . '"';
+        $sql .= ' and media_type="' . $media_type . '"';
+        $sql .= ' ORDER BY publish_time desc limit ' . $offset . ',' . $limit;
 
         $result = $model->query($sql);
         return $result;
     }
 
-    function getChanneCount($channel, $user_id)
+    function getChanneCount($channel, $user_id, $media_type)
     {
-        $qg_group = session("qg_group");
         $model = M();
-        $sql = 'select count(*) cnt from (select * from jrqg.stream_info where status="' . $channel . '"';
-        if ($qg_group["group_id"]!="1"){
-            $sql.='  and user_id="' . $user_id . '"';
-        }
-
-        $sql.=' ) as stream_info';
-        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
+        $sql = 'select count(*) cnt from jrqg.stream_info where status="' . $channel . '"';
+        $sql .= ' and user_id="' . $user_id . '"';
+        $sql .= ' and media_type="' . $media_type . '"';
         $result = $model->query($sql);
         return $result[0]["cnt"];
     }
 
-    function getChannelAll( $offset, $limit = 20)
+    function getChannelAll($offset, $limit = 20)
     {
         $model = M();
         $sql = 'select * from (select * from jrqg.stream_info ) as stream_info';
@@ -217,7 +207,7 @@ class StreamInfoModel extends Model
         return $result;
     }
 
-    public function updateGuanzhiMsg($map,$arr)
+    public function updateGuanzhiMsg($map, $arr)
     {
 
         $model = M("jrqg.guanzhi_msg");
@@ -253,6 +243,7 @@ class StreamInfoModel extends Model
         $id = $model->add($arr);
         return $id;
     }
+
     public function getTagMedia($map)
     {
         $model = M("jrqg.tag_media");

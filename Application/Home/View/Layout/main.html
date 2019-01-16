@@ -56,19 +56,23 @@
                 <neq name="check" value="$News">
                     <li class="nav-parent" id="News"><a><i class="fa fa-edit"></i> <span>内容发布模块</span></a>
                         <ul class="children">
-                            <li id="newsshow"><a href="__ROOT__/News/gettwnews.html"><i class="fa fa-caret-right"></i>图文内容编辑器</a>
-                            </li>
-                            <li id="photo"><a href="__ROOT__/News/photo.html"><i class="fa fa-caret-right"></i>发布图集</a>
-                            </li>
-                            <li id="music"><a href="__ROOT__/News/music.html"><i class="fa fa-caret-right"></i>发布音频</a>
-                            </li>
-                            <li id="video"><a href="__ROOT__/News/video.html"><i class="fa fa-caret-right"></i>发布视频</a>
-                            </li>
-                            <li id="content"><a href="__ROOT__/News/content.html"><i class="fa fa-caret-right"></i>内容管理</a>
-                            </li>
-                            <!--<li id="report"><a href="__ROOT__/News/report.html"><i class="fa fa-caret-right"></i>分析报表</a></li>-->
-                            <!--<li id="comments"><a href="__ROOT__/News/comments.html"><i class="fa fa-caret-right"></i>评论管理</a></li>-->
-
+                            <neq name="check" value="$getarticle">
+                                <li id="getarticle"><a href="__ROOT__/News/getarticle.html"><i
+                                        class="fa fa-caret-right"></i>图文内容编辑器</a>
+                                </li>
+                            </neq>
+                            <neq name="check" value="$getpics">
+                                <li id="getpics"><a href="__ROOT__/News/getpics.html"><i class="fa fa-caret-right"></i>发布图集</a>
+                                </li>
+                            </neq>
+                            <neq name="check" value="$getaudio">
+                                <li id="getaudio"><a href="__ROOT__/News/getaudio.html"><i class="fa fa-caret-right"></i>发布音频</a>
+                                </li>
+                            </neq>
+                            <neq name="check" value="$getradio">
+                                <li id="getradio"><a href="__ROOT__/News/getradio.html"><i class="fa fa-caret-right"></i>发布视频</a>
+                                </li>
+                            </neq>
 
                         </ul>
                     </li>
@@ -76,7 +80,8 @@
                 <neq name="check" value="$Audit">
                     <li class="nav-parent" id="Audit"><a><i class="fa  fa-list-alt"></i> <span>信息流管理</span></a>
                         <ul class="children">
-                            <li id="informtion"><a href="__ROOT__/Audit/informtion.html"><i class="fa fa-caret-right"></i>信息流管理</a>
+                            <li id="informtion"><a href="__ROOT__/Audit/informtion.html"><i
+                                    class="fa fa-caret-right"></i>信息流管理</a>
                             </li>
                         </ul>
                     </li>
@@ -132,9 +137,10 @@
                 <neq name="check" value="$Auth">
                     <li class="nav-parent" id="Auth"><a><i class="fa fa-user"></i> <span>角色管理</span></a>
                         <ul class="children">
-                            <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-caret-right"></i>采集用户</a></li>
+                            <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-caret-right"></i>采集用户</a>
+                            </li>
                             <li id="auth_user"><a href="__ROOT__/Auth/auth_user.html"><i class="fa fa-caret-right"></i>权限管理</a>
-                        </li>
+                            </li>
                         </ul>
                     </li>
 
@@ -209,6 +215,9 @@
 <!--分页插件-->
 <script src="__JS__/kkpager.min.js" type="text/javascript"></script>
 <link href="__CSS__/kkpager_orange.css" rel="stylesheet" type="text/css"/>
-
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="__JS__/upload.js"></script>
 </body>
 </html>
