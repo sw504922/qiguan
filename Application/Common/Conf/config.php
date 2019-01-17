@@ -24,5 +24,6 @@ return array(
 
 
     'replaceYPath'=>'/qiguan/discover/',
+    'newsurl'=>'http://47.92.75.8',
 
 );

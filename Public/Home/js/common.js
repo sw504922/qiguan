@@ -153,7 +153,7 @@ function submitNewChanne(id, target, contro,type) {
             contentType: false,
             data: form,
             success: function (data) {
-                $(".btn-primary").removeAttr("onclick");
+             //   $(".btn-primary").removeAttr("onclick");
                 $(".btn-primary").css("background" ,"#efefef");
                 $(".btn-primary").css("border" ,"1px solid #efefef");
 
@@ -254,6 +254,7 @@ function addConversion() {
     for (var i = 1; i <= num; i++) {
         $("#thumbnail_span_" + i).removeClass("hide");
         $("#thumbnail_text_" + i).removeClass("hide");
+        $("#thumbnail_checkbox_" + i).removeClass("hide");
     }
     if (num < parseInt(maxNum)) {
         $("#addconversion").attr("num_id", ++num);
@@ -328,7 +329,6 @@ function getChannelInfor(str, id, status) {
 
 function userMethod(target, num) {
     var form = new FormData(document.getElementById("formid" + num));
-console.log(JSON.stringify(form))
     $.ajax({
         type: "post",
         url: target,
@@ -336,7 +336,7 @@ console.log(JSON.stringify(form))
         contentType: false,
         data: form,
         beforeSend: function () {
-            $("#loading_" + num).show();
+            //$("#loading_" + num).show();
         },
 
         success: function (data) {
@@ -345,4 +345,83 @@ console.log(JSON.stringify(form))
         }
     });
 
+}
+
+/**
+ *@Auth group checkbox start status onload  Method
+ ****/
+function checkBoxCheced(id) {
+    var rules = $("#rules" + id).val();
+
+    var arr = rules.split(",");
+
+    for (var i = 0; i < arr.length; i++) {
+
+
+        $("#check" + id + "two" + arr[i] + "s").attr("checked", "checked");
+    }
+    $("#check" + id + "two" + "1s").attr("checked", "checked");
+    $("#check" + id + "two" + "1s").attr("disabled", "false");
+}
+/**
+ *@Auth group checkbox status Method
+ ****/
+function checkALL(id, sid) {
+    var first = $("#check" + id + "two" + sid + "s").is(":checked");
+    if (first == true) {
+        $("." + sid).prop("checked", true);
+    } else {
+        $("." + sid).prop("checked", false);
+    }
+}
+
+function checkAddALL(id, sid) {
+    var first = $("#addcheck" + id + sid).is(":checked");
+    if (first == true) {
+        $("." + sid).prop("checked", true);
+    } else {
+        $("." + sid).prop("checked", false);
+    }
+}
+/**
+ *@Auth group update Method
+ ****/
+function saveNews(num) {
+    var id_array = new Array();
+    $("input[name='checkbox" + num + "']:checked").each(function () {
+        id_array.push($(this).val());//向数组中添加元素
+    });
+    var rules = id_array.join(',');//将数组元素连接起来以构建一个字符串
+    if (rules != "") {
+        $.ajax({
+            type: "POST",
+            url: "updateGroup",
+            data: {
+                rowkey: num,
+                rules: rules,
+            },
+            dataType: "json",
+            success: function (data) {
+                getChannelInfor('infor', num, 'close')
+            }
+        });
+
+    }
+}
+
+/**
+ *@Auth group del Method
+ ****/
+function deltedGroup(id) {
+    $.ajax({
+        type: "GET",
+        url: "deltedGroup",
+        data: {
+            rowkey: id,
+        },
+        dataType: "json",
+        success: function (data) {
+            location.reload();
+        }
+    });
 }

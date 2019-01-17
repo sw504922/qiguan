@@ -11,10 +11,11 @@ class StreamInfoModel extends Model
     function getChannel($channel, $user_id, $media_type, $offset, $limit = 20)
     {
         $model = M();
-        $sql = 'select * from jrqg.stream_info where status="' . $channel . '"';
-        $sql .= ' and user_id="' . $user_id . '"';
-        $sql .= ' and media_type="' . $media_type . '"';
-        $sql .= ' ORDER BY publish_time desc limit ' . $offset . ',' . $limit;
+        $sql = 'select a.*,b.final_content from jrqg.stream_info as a left join stream_media as b on a.msg_id=b.msg_id';
+        $sql .= ' where a.status="' . $channel . '"';
+        $sql .= ' and a.user_id="' . $user_id . '"';
+        $sql .= ' and a.media_type="' . $media_type . '"';
+        $sql .= ' ORDER BY a.publish_time desc limit ' . $offset . ',' . $limit;
 
         $result = $model->query($sql);
         return $result;

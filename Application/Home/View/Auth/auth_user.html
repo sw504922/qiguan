@@ -1,0 +1,110 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+
+            <div class="x_content">
+                <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                        <tr class="headings">
+                            <th>序号</th>
+                            <th>部门名称</th>
+                            <th width="20%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach($group as $key=>$val){
+                        ?>
+                        <!--编辑管理组信息-->
+                        <div class="addQA" id="channel_infor_{$val.id}" style="display: none;">
+                            <div class="addMouule">
+                                <section class="panel">
+                                    <header class="panel-heading">
+                                        编辑用户信息
+                                        <a class="fa fa-times close"
+                                           onclick="getChannelInfor('infor','{$val.id}','close')"></a>
+                                    </header>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="label-width">部门名称:</label>
+                                            <input type="text" id="editName{$val.id}" class="form-control "
+                                                   value="{$val['title']}"
+                                                   readonly/>
+                                            <input type="hidden" id="editUser{$val.id}" class="form-control"
+                                                   value="{$val['id']}"/>
+                                        </div>
+                                        <div class="form-group groupLevel ">
+                                            <label class="label-width">所属权限:</label>
+                                            <input value="{$val.rules}" id="rules{$val.id}" type="hidden"/>
+                                            <?php
+                                                    foreach($rule as $value){
+                                                ?>
+                                            <div>
+                                                <input type="checkbox" name="checkbox{$val.id}"
+                                                       id="check{$val.id}two{$value.id}s" value="{$value.id}"
+                                                       onclick="checkALL('{$val.id}','{$value.id}')"/>
+                                                <span class="valueTitle">{$value.title}</span>
+                                            </div>
+                                            <?php
+                                                    foreach($value["level"] as $level){
+                                                ?>
+                                            <div class="level">
+                                                <input type="checkbox" class="{$level.sid}" name="checkbox{$val.id}"
+                                                       id="check{$val.id}two{$level.id}s"
+                                                       value="{$level.id}"/><span
+                                                    class="valueTitle">{$level.title}</span>
+                                            </div>
+
+                                            <?php } } ?>
+                                            <!--leve end -->
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="btn btn-primary" onclick="saveNews('{$val.id}')">
+                                            &nbsp;保&nbsp;&nbsp;存&nbsp;
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="meng"></div>
+                        </div>
+                        <!--展示用户信息-->
+                        <tr class="pointer">
+                            <td>{$key+1}</td>
+
+                            <td>{$val.title}</td>
+                            <td>
+                                <small onclick="getChannelInfor('infor','{$val.id}','group')"
+                                       class="btn btn-primary  btn-xs"><i class="fa fa-pencil"></i> 编辑
+                                </small>
+                                <small onclick="deltedGroup('{$val.id}')" class="btn btn-danger btn-xs"><i
+                                        class="fa fa-trash-o"></i>删除
+                                </small>
+                            </td>
+                        </tr>
+
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        window.onload = function () {
+            setBackHeight();
+            $(".gids").each(function () {
+                var id = $(this).attr("id").replace("gid", "");
+                $("#editGroup" + id).val($("#gid" + id).val())
+            })
+
+            $("#addcheck1").attr("checked", "checked");
+            $("#addcheck1").attr("disabled", "false");
+        }
+    </script>
+</block>
