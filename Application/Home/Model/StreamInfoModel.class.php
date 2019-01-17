@@ -11,7 +11,12 @@ class StreamInfoModel extends Model
     function getChannel($channel, $user_id, $media_type, $offset, $limit = 20)
     {
         $model = M();
-        $sql = 'select a.*,b.final_content from jrqg.stream_info as a left join stream_media as b on a.msg_id=b.msg_id';
+        if($media_type!="pics"){
+            $sql = 'select a.*,b.final_content from jrqg.stream_info as a left join stream_media as b on a.msg_id=b.msg_id';
+        }else{
+            $sql = 'select a.*from jrqg.stream_info as a ';
+        }
+
         $sql .= ' where a.status="' . $channel . '"';
         $sql .= ' and a.user_id="' . $user_id . '"';
         $sql .= ' and a.media_type="' . $media_type . '"';

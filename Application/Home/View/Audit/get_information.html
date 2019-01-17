@@ -5,7 +5,7 @@
         <th>文章类型</th>
         <th>发布用户</th>
         <th>发布时间</th>
-        <!--<th>操作</th>-->
+        <th>操作</th>
     </tr>
     <?php
         foreach($result as $key=>$val){
@@ -19,7 +19,11 @@
         <td>{$val.ch_media_type}</td>
         <td>{$val.user_name}</td>
         <td>{$val.publish_time}</td>
-
+        <td>
+            <a onclick="updateData('updateStatusMethod','{$val.msg_id}',1)" class="blue pointer">下架</a>
+            <a onclick="updateData('updateStatusMethod','{$val.msg_id}',2)" class="blue pointer">审核不通过</a>
+            <a class="blue pointer" onclick="updateData('deltedMethod','{$val.msg_id}')">删除</a>
+        </td>
     </tr>
     <?php }?>
 

@@ -23,7 +23,6 @@ class GuzhiController extends BaseController
     }
 
 
-
     /*****
      *游历
      *  $cacheKey:定义唯一缓存key值
@@ -64,8 +63,6 @@ class GuzhiController extends BaseController
     }
 
 
-
-
     /***
      * @添加观止频道
      ****/
@@ -75,7 +72,7 @@ class GuzhiController extends BaseController
         //$arr["summary"] = htmlspecialchars(I("summary"));
         $arr["guanzhi_desc"] = htmlspecialchars_decode(I("desc"));
         $arr["thumnailChannel"] = trim(I("thumnailChannel"));
-        $thumbnail =  array_filter(I('thumbnail'));
+        $thumbnail = array_filter(I('thumbnail'));
 
         $session = session("qg_auth");
         $arr["user_id"] = $session[0]['user_id'];
@@ -104,17 +101,14 @@ class GuzhiController extends BaseController
     }
 
 
-
-
-
     public function banner()
     {
         $StreamInfoModel = new StreamInfoModel();
         $result = $StreamInfoModel->getGuzhiInfor("");
-        foreach($result as $key=>$val){
+        foreach ($result as $key => $val) {
             $map["guanzhi_id"] = $val["guanzhi_id"];
-            $status=$StreamInfoModel->getGuanzhiChoiceTopic($map);
-            $result[$key]["status"]=$status[0]["status"];
+            $status = $StreamInfoModel->getGuanzhiChoiceTopic($map);
+            $result[$key]["status"] = $status[0]["status"];
         }
 
         $this->assign("result", $result);
@@ -124,16 +118,21 @@ class GuzhiController extends BaseController
     public function setStatusBanner()
     {
         $arr["status"] = I("status");
-        $map["guanzhi_id"] = I("id");
-        $StreamInfoModel = new StreamInfoModel();
-        $result = $StreamInfoModel->getGuanzhiChoiceTopic($map);
+        $rowky = I("id");
+        $list = explode(",", $rowky);
+        foreach ($list as $val) {
+            $map["guanzhi_id"] = $val;
+            $StreamInfoModel = new StreamInfoModel();
+            $result = $StreamInfoModel->getGuanzhiChoiceTopic($map);
 
-        if (empty($result) && $arr["status"] == 1) {
-            $arr["guanzhi_id"] = $map["guanzhi_id"];
-            $StreamInfoModel->addGuanzhiChoiceTopic($arr);
-        } else{
-            $StreamInfoModel->updateGuanzhiChoiceTopic($map, $arr);
+            if (empty($result) && $arr["status"] == 1) {
+                $arr["guanzhi_id"] = $map["guanzhi_id"];
+                $StreamInfoModel->addGuanzhiChoiceTopic($arr);
+            } else {
+                $StreamInfoModel->updateGuanzhiChoiceTopic($map, $arr);
+            }
         }
+
     }
 
 }
