@@ -19,11 +19,18 @@
             </div>
             <div id="get_data_area"></div>
             <input type="hidden" value="0" name="status" id="status"/>
-            <input type="hidden" value="pics" name="channel" id="channel"/>
+            <input type="hidden" value="pics" name="media_type" id="media_type"/>
         </div>
     </section>
 
-
+    <div class="addQA" id="loading_tiao" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%;height:20px;position: fixed;min-width: 800px">
+            <div id="slider-danger" class="slider-danger mb20 ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                <div id="loding" class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 10%;"></div>
+            </div>
+        </div>
+        <div class="meng"></div>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".tradeNav li:first").click();

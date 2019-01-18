@@ -52,6 +52,14 @@
         if (dataCount > 0) {
             limitPage(pageCount, dataCount, "../News/getContent");
         }
+        var media_type=$("#media_type").val();
+
+        if (media_type=="pics"){
+            $(".whiteSpace a").each(function(){
+                $(this).removeAttr('href');
+                $(this).removeAttr('target');
+            })
+        }
     })
 
 </script>

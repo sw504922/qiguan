@@ -29,6 +29,7 @@ $(".tradeNav li").click(function () {
         $("#status").val(3)
         getData("getContent");
     }else if(val.indexOf("添加")==0){
+        $("#status").val(4)
         getData("getAddMethod");
     }
 
@@ -85,7 +86,7 @@ function getData(targets,msg_id) {
         data: {
             status: $("#status").val(),
             new_page: $("#page").val(),
-            channel: $("#channel").val(),
+            media_type: $("#media_type").val(),
             msg_id: msg_id,
         },
         dataTyep: "json",
@@ -255,10 +256,10 @@ $("#thumbnail_file").bind("change", function (event) {
                 $("#thumbnail_span_"+ num).html("重新上传视频");
             } else if (subname == "music_images" && num == 1) {
                 $("#audio_area_show_" + num).html("<audio controls preload='auto' id='player' src='"+data+"'></audio>");
-
                 $("#thumbnail_span_"+ num).html("重新上传音频");
             } else {
-                $("#thumbnail_span_" + num).html("<img src='" + data + "' class='eidtImg'>");
+                $("#audio_area_show_" + num).html("<img src='" + data + "' class='eidtImg'>");
+                $("#thumbnail_span_"+ num).html("重新上传图片");
             }
 
             $("#thumbnail_file_" + num).val(data.replace("..", ""));
@@ -303,36 +304,7 @@ function addConversion() {
     }
 }
 
-$(".setPublish").click(function () {
-    var value = $(this).val();
-    console.log(value);
-    addClass("#publishtime");
-    if (value == "1") {
-        removeClass("#publishtime");
-    }
-})
 
-function removeClass(str) {
-    $(str).removeClass("hide");
-}
-
-function addClass(str) {
-    $(str).addClass("hide");
-}
-
-/**
- * @日期
- * format: 'yyyy-mm-dd',天
- * format: 'yyyy-mm-dd hh:ii:ss',小时
- * minView:显示最小视图
- *
- * ******日期*******/
-$("#publishtime").datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    minView: 'hour',
-    language: 'zh-CN',
-    autoclose: true,
-})
 
 
 function addLayer(id, status) {
