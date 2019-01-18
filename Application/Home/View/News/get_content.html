@@ -17,7 +17,7 @@
 
         <td>{$val.publish_time}</td>
         <td>
-            <a href="__ROOT__/News/getUpdateNews.html?msg_id={$val.msg_id}" class="blue pointer">编辑</a>
+            <a onclick="getData('getUpdateNews','{$val.msg_id}')" class="blue pointer">编辑</a>
             <?php
             if($val["status"]==0){ ?>
             <a onclick="updateData('updateStatusMethod','{$val.msg_id}',1)" class="blue pointer">下架</a>

@@ -78,7 +78,7 @@ function updateData(targets, id, status) {
  * submitNewChanne:form Post Method
  * ****/
 
-function getData(targets) {
+function getData(targets,msg_id) {
     $.ajax({
         type: "get",
         url: targets,
@@ -86,6 +86,7 @@ function getData(targets) {
             status: $("#status").val(),
             new_page: $("#page").val(),
             channel: $("#channel").val(),
+            msg_id: msg_id,
         },
         dataTyep: "json",
         beforeSend: function () {
@@ -249,10 +250,12 @@ $("#thumbnail_file").bind("change", function (event) {
             $("#loading_tiao").hide();
             var num = $("#thumbnailNum").val();
             var subname = $("#subname").val();
-            if (subname == "video_images" && num == 1) {
-                $("#thumbnail_span_" + num).html("<video controls preload='auto' id='player' src='" + data + "'></video>");
+            if (subname == "radio_images" && num == 1) {
+                $("#audio_area_show_" + num).html("<video   style='width: 300px;' controls preload='auto' id='player' src='" + data + "'></video>");
+                $("#thumbnail_span_"+ num).html("重新上传视频");
             } else if (subname == "music_images" && num == 1) {
                 $("#audio_area_show_" + num).html("<audio controls preload='auto' id='player' src='"+data+"'></audio>");
+
                 $("#thumbnail_span_"+ num).html("重新上传音频");
             } else {
                 $("#thumbnail_span_" + num).html("<img src='" + data + "' class='eidtImg'>");

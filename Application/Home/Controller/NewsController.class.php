@@ -34,7 +34,21 @@ class NewsController extends BaseController
         $this->display();
     }
 
+    public function report()
+    {
+        $result["guanzhi_id"] = I("guanzhiid");
+        $result["channel"] = I("channel");
+        $this->assign("result", $result);
+        $this->display();
+    }
 
+    public function comments()
+    {
+        $result["guanzhi_id"] = I("guanzhiid");
+        $result["channel"] = I("channel");
+        $this->assign("result", $result);
+        $this->display();
+    }
     /*****
      *内容库管理获取内容
      ****/
@@ -74,53 +88,8 @@ class NewsController extends BaseController
         $this->ajaxReturn($data);
     }
 
-    public function photo()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
 
-    public function music()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
 
-    public function video()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
-
-    public function content()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
-
-    public function report()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
-
-    public function comments()
-    {
-        $result["guanzhi_id"] = I("guanzhiid");
-        $result["channel"] = I("channel");
-        $this->assign("result", $result);
-        $this->display();
-    }
 
     /*****
      *@获取更新新闻
@@ -138,9 +107,7 @@ class NewsController extends BaseController
             $mediaDetailResult = $StreamInfoModel->getMediaDetail(strReplace($val["final_content"]));
             $mediaDetailArr[] = $mediaDetailResult[0];
         }
-
         $mediaDetail = $mediaDetailArr;
-
         $result["mediaDetail"] = $mediaDetail;
         $result["streamMedia"] = $streamMedia;
         $result["streamInfo"] = $streamInfo;
@@ -158,7 +125,8 @@ class NewsController extends BaseController
         } else if ($media_type == "article") {
             $page = "update_article";
         }
-        $this->display($page);
+        $data = $this->fetch($page);
+        $this->ajaxReturn($data);
     }
 
     //上传路径
@@ -437,8 +405,7 @@ class NewsController extends BaseController
 
         }
 
-        dump($arr);
-exit();
+
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
         $arr["guanzhi_id"] = trim(I("guanzhi_id"));
