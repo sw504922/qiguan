@@ -27820,7 +27820,7 @@ UE.ui = baidu.editor.ui = {};
         'webapp':'~/dialogs/webapp/webapp.html',
         'snapscreen':'~/dialogs/snapscreen/snapscreen.html',
         'scrawl':'~/dialogs/scrawl/scrawl.html',
-        'music':'~/dialogs/music/music.html',
+        'music':'~/dialogs/music/add_audio.html',
         'template':'~/dialogs/template/template.html',
         'background':'~/dialogs/background/background.html',
         'charts': '~/dialogs/charts/charts.html'

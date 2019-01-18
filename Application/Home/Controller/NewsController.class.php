@@ -408,9 +408,10 @@ class NewsController extends BaseController
         $arr["user_id"] = $session[0]['user_id'];
         $opinion_method = I("opinion_method");
         $arr["tags"] = array_filter(I("tags"));
-
+        $arr["status"] = trim(I("send_status"));
         $arr["title"] = trim(I("title"));
         $arr["type"] = trim(I("sendtype"));
+        $arr["layout"] = I("audio_length");
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
         $arr["send"] = trim(I("send"));
         $arr["publish_time"] = trim(I("publish_time"));
@@ -436,6 +437,8 @@ class NewsController extends BaseController
 
         }
 
+        dump($arr);
+exit();
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
         $arr["guanzhi_id"] = trim(I("guanzhi_id"));

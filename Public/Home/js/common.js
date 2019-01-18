@@ -134,6 +134,12 @@ function submitNewChanne(id, target, contro,type) {
     if (type=="save"){
         $("#send_status").val(3);
     }
+    // if(target=="addVideo"){
+    //     var pl=document.getElementById("thumbnail_span_1");
+    //     time = pl.duration;
+    //     console.log(time);
+    //     $("#audio_length").val(time);
+    // }
 
 
 
@@ -201,8 +207,28 @@ function uploadIMG(id, num) {
     $("#thumbnail_file").click();
 
 }
+/*
+* 进度条实现
+* */
+var jqureAjaxXhrOnProgress = function(fun) {
+    jqureAjaxXhrOnProgress.onprogress = fun; //绑定监听
+    //使用闭包实现监听绑
+    return function() {
+        //通过$.ajaxSettings.xhr();获得XMLHttpRequest对象
+        var xhr = $.ajaxSettings.xhr();
+        //判断监听函数是否为函数
+        if (typeof jqureAjaxXhrOnProgress.onprogress !== 'function')
+            return xhr;
+        //如果有监听函数并且xhr对象支持绑定时就把监听函数绑定上去
+        if (jqureAjaxXhrOnProgress.onprogress && xhr.upload) {
+            xhr.upload.onprogress = jqureAjaxXhrOnProgress.onprogress;
+        }
+        return xhr;
+    }
+}
 
 $("#thumbnail_file").bind("change", function (event) {
+
     var form = new FormData(document.getElementById("uploadForm"));
     $.ajax({
         type: "post",
@@ -210,29 +236,42 @@ $("#thumbnail_file").bind("change", function (event) {
         processData: false,
         contentType: false,
         data: form,
+        beforeSend: function () {
+            $("#loading_tiao").show();
+        },
+        xhr:jqureAjaxXhrOnProgress(function(e){
+            var percent=e.loaded / e.total*100;
+            console.log(percent)
+            $("#loding").css("width",percent+"%")
+
+        }),
         success: function (data) {
+            $("#loading_tiao").hide();
             var num = $("#thumbnailNum").val();
             var subname = $("#subname").val();
             if (subname == "video_images" && num == 1) {
-                $("#thumbnail_span_" + num).html("<video style='width: 300px' id='videodd' controls='controls' ><source src='" + data + "' type='video/mp4'></video>");
-
+                $("#thumbnail_span_" + num).html("<video controls preload='auto' id='player' src='" + data + "'></video>");
             } else if (subname == "music_images" && num == 1) {
-                $("#thumbnail_span_" + num).html("<audio id='videodd' controls='controls'><source src='" + data + "' type='audio/map3'></audio>");
+                $("#audio_area_show_" + num).html("<audio controls preload='auto' id='player' src='"+data+"'></audio>");
+                $("#thumbnail_span_"+ num).html("重新上传音频");
             } else {
                 $("#thumbnail_span_" + num).html("<img src='" + data + "' class='eidtImg'>");
             }
-
 
             $("#thumbnail_file_" + num).val(data.replace("..", ""));
             $("#thumbnail_file").val("");
 
         },
+        error:function () {
+            alert('上传失败')
+        }
     })
 });
 
 function getVidDur() {
-    var videoAudio = document.getElementById("videodd").duration;
-    $("#videoLength").val(videoAudio);
+    var videoAudio = document.getElementById("player").duration;
+    console.log(videoAudio)
+    $("#audio_length").val(videoAudio);
 }
 
 function newsoOnload() {

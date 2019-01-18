@@ -6,23 +6,28 @@
             <li><a href="#register" data-toggle="tab"><strong>已发布</strong></a></li>
             <li><a href="#account" data-toggle="tab"><strong>审核未通过</strong></a></li>
             <li><a href="#trade" data-toggle="tab"><strong>已下架</strong></a></li>
-            <li><a href="#regAndAcc" data-toggle="tab"><strong>草稿</strong></a></li>
-            <li><a href="#regAndAcc" data-toggle="tab"><strong>添加</strong></a></li>
+            <li><a href="#add_audio" data-toggle="tab"><strong>添加音频</strong></a></li>
         </ul>
     </header>
 
     <section class="panel divBox">
 
         <div class="dataAll">
-            <div class="loading" style="display: none;width: 100%;text-align: center;">
-                <img src="__IMG__/loading.gif"/>
-            </div>
+
             <div id="get_data_area"></div>
             <input type="hidden" value="0" name="status" id="status"/>
             <input type="hidden" value="audio" name="channel" id="channel"/>
         </div>
     </section>
 
+    <div class="addQA" id="loading_tiao" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%;height:20px;position: fixed;min-width: 800px">
+            <div id="slider-danger" class="slider-danger mb20 ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+                <div id="loding" class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="width: 10%;"></div>
+            </div>
+        </div>
+        <div class="meng"></div>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".tradeNav li:first").click();

@@ -9,7 +9,7 @@
                     class="fa fa-refresh"></i> 设置轮播图
             </button>
             <button class="btn btn-primary btn-xs authAll" type="button" onclick="setBanner(0)"><i
-                    class="fa fa-plus-square-o"></i> 取消轮播图
+                    class="fa  fa-mail-reply"></i> 取消轮播图
             </button>
         </header>
         <div class="dataAll">
@@ -34,7 +34,12 @@
                     <td><input class="Second" type="checkbox" name="checkbox" value="{$val.guanzhi_id}"/></td>
                     <td>{$key+1}</td>
                     <td>
-                        <div class="whiteSpace">{$val.title}</div>
+                        <div class="whiteSpace"> <?php if($val["status"]==1 && $val["status"]!=Null){ ?>
+                            <i class="fa fa-star"></i>{$val.title}
+                            <?php }else{ ?>
+                            <i class="fa fa-star-o"></i>{$val.title}
+                            <?php  }?>
+                        </div>
                     </td>
                     <td align="center">
                         <?php
@@ -49,9 +54,9 @@
                     <td>{$val.publish_time}</td>
                     <td>
                         <?php if($val["status"]==1 && $val["status"]!=Null){ ?>
-                        <span class="label label-danger pull-right">已显示</span>
+                        <span class="label label-danger pull-right"><i class="fa fa-star"></i>已显示</span>
                         <?php }else{ ?>
-                        <span class="label label-info pull-right">未显示</span>
+                        <span class="label label-info pull-right"><i class="fa fa-star-o"></i>未显示</span>
                         <?php  }?>
                     </td>
                 </tr>

@@ -173,6 +173,7 @@ class BaseController extends Controller
         $getID3 = new \getID3 ();
 
         $ThisFileInfo = $getID3->analyze($path); //分析文件，$path为音频文件的地址
+
         $fileduration=$ThisFileInfo['playtime_seconds']; //这个获得的便是音频文件的时长
         $time = (int)ceil($fileduration);
         return $time;
