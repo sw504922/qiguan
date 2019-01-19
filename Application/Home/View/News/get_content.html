@@ -30,6 +30,7 @@
     <?php }?>
     <?php
         if(count($result)==0){
+         $pageCount=0;
     ?>
     <tr>
         <td colspan="4" align="center">暂无符合的数据</td>
@@ -55,7 +56,7 @@
         var media_type=$("#media_type").val();
 
         if (media_type=="pics"){
-            $(".whiteSpace a").each(function(){
+            $(".whiteSpace").each(function(){
                 $(this).removeAttr('href');
                 $(this).removeAttr('target');
             })

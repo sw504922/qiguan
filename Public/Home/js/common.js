@@ -165,14 +165,14 @@ function submitNewChanne(id, target, contro,type) {
             contentType: false,
             data: form,
             success: function (data) {
-             //   $(".btn-primary").removeAttr("onclick");
+                $(".btn-primary").removeAttr("onclick");
                 $(".btn-primary").css("background" ,"#efefef");
                 $(".btn-primary").css("border" ,"1px solid #efefef");
 
-                //window.location.reload();
+               window.location.reload();
             },
             error: function (data) {
-                // console.log("this is error");
+                 console.log("this is error");
             }
         })
     }
@@ -255,6 +255,7 @@ $("#thumbnail_file").bind("change", function (event) {
             $("#loading_tiao").hide();
             var num = $("#thumbnailNum").val();
             var subname = $("#subname").val();
+
             if (subname == "radio_images" && num == 1) {
                 $("#audio_area_show_" + num).html("<video   style='width: 300px;' controls preload='auto' id='player' src='" + data + "'></video>");
                 $("#thumbnail_span_"+ num).html("重新上传视频");
@@ -361,7 +362,7 @@ function userMethod(target, num) {
 
         success: function (data) {
             getChannelInfor('infor', num, 'close');
-           // self.location = document.referrer;
+            self.location = document.referrer;
         }
     });
 

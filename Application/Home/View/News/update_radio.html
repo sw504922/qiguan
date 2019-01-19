@@ -1,5 +1,11 @@
 <section class="panel divBox">
+
+
     <div class="dataAll">
+        <div class="loading" style="display: none;width: 100%;text-align: center;">
+            <img src="__IMG__/loading.gif"/>
+        </div>
+
         <div class="panel-body panel-body-nopadding">
             <form id="addForm" class="form-horizontal form-bordered">
                 <input type="hidden" value="audio" name="sendtype"/>
@@ -20,22 +26,18 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">上传视频</label>
                     <div class="col-sm-6">
-                            <span id="audio_area_show_1">
-                                 <?php
+                        <span id="audio_area_show_1">
+                            <?php
                                 $audioPath=$result['mediaDetail'][0]['content'];
-                                   if(!empty($audioPath)){
-                                ?>
-                                <video id='player' style='width: 300px;' controls preload='auto'
-                                       src="..{$audioPath}"></video>
-                                <?php } ?>
-                            </span>
-
+                                    if(!empty($audioPath)){
+                            ?>
+                            <video   style='width: 300px;' controls preload='auto' id='player' src="..{$audioPath}" /></video>
+                            <?php } ?>
+                       </span>
                         <span class="label label-primary  pointer" id="thumbnail_span_1"
                               onclick="uploadIMG('thumbnail','1')">
                             <i class="fa fa-cloud-upload"></i>上传视频</span>
-
-                        </a>
-                        <input type="hidden" class="form-control" name="upload_music" id="thumbnail_file_1"
+                        <input type="hidden" class="form-control hide" name="upload_music" id="thumbnail_file_1"
                                value="{$audioPath}"/>
                     </div>
                 </div>
@@ -80,28 +82,29 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <label class="col-sm-1 control-label">上传缩略图</label>
 
                     <?php for($i=2;$i<5;$i++){ ?>
                     <div class="col-sm-6">
-                        <a class="blue pointer that hide" id="thumbnail_span_{$i}"
-                           onclick="uploadIMG('thumbnail','{$i}')">
-                            <?php
+                             <span id="audio_area_show_{$i}" class="that">
+                                <?php
                                 $thumbnail_url=$result['streamInfo'][$i-2]['thumbnail_url'];
+                                $old_thumbnail_url=$result['streamInfo'][$i-2]['thumbnail_url'];
                                 if(!empty($thumbnail_url)){
                                     $thumurls=strpos($thumbnail_url,"http");
                                     if($thumurls===false){
                                         $thumbnail_url="..".$thumbnail_url;
                                     }
                              ?>
-                            <img src="{$thumbnail_url}" class="eidtImg"/>
-                            <?php }else{ ?>
-                            上传缩略图
-                            <?php } ?>
-                        </a>
+                                 <img src="{$thumbnail_url}" class="eidtImg"/>
+                                 <?php } ?>
+                            </span>
+                        <span class="label label-primary  pointer that  hide" id="thumbnail_span_{$i}"
+                              onclick="uploadIMG('thumbnail','{$i}')"><i class="fa fa-cloud-upload"></i>上传缩略图</span>
                         <input type="hidden" class="form-control " name="thumbnail[]" id="thumbnail_file_{$i}"
-                               value="{$thumbnail_url}"/>
+                               value="{$old_thumbnail_url}"/>
                     </div>
                     <?php } ?>
                 </div>
@@ -115,14 +118,14 @@
                     </div>
                     <?php } ?>
                 </div>
+              
                 <input type="hidden" value="radio" name="sendtype"/>
                 <input type="hidden" value="{$result['streamInfo'][0]['channel']}" id="hideChannel"/>
                 <input type="hidden" name="opinion_method" value="update"/>
                 <input type="hidden" name="msg_id" value="{$result['streamInfo'][0]['msg_id']}"/>
                 <input type="hidden" id="hide_guanzhi_id" value="{$result['guZhiMsg'][0]['guanzhi_id']}"/>
-
                 <input type="hidden" id="send_status" name="send_status" value="0"/>
-                <input type="hidden" id="audio_length" name="audio_length" value="0"/>
+                <input type="hidden" id="audio_length" name="audio_length"  value="{$result['streamMedia'][0]['duration']}"/>
             </form>
             <div class="form-group savebutton">
                 <button class="btn btn-primary " id="button_send"
@@ -137,14 +140,13 @@
 
 
 </section>
-
+<script type="text/javascript" charset="utf-8" src="__JS__/childe.js"></script>
 <script type="text/javascript" charset="utf-8" src="__JS__/upload.js"></script>
 <script>
     $(document).ready(function () {
         thumbnailStatus();
-
         $("#channel").val($("#hideChannel").val());
-        getSelectData('getGuzhiChannel');
+        getSelectData('getGuzhiChannel','first');
         $("#subname").val("radio_images");
     })
 </script>

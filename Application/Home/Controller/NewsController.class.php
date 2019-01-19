@@ -344,6 +344,7 @@ class NewsController extends BaseController
         $arr["title"] = trim(I("title"));
         $arr["type"] = trim(I("sendtype"));
         $arr["layout"] = I("audio_length");
+        $arr["duration"] = I("audio_length");
 
 
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
@@ -375,6 +376,8 @@ class NewsController extends BaseController
         $arr["media_time"] = $arr["publish_time"];
         $arr["summary"] = $arr["msg_abstract"];
         $arr["guanzhi_id"] = trim(I("guanzhi_id"));
+
+
 
         $StreamInfoModel = new StreamInfoModel();
         if ($opinion_method != "update") {
@@ -419,7 +422,9 @@ class NewsController extends BaseController
                 $wmap["rowkey"] = strReplace($updateID[0]['final_content']);
                 $StreamInfoModel->updateMediaDetail($wmap, $arr);
             }
-            if ($result[0]["thumbnail_url"] != $arr["thumbnail_url"]) {
+            if ($result[0]["thumbnail_url"] != $arr["thumbnail_url"] ||
+                $updateID[0]["duration"] !=  $arr["duration"]
+            ) {
                 $arr["overview_pic"] = $arr["thumbnail_url"];
                 $StreamInfoModel->updateStreamMedia($map, $arr);
             }
@@ -447,6 +452,10 @@ class NewsController extends BaseController
             $map["final_content"] = $value["rowkey"];
             $map["is_ad"] = 0;
             $map["overview_pic"] = $arr["thumbnail_url"];
+            if(!empty($arr["duration"])){
+                $map["duration"] = $arr["duration"];
+            }
+
             $StreamInfoModel->addStreamMedia($map);
         }
     }

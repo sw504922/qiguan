@@ -125,7 +125,7 @@
                 <input type="hidden" name="msg_id" value="{$result['streamInfo'][0]['msg_id']}"/>
                 <input type="hidden" id="hide_guanzhi_id" value="{$result['guZhiMsg'][0]['guanzhi_id']}"/>
                 <input type="hidden" id="send_status" name="send_status" value="0"/>
-                <input type="hidden" id="audio_length" name="audio_length" value="0"/>
+                <input type="hidden" id="audio_length" name="audio_length"  value="{$result['streamMedia'][0]['duration']}"/>
             </form>
             <div class="form-group savebutton">
                 <button class="btn btn-primary " id="button_send"
