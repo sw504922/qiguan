@@ -26,6 +26,7 @@ class NewsController extends BaseController
 
     public function getaudio()
     {
+
         $this->display();
     }
 
@@ -343,6 +344,8 @@ class NewsController extends BaseController
         $arr["title"] = trim(I("title"));
         $arr["type"] = trim(I("sendtype"));
         $arr["layout"] = I("audio_length");
+
+
         $arr["msg_abstract"] = htmlspecialchars_decode(I("summary"));
         $arr["send"] = trim(I("send"));
         $arr["publish_time"] = trim(I("publish_time"));
@@ -376,7 +379,6 @@ class NewsController extends BaseController
         $StreamInfoModel = new StreamInfoModel();
         if ($opinion_method != "update") {
             /***********insert area***********/
-            $arr["layout"] = $this->send;
             $arr["rowkey"] = getKey($arr["title"] . $arr["publish_time"] . $arr["msg_id"]);
             $arr["details_url"] = $arr["rowkey"] . ".html";
 

@@ -103,7 +103,10 @@ function getData(targets,msg_id) {
 }
 
 
-function getSelectData(targets) {
+function getSelectData(targets,str) {
+    if (str!="first")
+        $("#hide_guanzhi_id").val("");
+
     $.ajax({
         type: "get",
         url: targets,
@@ -114,6 +117,7 @@ function getSelectData(targets) {
         },
         dataTyep: "json",
         success: function (data) {
+
             $("#select_data_area").html(data);
         }
     });
@@ -284,7 +288,7 @@ function newsoOnload() {
     if (channel != "") {
         $("#channel").val(channel);
     }
-    getSelectData('../News/getGuzhiChannel');
+    getSelectData('../News/getGuzhiChannel',"first");
 }
 
 /**
@@ -322,9 +326,11 @@ function addLayer(id, status) {
 
 function thumbnailStatus() {
     var num = $("#specialImg").val();
+    var upload_id = "#audio_area_show_" + num;
     var id = "#thumbnail_span_" + num;
     addClass(".that");
     removeClass(id);
+    removeClass(upload_id);
     $(id).attr("onclick", "uploadIMG('thumbnail','" + num + "')");
 }
 

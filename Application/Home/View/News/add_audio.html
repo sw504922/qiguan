@@ -21,7 +21,8 @@
                     <div class="col-sm-6">
 
                         <span id="audio_area_show_1"></span>
-                        <span class="label label-primary  pointer" id="thumbnail_span_1" onclick="uploadIMG('thumbnail','1')">
+                        <span class="label label-primary  pointer" id="thumbnail_span_1"
+                              onclick="uploadIMG('thumbnail','1')">
                             <i class="fa fa-cloud-upload"></i>上传音频</span>
                         <input type="hidden" class="form-control hide" name="upload_music" id="thumbnail_file_1"/>
                     </div>
@@ -77,8 +78,9 @@
 
                     <?php for($i=2;$i<5;$i++){ ?>
                     <div class="col-sm-6">
-                        <a class="blue pointer that hide" id="thumbnail_span_{$i}"
-                           onclick="uploadIMG('thumbnail','{$i}')">上传缩略图</a>
+                        <span id="audio_area_show_{$i}" class="that"></span>
+                         <span class="label label-primary  pointer that  hide" id="thumbnail_span_{$i}"
+                               onclick="uploadIMG('thumbnail','{$i}')"><i class="fa fa-cloud-upload"></i>上传缩略图</span>
                         <input type="hidden" class="form-control" name="thumbnail[]" id="thumbnail_file_{$i}"/>
                     </div>
                     <?php } ?>
@@ -113,11 +115,13 @@
 
 </section>
 
+<script type="text/javascript" charset="utf-8" src="__JS__/childe.js"></script>
 <script type="text/javascript" charset="utf-8" src="__JS__/upload.js"></script>
 <script>
     $(document).ready(function () {
         thumbnailStatus();
         newsoOnload();
+
         $("#subname").val("music_images");
 
     })
