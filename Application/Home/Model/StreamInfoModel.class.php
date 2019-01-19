@@ -11,9 +11,9 @@ class StreamInfoModel extends Model
     function getChannel($channel, $user_id, $media_type, $offset, $limit = 20)
     {
         $model = M();
-        if($media_type!="pics"){
+        if ($media_type != "pics") {
             $sql = 'select a.*,b.final_content from jrqg.stream_info as a left join stream_media as b on a.msg_id=b.msg_id';
-        }else{
+        } else {
             $sql = 'select a.*from jrqg.stream_info as a ';
         }
 
@@ -36,21 +36,36 @@ class StreamInfoModel extends Model
         return $result[0]["cnt"];
     }
 
-    function getChannelAll($offset, $limit = 20)
+    function getChannelAll($search, $media_type, $offset, $limit = 20)
     {
         $model = M();
-        $sql = 'select * from (select * from jrqg.stream_info ) as stream_info';
-        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
-        $sql .= ' limit ' . $offset . ',' . $limit;
+        $sql = 'select * from  jrqg.stream_info as stream_info';
+        $sql .= ' left join jrqg.user_info as user_info on stream_info.user_id=user_info.user_id';
+        $sql .= ' where stream_info.status=0 ';
+        if (!empty($search)) {
+            $sql .= ' and user_info.user_name like "%' . $search . '%"';
+        }
+
+        if ($media_type != "全部") {
+            $sql .= ' and stream_info.media_type="' . $media_type . '"';
+        }
+        $sql .= ' ORDER BY stream_info.publish_time desc limit ' . $offset . ',' . $limit;
         $result = $model->query($sql);
         return $result;
     }
 
-    function getChanneAllCount()
+    function getChanneAllCount($search, $media_type)
     {
         $model = M();
-        $sql = 'select count(*) cnt from (select * from jrqg.stream_info  ) as stream_info';
-        $sql .= ' left join (select user_name,user_id  from jrqg.user_info) as user_info on stream_info.user_id=user_info.user_id';
+        $sql = 'select count(*) cnt from  jrqg.stream_info as stream_info';
+        $sql .= ' left join jrqg.user_info as user_info on stream_info.user_id=user_info.user_id';
+        $sql .= ' where stream_info.status=0 ';
+        if (!empty($search)) {
+            $sql .= ' and user_info.user_name like "%' . $search . '%"';
+        }
+        if ($media_type != "全部") {
+            $sql .= ' and stream_info.media_type="' . $media_type . '"';
+        }
         $result = $model->query($sql);
         return $result[0]["cnt"];
     }

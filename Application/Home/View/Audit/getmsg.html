@@ -5,11 +5,17 @@
     <div class="col-md-12 marginTop">
         <small class="descSpan">作者搜索：</small>
         <input id="search" placeholder="请输入渠道中文名称"/>
+        <small class="descSpan">文章类型：</small>
+        <select class="channel btn-sm" id="media_type" onchange="getData('../Audit/getContent')">
+            <option value="全部">全部</option>
+            <?php foreach($mediaTyped as $key=>$val){ ?>
+            <option value="{$key}">{$val}</option>
+            <?php } ?>
+        </select>
+        <button id="news_click" class="btn btn-sm btn-primary" onclick="getData('../Audit/getContent')">确&nbsp;&nbsp;定</button>
     </div>
 
-    <div class="col-md-12 marginTop">
-        <button id="news_click" class="btn btn-primary searchBtn ">确定</button>
-    </div>
+
     <section class="panel divBox">
         <div class="dataAll">
             <div class="loading" style="display: none;width: 100%;text-align: center;">
@@ -19,7 +25,6 @@
             <input type="hidden" value="0" name="status" id="status"/>
         </div>
     </section>
-
 
     <script>
         $(document).ready(function () {

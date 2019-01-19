@@ -87,6 +87,7 @@ function getData(targets,msg_id) {
             status: $("#status").val(),
             new_page: $("#page").val(),
             media_type: $("#media_type").val(),
+            search: $("#search").val(),
             msg_id: msg_id,
         },
         dataTyep: "json",
