@@ -18,7 +18,6 @@
                 <img src="__IMG__/loading.gif"/>
             </div>
 
-
             <table class="dataTable" cellpadding="0" cellspacing="0">
                 <tr class="info">
                     <th>序号</th>
@@ -39,7 +38,7 @@
 
                     <td>{$val.publish_time}</td>
                     <td>
-                        <a  href="__ROOT__/News/newsshow.html?guanzhiid={$val.guanzhi_id}&channel=1" class="blue pointer">编辑</a>
+                        <a  href="__ROOT__/Guzhi/getnews.html?guanzhiid={$val.guanzhi_id}&channel=1" class="blue pointer">编辑</a>
                         <?php
                             if($val["status"]==0){ ?>
                         <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)" class="blue pointer">隐藏</a>
@@ -60,7 +59,8 @@
                 </tr>
                 <?php }?>
             </table>
-
+            <input type="text" class="form-control hide" name="publish_time" id="publishtime"
+                   placeholder="请输入发布时间"/>
 
         </div>
     </section>
@@ -120,7 +120,6 @@
 
                     </div>
 
-
                 </form>
                 <div class="form-group">
                     <div class="btn btn-primary buttonLayout" onclick="submitNewChanne('addForm','addJXMethod','Guzhi')">&nbsp;保&nbsp;&nbsp;存</div>
@@ -132,9 +131,11 @@
     </div>
     </div>
 
+    </section>
+    <script src="__JS__/childe.js"></script>
     <script>
         $(document).ready(function () {
-            thumbnailStatus();
+          //  thumbnailStatus();
             $("#subname").val("guanzhi");
         })
 
