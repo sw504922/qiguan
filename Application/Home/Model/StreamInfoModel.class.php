@@ -39,8 +39,9 @@ class StreamInfoModel extends Model
     function getChannelAll($search, $media_type, $offset, $limit = 20)
     {
         $model = M();
-        $sql = 'select * from  jrqg.stream_info as stream_info';
+        $sql = 'select stream_info.*,user_info.*,stream_media.final_content from  jrqg.stream_info as stream_info';
         $sql .= ' left join jrqg.user_info as user_info on stream_info.user_id=user_info.user_id';
+        $sql .= ' left join jrqg.stream_media as stream_media on stream_info.msg_id=stream_media.msg_id';
         $sql .= ' where stream_info.status=0 ';
         if (!empty($search)) {
             $sql .= ' and user_info.user_name like "%' . $search . '%"';
@@ -50,6 +51,7 @@ class StreamInfoModel extends Model
             $sql .= ' and stream_info.media_type="' . $media_type . '"';
         }
         $sql .= ' ORDER BY stream_info.publish_time desc limit ' . $offset . ',' . $limit;
+
         $result = $model->query($sql);
         return $result;
     }
@@ -59,6 +61,7 @@ class StreamInfoModel extends Model
         $model = M();
         $sql = 'select count(*) cnt from  jrqg.stream_info as stream_info';
         $sql .= ' left join jrqg.user_info as user_info on stream_info.user_id=user_info.user_id';
+
         $sql .= ' where stream_info.status=0 ';
         if (!empty($search)) {
             $sql .= ' and user_info.user_name like "%' . $search . '%"';

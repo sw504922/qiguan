@@ -166,11 +166,11 @@ function submitNewChanne(id, target, contro,type) {
             contentType: false,
             data: form,
             success: function (data) {
-             //   $(".btn-primary").removeAttr("onclick");
+                $(".btn-primary").removeAttr("onclick");
                 $(".btn-primary").css("background" ,"#efefef");
                 $(".btn-primary").css("border" ,"1px solid #efefef");
 
-              // window.location.reload();
+               window.location.reload();
             },
             error: function (data) {
                  console.log("this is error");

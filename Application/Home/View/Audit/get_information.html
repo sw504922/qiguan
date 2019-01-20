@@ -17,13 +17,18 @@
         <td width="30%">
             <div class="whiteSpace">
                 <?php
-                if($val.ch_media_type!="图集"){
-                    $url=$newsurl.$val.final_content;
-                }else{
-                 $url=$val.final_content;
-                }
+
+                if($val["ch_media_type"]!="图集"){
+                    $url=$newsurl.$val["final_content"];
                 ?>
                 <a href="{$url}.html" target="_blank">{$val.title}</a>
+                <?php
+                }else{
+                 $url=$val["final_content"];
+                ?>
+                   {$val.title}
+                <?php } ?>
+
 
             </div>
 

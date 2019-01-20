@@ -38,11 +38,13 @@ class AuditController extends BaseController
         $StreamInfoModel = new StreamInfoModel();
         $dataResult = $StreamInfoModel->getChannelAll($search, $media_type, $offset, $this->limit);
         $resultCount = $StreamInfoModel->getChanneAllCount($search, $media_type);
+
         foreach ($dataResult as $val) {
             $val["ch_media_type"] = $this->mediaType[$val["media_type"]];
             $result[] = $val;
         }
         $this->result = $result;
+        $this->newsurl = C("newsurl");
         $this->resultCount = $resultCount;
         $this->new_page = $new_page;
         $this->viewCount = $this->limit;
