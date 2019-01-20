@@ -835,6 +835,9 @@ strong {
     margin: 0 10px 0 5px;
     color: #ccc;
 }
+.level{
+    margin-left: 20px;
+}
 
 .pageheader .breadcrumb-wrapper {
     position: absolute;

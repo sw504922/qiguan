@@ -23,6 +23,12 @@ class DiscoverNoticeModel extends Model
         $result = $model->where($map)->select();
         return $result;
     }
+    public function updateDiscoverNotice($map,$arr){
+        $model = M("jrqg.discover_notice");
+        $result = $model->where($map)->save($arr);
+        return $result;
+    }
+
 
     public function getDiscoverNoticeLoop($map){
         $model = M("jrqg.discover_notice_loop");
@@ -42,4 +48,6 @@ class DiscoverNoticeModel extends Model
         $result = $model->where($map)->save($arr);
         return $result;
     }
+
+
 }

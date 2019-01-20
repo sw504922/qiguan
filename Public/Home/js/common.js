@@ -68,7 +68,7 @@ function updateData(targets, id, status) {
         },
         dataTyep: "json",
         success: function (data) {
-            //window.location.reload();
+            window.location.reload();
         }
     });
 }
@@ -166,11 +166,11 @@ function submitNewChanne(id, target, contro,type) {
             contentType: false,
             data: form,
             success: function (data) {
-                $(".btn-primary").removeAttr("onclick");
+             //   $(".btn-primary").removeAttr("onclick");
                 $(".btn-primary").css("background" ,"#efefef");
                 $(".btn-primary").css("border" ,"1px solid #efefef");
 
-               window.location.reload();
+              // window.location.reload();
             },
             error: function (data) {
                  console.log("this is error");
@@ -450,11 +450,12 @@ function deltedGroup(id) {
 
 
 
-function setBanner(str){
+function setBanner(target,str){
+
     var id_array = new Array();
     $("input[name='checkbox']:checked").each(function () {
         id_array.push($(this).val());//向数组中添加元素
     });
     var rules = id_array.join(',');//将数组元素连接起来以构建一个字符串
-    updateData('../Guzhi/setStatusBanner',rules,str);
+    updateData(target,rules,str);
 }

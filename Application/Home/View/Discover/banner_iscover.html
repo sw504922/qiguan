@@ -4,7 +4,14 @@
 
 
     <section class="panel divBox">
-
+        <header class="panel-heading">
+            <button class="btn btn-info btn-xs authAll" type="button" onclick="setBanner('../Discover/setStatusBanner',1)"><i
+                    class="fa fa-refresh"></i> 设置轮播图
+            </button>
+            <button class="btn btn-primary btn-xs authAll" type="button" onclick="setBanner('../Discover/setStatusBanner',0)"><i
+                    class="fa  fa-mail-reply"></i> 取消轮播图
+            </button>
+        </header>
         <div class="dataAll">
             <div class="loading" style="display: none;width: 100%;text-align: center;">
                 <img src="__IMG__/loading.gif"/>
@@ -13,6 +20,7 @@
 
             <table class="dataTable" cellpadding="0" cellspacing="0">
                 <tr class="info">
+                    <th><input type="checkbox" id="checktwoSeconds" value="all" onclick="checkALL('', 'Second')"/></th>
                     <th>序号</th>
                     <th>观止标题</th>
                     <th>缩略图</th>
@@ -22,11 +30,17 @@
                 <?php
                     foreach($result as $key=>$val){
                 ?>
-
                 <tr>
+                    <td><input class="Second" type="checkbox" name="checkbox" value="{$val.notice_id}"/></td>
                     <td>{$key+1}</td>
                     <td>
-                        <div class="whiteSpace">{$val.title}</div>
+                        <div class="whiteSpace"> <?php if($val["loop_status"]==1 && $val["loop_status"]!=Null){ ?>
+                            <i class="fa fa-star"></i>{$val.title}
+                            <?php }else{ ?>
+                            <i class="fa fa-star-o"></i>{$val.title}
+                            <?php  }?>
+                        </div>
+
                     </td>
                     <td align="center">
                         <?php
@@ -40,13 +54,10 @@
                     </td>
                     <td>{$val.publish_time}</td>
                     <td>
-                        <?php if($val["loop_status"]==0 && $val["loop_status"]!=Null){ ?>
-                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',1)" class="blue pointer">设置轮播图</a>
-                        <?php }else if($val["loop_status"]==1 && $val["loop_status"]!=Null){ ?>
-                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',0)" class="blue pointer">取消轮播图</a>
-                        <?php  }else{ ?>
-                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',1)" class="blue pointer">设置轮播图</a>
-                        <a onclick="updateData('../Discover/setStatusBanner','{$val.notice_id}',0)" class="blue pointer">取消轮播图</a>
+                        <?php if($val["loop_status"]==1 && $val["loop_status"]!=Null){ ?>
+                        <span class="label label-danger pull-right"><i class="fa fa-star"></i>已显示</span>
+                        <?php }else{ ?>
+                        <span class="label label-info pull-right"><i class="fa fa-star-o"></i>未显示</span>
                         <?php  }?>
                     </td>
                 </tr>

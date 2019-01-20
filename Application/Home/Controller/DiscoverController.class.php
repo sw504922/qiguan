@@ -13,6 +13,84 @@ use Home\Model\StreamInfoModel;
 
 class DiscoverController extends BaseController
 {
+    public function getdiscover()
+    {
+        $this->display();
+    }
+
+    public function getContent()
+    {
+        $DiscoverNoticeModel = new DiscoverNoticeModel();
+        $map["status"] = 1;
+        $result = $DiscoverNoticeModel->getDiscoverNotice($map);
+        $this->result = $result;
+        $page = "Discover/getcontent";
+        $data = $this->fetch($page);
+        $this->ajaxReturn($data);
+    }
+
+    public function getSendDiscover()
+    {
+
+        $page = "Discover/send_discover";
+        $data = $this->fetch($page);
+        $this->ajaxReturn($data);
+    }
+
+    public function getEditContent()
+    {
+        $DiscoverNoticeModel = new DiscoverNoticeModel();
+        $model = new StreamInfoModel();
+        $map["status"] = 1;
+        $map["notice_id"] = I("msg_id");
+        $result = $DiscoverNoticeModel->getDiscoverNotice($map);
+
+        $rowkey = str_replace(".html", "", $result[0]["content_url"]);
+        $content = $model->getMediaDetail($rowkey);
+        $this->result = $result;
+        $this->content = $content;
+        $page = "Discover/geteditdiscover";
+        $data = $this->fetch($page);
+        $this->ajaxReturn($data);
+    }
+
+    public function updateDiscover()
+    {
+        $id = I("id");
+        $status = I("status");
+        $rowkey = I("rowkey");
+        $DiscoverNoticeModel = new DiscoverNoticeModel();
+        $StreamInfoModel = new StreamInfoModel();
+        if ($status == 0) {
+            $map["notice_id"] = $id;
+            $arr["status"] = $status;
+
+            $DiscoverNoticeModel->updateDiscoverNotice($map, $arr);
+            $DiscoverNoticeModel->updateDiscoverNoticeLoop($map, $arr);
+        } else {
+            $map["rowkey"] = $rowkey;
+            $rwap["content_url"] = $rowkey . ".html";
+            $arr["title"] = trim(I("title"));
+            $thumbnail = array_filter(I('thumbnail'));
+            $arr["thumbnail"] = $thumbnail[0];
+            $arr["pic_url"] = $thumbnail[0];
+
+            $arr["media_time"] = trim(I("publish_time"));
+            $arr["publish_time"] = trim(I("publish_time"));
+            $content = htmlspecialchars_decode(I("content"));
+            preg_match_all("<img.*?src=\"(.*?.*?)\".*?>", $content, $match);
+            foreach ($match[1] as $val) {
+                $imgsrc[] = basename($val);
+            }
+            $content = str_replace($this->replaceRPath, C("replaceYPath"), $content);
+            $arr["content"] = $content;
+
+            $DiscoverNoticeModel->updateDiscoverNotice($rwap, $arr);
+            $StreamInfoModel->updateMediaDetail($map, $arr);
+        }
+    }
+
+
     public function send_discover()
     {
         $this->display();
@@ -22,7 +100,8 @@ class DiscoverController extends BaseController
     {
 
         $DiscoverNoticeModel = new DiscoverNoticeModel();
-        $result = $DiscoverNoticeModel->getDiscoverNotice("");
+        $wap["status"]=1;
+        $result = $DiscoverNoticeModel->getDiscoverNotice($wap);
         foreach ($result as $key => $val) {
             $map["notice_id"] = $val["notice_id"];
             $status = $DiscoverNoticeModel->getDiscoverNoticeLoop($map);

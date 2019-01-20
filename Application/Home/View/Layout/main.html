@@ -112,14 +112,17 @@
                 <neq name="check" value="$Discover">
                     <li class="nav-parent" id="Discover"><a><i class="fa fa-eye"></i> <span>发现频道</span></a>
                         <ul class="children">
-                            <li id="send_discover"><a href="__ROOT__/Discover/send_discover.html"><i
+                            <neq name="check" value="$getdiscover">
+                            <li id="getdiscover"><a href="__ROOT__/Discover/getdiscover.html"><i
                                     class="fa fa-caret-right"></i>公告内容发布</a>
                             </li>
 
+                                </neq>
+                            <neq name="check" value="$banner_iscover">
                             <li id="banner_iscover"><a href="__ROOT__/Discover/banner_iscover.html"><i
                                     class="fa fa-caret-right"></i>轮播内容管理</a>
                             </li>
-
+</neq>
                         </ul>
                     </li>
                 </neq>
@@ -139,10 +142,14 @@
                 <neq name="check" value="$Auth">
                     <li class="nav-parent" id="Auth"><a><i class="fa fa-user"></i> <span>角色管理</span></a>
                         <ul class="children">
+                            <neq name="check" value="$user">
                             <li id="user"><a href="__ROOT__/Auth/user.html"><i class="fa fa-caret-right"></i>采集用户</a>
                             </li>
+                            </neq>
+                                <neq name="check" value="$auth_user">
                             <li id="auth_user"><a href="__ROOT__/Auth/auth_user.html"><i class="fa fa-caret-right"></i>权限管理</a>
                             </li>
+                                    </neq>
                         </ul>
                     </li>
 
