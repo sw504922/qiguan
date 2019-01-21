@@ -281,4 +281,11 @@ class StreamInfoModel extends Model
         $result = $model->where($map)->delete();
         return $result;
     }
+
+    public function getGuanzhiRank($guanzhi_id){
+        $model=new  Model();
+        $sql='select max(rank) as rank from guanzhi_msg where guanzhi_id="'.$guanzhi_id.'"';
+        $result = $model->query($sql);
+        return $result;
+    }
 }

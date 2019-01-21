@@ -33,12 +33,14 @@
                 <tr>
                     <td>{$key+1}</td>
                     <td>
-                        <div class="whiteSpace">{$val.title}</div>
+                        <div class="whiteSpace">
+                            <a href="../Guzhi/getList?guanzhi_id={$val.guanzhi_id}">{$val.title}</a>
+                        </div>
                     </td>
 
                     <td>{$val.publish_time}</td>
                     <td>
-                        <a  href="__ROOT__/Guzhi/getnews.html?guanzhiid={$val.guanzhi_id}&channel=1" class="blue pointer">编辑</a>
+                        <a   class="blue pointer">编辑</a>
                         <?php
                             if($val["status"]==0){ ?>
                         <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)" class="blue pointer">隐藏</a>

@@ -469,7 +469,15 @@ class NewsController extends BaseController
     {
         $map["guanzhi_id"] = $arr["guanzhi_id"];
         $map["msg_id"] = $arr["msg_id"];
+
         $StreamInfoModel = new StreamInfoModel();
+        $result=$StreamInfoModel-> getGuanzhiRank( $map["guanzhi_id"]);
+        if(empty($result[0]["rank"]) && $result[0]["rank"]!=0){
+            $rank=0;
+        }else{
+            $rank=$result[0]["rank"]+1;
+        }
+        $map["rank"]=$rank;
         $StreamInfoModel->addGuanzhiMsg($map);
     }
 

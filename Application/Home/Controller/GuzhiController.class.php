@@ -135,6 +135,13 @@ class GuzhiController extends BaseController
 
     }
 
+
+
+
+    public function getList(){
+        $map["guanzhi_id"] = I("guanzhi_id");
+    }
+
 }
 
 ?>
