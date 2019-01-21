@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<input type="hidden" value="{$msg_id}" id="msg_id"/>
+<table class="dataTable" cellpadding="0" cellspacing="0">
+    <tr class="info">
+        <th>序号</th>
+        <th>标题</th>
+        <th>发布时间</th>
+        <th>排揎</th>
+        <th>操作</th>
+    </tr>
+    <?php
+        foreach($result as $key=>$val){
+    ?>
 
-</body>
-</html>
+    <tr>
+        <td>{$key+1}</td>
+        <td width="30%">
+            <a href="{$newsurl}{$val.final_content}.html" target="_blank">{$val.title}</a>
+        </td>
+
+        <td>{$val.publish_time}</td>
+        <td><a >上移</a><a >下移</a></td>
+        <td>
+            <a onclick="getData('../News/getUpdateNews','{$val.msg_id}')" class="blue pointer">编辑</a>
+            <?php
+            if($val["status"]==0){ ?>
+            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',1)" class="blue pointer">下架</a>
+            <?php }else if($val["status"]==1){ ?>
+            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',0)" class="blue pointer">重新发布</a>
+            <?php } ?>
+            <a class="blue pointer" onclick="updateData('../News/deltedMethod','{$val.msg_id}')">删除</a>
+        </td>
+    </tr>
+    <?php }?>
+    <?php
+        if(count($result)==0){
+         $pageCount=0;
+    ?>
+    <tr>
+        <td colspan="4" align="center">暂无符合的数据</td>
+    </tr>
+    <?php
+        }else{
+     $pageCount=ceil($resultCount/$viewCount);
+    ?>
+</table>
+<input value="{$new_page}" id="page" type="hidden"/>
+<div id="kkpager" style="display: inline-block"></div>
+<span style="vertical-align: middle;margin-top: -30px;display: inline-block;">共{$resultCount}条数据</span>
+<?php } ?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //设置显示数据结构名称与数据
+        var dataCount = {$resultCount};
+        $(".newsNum").html(dataCount);
+        var pageCount = {$pageCount};
+        if (dataCount > 0) {
+            limitPage(pageCount, dataCount, "../Guzhi/getList");
+        }
+        var media_type=$("#media_type").val();
+
+        if (media_type=="pics"){
+            $(".whiteSpace").each(function(){
+                $(this).removeAttr('href');
+                $(this).removeAttr('target');
+            })
+        }
+    })
+
+</script>

@@ -1,4 +1,4 @@
-<extend name="Layout/main"/>
+<extend name="Layout/main" xmlns="http://www.w3.org/1999/html"/>
 <block name="main">
     <input type="hidden" value="Guzhi" id="chiledren"/>
 
@@ -19,49 +19,123 @@
             </div>
 
 
-            <table class="dataTable" cellpadding="0" cellspacing="0">
-                <tr class="info">
-                    <th>序号</th>
-                    <th>动态描述</th>
+            <div id="get_data_area">
+                <table class="dataTable" cellpadding="0" cellspacing="0">
+                    <tr class="info">
+                        <th>序号</th>
+                        <th>动态描述</th>
 
-                    <th>发布时间</th>
-                    <th>操作</th>
-                </tr>
-                <?php
+                        <th>发布时间</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
                     foreach($result as $key=>$val){
-                ?>
+                    ?>
+                    <!--编辑管理组信息-->
+                    <div class="addQA" id="channel_infor_{$val.guanzhi_id}" style="display: none;">
+                        <div class="addMouule" style=" overflow: auto;">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    编辑博览专题
+                                    <a class="fa fa-times close"
+                                       onclick="getChannelInfor('infor','{$val.guanzhi_id}','close')"></a>
+                                </header>
+                                <form id="form_guanzhi_{$val.guanzhi_id}">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="label-width">标题:</label>
+                                            <input type="text" id="title{$val.id}" name="editTitle"
+                                                   class="form-control "
+                                                   value="{$val['title']}"/>
+                                            <input type="hidden" id="guanzhi_id{$val.guanzhi_id}" name="guanzhi_id"
+                                                   class="form-control"
+                                                   value="{$val['guanzhi_id']}"/>
+                                        </div>
 
-                <tr>
-                    <td>{$key+1}</td>
-                    <td>
-                        <div class="whiteSpace">{$val.title}</div>
-                    </td>
+                                        <div class="form-group">
+                                            <label class="label-width">介绍:</label>
+                                            <textarea name="editDesc" rows="5" class="form-control ">{$val['guanzhi_desc']}</textarea>
+                                        </div>
 
-                    <td>{$val.publish_time}</td>
-                    <td>
-                        <a  href="__ROOT__/News/newsshow.html?guanzhiid={$val.guanzhi_id}&channel=3" class="blue pointer">编辑</a>
-                        <?php
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">上传缩略图</label>
+
+
+                                            <div class="col-sm-6">
+                             <span id="audio_area_show_{$val.guanzhi_id}" class="that">
+                                <?php
+                                $thumbnail_url=$result[$key]['pic_url'];
+                                $old_thumbnail_url=$result[$key]['pic_url'];
+                                if(!empty($thumbnail_url)){
+                                    $thumurls=strpos($thumbnail_url,"http");
+                                    if($thumurls===false){
+                                        $thumbnail_url="..".$thumbnail_url;
+                                    }
+                                }
+                             ?>
+
+
+                                 <img src="{$thumbnail_url}" class="eidtImg"/>
+                            </span>
+                        <span class="label label-primary  pointer that  " id="thumbnail_span_{$val.guanzhi_id}"
+                              onclick="uploadIMG('thumbnail','{$val.guanzhi_id}')"><i class="fa fa-cloud-upload"></i>上传缩略图</span>
+                                                <input type="hidden" class="form-control " name="thumbnail" id="thumbnail_file_{$val.guanzhi_id}" value="{$old_thumbnail_url}"/>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <div class="panel-footer">
+                                    <div class="btn btn-primary"
+                                         onclick="submitGuanzhi('form_guanzhi_{$val.guanzhi_id}','updateGuanzhi','{$val.guanzhi_id}')">
+                                        &nbsp;保&nbsp;&nbsp;存&nbsp;
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="meng"></div>
+                    </div>
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td width="30%">
+                            <a onclick="getData('../Guzhi/getList','{$val.guanzhi_id}')">{$val.title}</a>
+
+                        </td>
+
+                        <td>{$val.publish_time}</td>
+                        <td>
+                            <a class="blue pointer"
+                               onclick="getChannelInfor('infor','{$val.guanzhi_id}','guanzhi')">编辑</a>
+                            <?php
                             if($val["status"]==0){ ?>
-                        <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)" class="blue pointer">隐藏</a>
-                        <?php }else{ ?>
-                        <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',0)" class="blue pointer">显示</a>
-                        <?php } ?>
-                        <a class="blue pointer" onclick="updateData('../Guzhi/deltedMethod','{$val.guanzhi_id}')">删除</a>
-                    </td>
-                </tr>
-                <?php }?>
+                            <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)"
+                               class="blue pointer">隐藏</a>
+                            <?php }else{ ?>
+                            <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',0)"
+                               class="blue pointer">显示</a>
+                            <?php } ?>
+                            <a class="blue pointer"
+                               onclick="updateData('../Guzhi/deltedMethod','{$val.guanzhi_id}')">删除</a>
+                        </td>
+                    </tr>
+                    <?php }?>
 
 
-                <?php
+                    <?php
                     if(count($result)==0){
                 ?>
-                <tr>
-                    <td colspan="5" align="center">暂无符合的数据</td>
-                </tr>
-                <?php }?>
-            </table>
+                    <tr>
+                        <td colspan="5" align="center">暂无符合的数据</td>
+                    </tr>
+                    <?php }?>
+                </table>
+                <input type="hidden" class="form-control hide" id="page" value="1"/>
+                <input type="hidden" class="form-control hide" name="publish_time" id="publishtime"/>
+                <input type="hidden" id="subname"/>
 
 
+            </div>
         </div>
     </section>
 
@@ -97,10 +171,11 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">专题图类型</label>
                         <div class="col-sm-6">
-                            <select class="form-control mb15" name="thumnailChannel" id="specialImg" onchange="thumbnailStatus()">
-                                <option value="0">主页背景图</option>
-                                <option value="1">列表缩略图</option>
-                                <option value="2">推荐位缩略图</option>
+                            <select class="form-control mb15" name="thumnailChannel" id="specialImg"
+                                    onchange="thumbnailStatus()">
+                                <option value="2">推荐位</option>
+                                <option value="3">列表</option>
+                                <option value="4">封面</option>
                             </select>
                         </div>
                     </div>
@@ -109,21 +184,21 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">上传专题图</label>
 
-
-                        <?php for($i=0;$i<3;$i++){ ?>
+                        <?php for($i=2;$i<5;$i++){ ?>
                         <div class="col-sm-6">
-                            <a class="blue pointer that hide" id="thumbnail_span_{$i}"
-                               onclick="uploadIMG('thumbnail','{$i}')">上传专题图</a>
-                            <input type="hidden" class="form-control hide" name="thumbnail[]" id="thumbnail_file_{$i}"/>
+                            <span id="audio_area_show_{$i}" class="that"></span>
+                         <span class="label label-primary  pointer that  hide" id="thumbnail_span_{$i}"
+                               onclick="uploadIMG('thumbnail','{$i}')"><i class="fa fa-cloud-upload"></i>上传专题图</span>
+                            <input type="hidden" class="form-control" name="thumbnail[]" id="thumbnail_file_{$i}"/>
                         </div>
                         <?php } ?>
-
                     </div>
-
 
                 </form>
                 <div class="form-group">
-                    <div class="btn btn-primary buttonLayout" onclick="submitNewChanne('addForm','addJXMethod','Guzhi')">&nbsp;保&nbsp;&nbsp;存</div>
+                    <div class="btn btn-primary buttonLayout"
+                         onclick="submitNewChanne('addForm','addJXMethod','Guzhi')">&nbsp;保&nbsp;&nbsp;存
+                    </div>
                 </div>
             </section>
         </div>
@@ -131,10 +206,12 @@
         <div class="meng"></div>
     </div>
     </div>
+
+    </section>
     <script src="__JS__/childe.js"></script>
     <script>
         $(document).ready(function () {
-            thumbnailStatus();
+            //  thumbnailStatus();
             $("#subname").val("guanzhi");
         })
 

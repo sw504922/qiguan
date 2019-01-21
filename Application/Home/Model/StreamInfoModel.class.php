@@ -282,10 +282,36 @@ class StreamInfoModel extends Model
         return $result;
     }
 
-    public function getGuanzhiRank($guanzhi_id){
-        $model=new  Model();
-        $sql='select max(rank) as rank from guanzhi_msg where guanzhi_id="'.$guanzhi_id.'"';
+    public function getGuanzhiRank($guanzhi_id)
+    {
+        $model = new  Model();
+        $sql = 'select max(rank) as rank from guanzhi_msg where guanzhi_id="' . $guanzhi_id . '"';
         $result = $model->query($sql);
+        return $result;
+    }
+
+    public function getGuanzhiData($guanzhi_id,$offset,$limit)
+    {
+        $model = new  Model();
+        $sql = 'select a.guanzhi_id,a.rank,b.* from guanzhi_msg as a left join stream_info as b
+on a.msg_id=b.msg_id where a.guanzhi_id=' . $guanzhi_id ;
+        $sql .= ' ORDER BY a.rank desc limit ' . $offset . ',' . $limit;
+        $result = $model->query($sql);
+        return $result;
+
+    }
+
+    public function getGuanzhiDataCount($guanzhi_id)
+    {
+        $model = new  Model();
+        $sql = 'select count(*) cnt from guanzhi_msg as a  where a.guanzhi_id=' . $guanzhi_id;
+        $result = $model->query($sql);
+        return $result[0]["cnt"];
+    }
+
+    public function saveGuanzhiInfo($map,$arr){
+        $model= M("guanzhi_info");
+        $result = $model->where($map)->save($arr);
         return $result;
     }
 }

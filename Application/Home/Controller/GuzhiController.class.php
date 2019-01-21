@@ -137,9 +137,41 @@ class GuzhiController extends BaseController
 
 
 
+    private $limit=10;
 
     public function getList(){
-        $map["guanzhi_id"] = I("guanzhi_id");
+        $guanzhi_id = I("msg_id");
+        $StreamInfoModel = new StreamInfoModel();
+
+        $new_page = I('new_page');
+
+        if ($new_page == 0 || empty($new_page)) {
+            $new_page = 1;
+        }
+
+        $offset = ($new_page - 1) * $this->limit;
+
+        $result = $StreamInfoModel->getGuanzhiData($guanzhi_id,$offset,$this->limit);
+        $resultcount = $StreamInfoModel->getGuanzhiDataCount($guanzhi_id);
+
+        $this->result = $result;
+        $this->newsurl = C("newsurl");
+        $this->resultCount = $resultcount;
+        $this->new_page = $new_page;
+        $this->msg_id = $guanzhi_id;
+        $this->viewCount = $this->limit;
+        $data = $this->fetch("Guzhi/get_content");
+        $this->ajaxReturn($data);
+    }
+
+    public function updateGuanzhi(){
+        $map["guanzhi_id"] =I("guanzhi_id");
+        $arr["title"]=trim(I("editTitle"));
+        $arr["guanzhi_desc"]=trim(I("editDesc"));
+        $arr["pic_url"]=trim(I("thumbnail"));
+        $arr["final_content"]=trim(I("thumbnail"));
+        $StreamInfoModel = new StreamInfoModel();
+        $StreamInfoModel->saveGuanzhiInfo($map,$arr);
     }
 
 }

@@ -80,6 +80,11 @@ function updateData(targets, id, status) {
  * ****/
 
 function getData(targets,msg_id) {
+    var  subname=$("#subname").val();
+
+    if (subname=="guanzhi" && typeof msg_id=="undefined"){
+        msg_id=$("#msg_id").val();
+    }
     $.ajax({
         type: "get",
         url: targets,
@@ -89,6 +94,7 @@ function getData(targets,msg_id) {
             media_type: $("#media_type").val(),
             search: $("#search").val(),
             msg_id: msg_id,
+
         },
         dataTyep: "json",
         beforeSend: function () {
@@ -102,6 +108,9 @@ function getData(targets,msg_id) {
         }
     });
 }
+
+
+
 
 
 function getSelectData(targets,str) {
@@ -178,6 +187,33 @@ function submitNewChanne(id, target, contro,type) {
         })
     }
 }
+
+function submitGuanzhi(id, target, num) {
+
+    var title = $("#title"+num).val();
+    if (title == "") {
+        alert("标题不能为空")
+        return false;
+    } else {
+        var form = new FormData(document.getElementById(id));
+        $.ajax({
+            type: "post",
+            url:  target,
+            processData: false,
+            contentType: false,
+            data: form,
+            success: function (data) {
+
+                window.location.reload();
+            },
+            error: function (data) {
+                //console.log("this is error");
+            }
+        })
+    }
+}
+
+
 
 /**
  * @limit
