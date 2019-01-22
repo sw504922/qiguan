@@ -174,6 +174,24 @@ class GuzhiController extends BaseController
         $StreamInfoModel->saveGuanzhiInfo($map,$arr);
     }
 
+
+    public function updateRank(){
+        $map["mgs_id"]=I("myId");
+        $marr["rank"]=trim(I("thatRank"));
+        $thatMap["mgs_id"]=I("thatId");
+        $thatArr["rank"]=trim(I("myRank"));
+        $StreamInfoModel = new StreamInfoModel();
+
+        if (!empty($map["mgs_id"])){
+            $StreamInfoModel->saveGuanzhiMsg($map["mgs_id"],$marr["rank"]);
+        }
+        if (!empty($thatMap["mgs_id"])){
+
+            $StreamInfoModel->saveGuanzhiMsg($thatMap["mgs_id"], $thatArr["rank"]);
+
+        }
+
+    }
 }
 
 ?>

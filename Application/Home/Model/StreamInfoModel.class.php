@@ -314,4 +314,12 @@ on a.msg_id=b.msg_id where a.guanzhi_id=' . $guanzhi_id ;
         $result = $model->where($map)->save($arr);
         return $result;
     }
+
+    public function saveGuanzhiMsg($msg_id,$rank){
+
+        $model = new  Model();
+        $sql='update jrqg.guanzhi_msg set rank='.$rank.' where msg_id="'.$msg_id.'"';
+        $result = $model->execute($sql);
+        return $result;
+    }
 }

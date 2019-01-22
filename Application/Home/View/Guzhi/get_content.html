@@ -18,16 +18,29 @@
         </td>
 
         <td>{$val.publish_time}</td>
-        <td><a >上移</a><a >下移</a></td>
         <td>
-            <a onclick="getData('../News/getUpdateNews','{$val.msg_id}')" class="blue pointer">编辑</a>
+            <?php
+            $prevId=$result[$key-1]['msg_id'];
+            if(!empty($nextID)){
+            ?>
+            <a onclick="updateRank('{$val.msg_id}','{$prevId}','{$val.rank}','{$result[$key-1][\'rank\']}')" class="btn btn-sm btn-brown"><i class="fa fa-long-arrow-up"></i>上移</a>
+            <?php } ?>
+            <?php
+            $nextID=$result[$key+1]['msg_id'];
+            if(!empty($nextID)){
+            ?>
+            <a onclick="updateRank('{$val.msg_id}','{$nextID}','{$val.rank}','{$result[$key+1][\'rank\']}')" class="btn-sm btn btn-black"><i class="fa fa-long-arrow-down"></i>下移</a>
+            <?php } ?>
+        </td>
+        <td>
+            <a onclick="getData('../News/getUpdateNews','{$val.msg_id}')" class="btn btn-sm btn-darkblue"><i class="fa fa-edit"></i>编辑</a>
             <?php
             if($val["status"]==0){ ?>
-            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',1)" class="blue pointer">下架</a>
+            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',1)" class="btn-sm btn btn-warning"><i class="fa fa-times"></i>下架</a>
             <?php }else if($val["status"]==1){ ?>
-            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',0)" class="blue pointer">重新发布</a>
+            <a onclick="updateData('../News/updateStatusMethod','{$val.msg_id}',0)" class=" btn-sm btn btn-warning"><i class="fa  fa-mail-reply"></i>重新发布</a>
             <?php } ?>
-            <a class="blue pointer" onclick="updateData('../News/deltedMethod','{$val.msg_id}')">删除</a>
+            <a onclick="updateData('../News/deltedMethod','{$val.msg_id}')"  class="btn btn-sm btn-danger" ><i class="fa fa-trash-o"></i>删除</a>
         </td>
     </tr>
     <?php }?>

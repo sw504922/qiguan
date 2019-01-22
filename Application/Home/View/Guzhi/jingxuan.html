@@ -98,25 +98,23 @@
                     </div>
                     <tr>
                         <td>{$key+1}</td>
-                        <td width="30%">
+                        <td width="40%">
                             <a onclick="getData('../Guzhi/getList','{$val.guanzhi_id}')">{$val.title}</a>
 
                         </td>
 
                         <td>{$val.publish_time}</td>
                         <td>
-                            <a class="blue pointer"
-                               onclick="getChannelInfor('infor','{$val.guanzhi_id}','guanzhi')">编辑</a>
+                            <a class="btn btn-sm btn-darkblue" onclick="getChannelInfor('infor','{$val.guanzhi_id}','guanzhi')"><i class="fa fa-edit"></i>编辑</a>
                             <?php
                             if($val["status"]==0){ ?>
                             <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',1)"
-                               class="blue pointer">隐藏</a>
+                               class="btn btn-sm btn-black"><i class="fa fa-eye-slash"></i>隐藏</a>
                             <?php }else{ ?>
                             <a onclick="updateData('../Guzhi/updateStatusMethod','{$val.guanzhi_id}',0)"
-                               class="blue pointer">显示</a>
+                               class="btn btn-sm btn-black"><i class="fa fa-eye"></i>显示</a>
                             <?php } ?>
-                            <a class="blue pointer"
-                               onclick="updateData('../Guzhi/deltedMethod','{$val.guanzhi_id}')">删除</a>
+                            <a class="btn btn-sm btn-danger" onclick="updateData('../Guzhi/deltedMethod','{$val.guanzhi_id}')"><i class="fa fa-trash-o"></i>删除</a>
                         </td>
                     </tr>
                     <?php }?>

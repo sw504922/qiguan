@@ -495,3 +495,22 @@ function setBanner(target,str){
     var rules = id_array.join(',');//将数组元素连接起来以构建一个字符串
     updateData(target,rules,str);
 }
+
+
+
+function updateRank(myId,thatId,myRank,thatRank) {
+    $.ajax({
+        type: "GET",
+        url: "updateRank",
+        data: {
+            myId: myId,
+            thatId: thatId,
+            myRank: myRank,
+            thatRank: thatRank,
+        },
+        dataType: "json",
+        success: function (data) {
+            getData("../Guzhi/getList")
+        }
+    });
+}
