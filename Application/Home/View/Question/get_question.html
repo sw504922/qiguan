@@ -1,67 +1,53 @@
-<table class="dataTable" cellpadding="0" cellspacing="0">
-    <tr class="info">
-        <th>序号</th>
-        <th>文章标题</th>
-        <th>回答摘要</th>
-        <th>发布时间</th>
-        <th>发布用户</th>
-        <th>赞同数</th>
-        <th>评论数</th>
-        <th>浏览数</th>
-        <th>操作</th>
-    </tr>
-    <?php
-        foreach($result as $key=>$val){
-    ?>
 
-    <tr>
-        <td>{$key+1}</td>
+<div class="panel panel-default">
+<ul class="media-list comment-list">
+<?php
 
-        <td>
-            <div class="whiteSpace">{$val.title}</div>
-        </td>
-        <td>
-            <div class="whiteSpace">{$val.msg_abstract}</div>
-        </td>
-        <td>
-            <div class="whiteSpace">{$val.publish_time}</div>
-        </td>
-        <td>{$val.user_name}</td>
-        <td>{$val.praise}</td>
-        <td>{$val.comment}</td>
-        <td>{$val.pv}</td>
-        <td>
-            <?php
-                $status=$val["status"];
-                if($status==0){
-            ?>
-            <a onclick="updateData('../Question/setStatus','{$val.answer_id}',1)" class="blue pointer">下架</a>
-            <?php
-                }else if($status==1){
-            ?>
-            <a onclick="updateData('../Question/setStatus','{$val.answer_id}',0)" class="blue pointer">发布</a>
-            <?php } ?>
-        </td>
+    foreach($result as $key=>$val){
+?>
+<li class="media">
+    <div class="media-body">
+        <a onclick="getCommot('{$val.msg_id}')" class="btn btn-primary btn-xs pull-right"><i class="fa fa-eye"></i>查看评论</a>
+        <h4>{$key+1}、{$val.title}</h4>
+        <small class="text-muted">新闻时间：{$val.publish_time}</small>
+        <small class="text-muted">赞同数：{$val.praise}</small>
+        <small class="text-muted">浏览数：{$val.pv}</small>
+        <small class="text-muted">评论数：{$val.comment}</small>
 
-    </tr>
-    <?php }?>
+        <div class="answer{$val.msg_id}"  style="margin-left: 20px;display: none">
+            <div class="media">
+                <div class="media-body">
+                    <a href="" class="btn btn-primary btn-xs pull-right reply">Reply</a>
+                    <h4>回答1</h4>
+                    <small class="text-muted">回答时间：{$val.publish_time}</small>
+                </div>
+            </div>
+        </div>
 
 
-    <?php
-        if(count($result)==0){
-    ?>
-    <tr>
-        <td colspan="9" align="center">暂无符合的数据</td>
-    </tr>
-    <?php
+    </div>
+
+
+</li>
+<?php }?>
+
+</ul>
+</div>
+<?php
+    if(count($result)==0){
+?>
+
+<div>暂无符合的数据</div>
+
+<?php
         }else{
      $pageCount=ceil($resultCount/$viewCount);
-    ?>
-</table>
+?>
 <input value="{$new_page}" id="page" type="hidden"/>
 <div id="kkpager" style="display: inline-block"></div>
 <span style="vertical-align: middle;margin-top: -30px;display: inline-block;">共{$resultCount}条数据</span>
 <?php } ?>
+
 <script type="text/javascript">
     $(document).ready(function () {
         //设置显示数据结构名称与数据
@@ -71,8 +57,5 @@
         if (dataCount > 0) {
             limitPage(pageCount, dataCount, "../Question/getAnswer");
         }
-
     })
-
-
 </script>

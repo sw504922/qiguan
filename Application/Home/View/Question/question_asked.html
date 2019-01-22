@@ -18,9 +18,9 @@
             <div class="loading" style="display: none;width: 100%;text-align: center;">
                 <img src="__IMG__/loading.gif"/>
             </div>
-
+            <header class="panel-heading tab-dark ">
             <div id="get_data_area"></div>
-
+            </header>
         </div>
     </section>
     <script>
@@ -29,21 +29,7 @@
             $(".tradeNav li:first").attr("class", "active");
         })
 
-        $(".tradeNav li").click(function () {
-            var val = $(this).text();
-            if (val == "已发布") {
-                $("#status").val(0)
-            } else if (val == "审核未通过") {
-                $("#status").val(2)
-            } else if (val == "已下架") {
-                $("#status").val(1)
-            } else if (val == "草稿") {
-                $("#status").val(3)
-            } else {
-                $("#status").val(4)
-            }
-            getData("getAnswer")
-        })
+
     </script>
 </block>
 

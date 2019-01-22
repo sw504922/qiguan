@@ -22,7 +22,7 @@ class QuestionController extends BaseController
 
     private $limit = 20;
 
-    public function getAnswer()
+    public function getContent()
     {
 
         $status = I("status");
@@ -32,14 +32,9 @@ class QuestionController extends BaseController
         }
         $offset = ($new_page - 1) * $this->limit;
         $answerModel = new AnswerInfoModel();
-        $streamer = new StreamInfoModel();
-        $answerResult = $answerModel->getAnswerInfo($status, $offset, $this->limit);
-        foreach ($answerResult as $key => $val) {
-            $result[$key] = $val;
-            $strMap["msg_id"] = $val["msg_id"];
-            $title = $streamer->getStreamInfo($strMap);
-            $result[$key]["title"] = $title[0]["title"];
-        }
+
+        $result = $answerModel->getAnswerInfo($status, $offset, $this->limit);
+
 
         $this->result = $result;
 

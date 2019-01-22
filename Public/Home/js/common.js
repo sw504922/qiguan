@@ -514,3 +514,23 @@ function updateRank(myId,thatId,myRank,thatRank) {
         }
     });
 }
+
+
+function getCommot(id,status) {
+    if(status=="close"){
+        $(".answer"+id).hide();
+    }else {
+        $.ajax({
+            type: "GET",
+            url: "getAnswer",
+            data: {
+                id: id,
+            },
+            dataType: "json",
+            success: function (data) {
+                $(".answer"+id).show();
+            }
+        });
+    }
+
+}
