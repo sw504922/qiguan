@@ -1,0 +1,30 @@
+<extend name="Layout/main"/>
+<block name="main">
+    <input type="hidden" value="Discover" id="chiledren"/>
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <div class="selectArea">
+                <button class="btn btn-info btn-xs authAll" type="button" onclick="getData('getSendDiscover')"><i
+                        class="fa fa-plus-square-o"></i> 新建公告
+                </button>
+            </div>
+        </header>
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+            <div id="get_data_area"></div>
+        </div>
+    </section>
+<script>
+    $(document).ready(function () {
+        $("#subname").val("discover");
+        getData("getContent");
+    })
+</script>
+
+
+</block>
+
+

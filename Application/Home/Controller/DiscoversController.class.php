@@ -11,7 +11,7 @@ namespace Home\Controller;
 use Home\Model\DiscoverNoticeModel;
 use Home\Model\StreamInfoModel;
 
-class DiscoverController extends BaseController
+class DiscoversController extends BaseController
 {
     public function getdiscover()
     {
@@ -24,7 +24,7 @@ class DiscoverController extends BaseController
         $map["status"] = 1;
         $result = $DiscoverNoticeModel->getDiscoverNotice($map);
         $this->result = $result;
-        $page = "Discover/getcontent";
+        $page = "Discovers/getcontent";
         $data = $this->fetch($page);
         $this->ajaxReturn($data);
     }
@@ -32,7 +32,7 @@ class DiscoverController extends BaseController
     public function getSendDiscover()
     {
 
-        $page = "Discover/send_discover";
+        $page = "Discovers/send_discover";
         $data = $this->fetch($page);
         $this->ajaxReturn($data);
     }
@@ -49,7 +49,7 @@ class DiscoverController extends BaseController
         $content = $model->getMediaDetail($rowkey);
         $this->result = $result;
         $this->content = $content;
-        $page = "Discover/geteditdiscover";
+        $page = "Discovers/geteditdiscover";
         $data = $this->fetch($page);
         $this->ajaxReturn($data);
     }
