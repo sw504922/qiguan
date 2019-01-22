@@ -522,13 +522,14 @@ function getCommot(id,status) {
     }else {
         $.ajax({
             type: "GET",
-            url: "getAnswer",
+            url: "getCommot",
             data: {
                 id: id,
             },
             dataType: "json",
             success: function (data) {
                 $(".answer"+id).show();
+                $(".answer"+id).html(data);
             }
         });
     }

@@ -1,0 +1,155 @@
+<extend name="Layout/main" xmlns="http://www.w3.org/1999/html"/>
+<block name="main">
+    <input type="hidden" value="Topic" id="chiledren"/>
+
+
+    <section class="panel divBox">
+        <header class="panel-heading">
+            <div class="selectArea">
+
+                <button class="btn btn-info btn-xs authAll" type="button" onclick="addLayer('addDIV')"><i
+                        class="fa fa-plus-square-o"></i> 新建话题
+                </button>
+            </div>
+        </header>
+
+        <div class="dataAll">
+            <div class="loading" style="display: none;width: 100%;text-align: center;">
+                <img src="__IMG__/loading.gif"/>
+            </div>
+
+
+            <div id="get_data_area">
+                <table class="dataTable" cellpadding="0" cellspacing="0">
+                    <tr class="info">
+                        <th>序号</th>
+                        <th>话题名称</th>
+                        <th>话题描述</th>
+                        <th>操作</th>
+                    </tr>
+                    <?php
+                    foreach($result as $key=>$val){
+                    ?>
+                    <!--编辑管理组信息-->
+                    <div class="addQA" id="channel_infor_{$val.topic_id}" style="display: none;">
+                        <div class="addMouule" style=" overflow: auto;">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    编辑精选专题
+                                    <a class="fa fa-times close"
+                                       onclick="getChannelInfor('infor','{$val.topic_id}','close')"></a>
+                                </header>
+                                <form id="form_guanzhi_{$val.topic_id}">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="label-width">标题:</label>
+                                            <input type="text" id="title{$val.topic_id}" name="editTitle"
+                                                   class="form-control "
+                                                   value="{$val['name']}"/>
+                                            <input type="hidden" id="topic_id{$val.topic_id}" name="topic_id"
+                                                   class="form-control"
+                                                   value="{$val['topic_id']}"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="label-width">介绍:</label>
+                                            <textarea name="editDesc" rows="5" class="form-control ">{$val['topic_desc']}</textarea>
+                                        </div>
+
+
+                                    </div>
+                                </form>
+                                <div class="panel-footer">
+                                    <div class="btn btn-primary"
+                                         onclick="submitGuanzhi('form_guanzhi_{$val.topic_id}','updateTopic','{$val.topic_id}')">
+                                        &nbsp;保&nbsp;&nbsp;存&nbsp;
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="meng"></div>
+                    </div>
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td>
+                            {$val.name}
+                        </td>
+
+                        <td>{$val.topic_desc}</td>
+                        <td width="20%">
+                            <a class="btn btn-sm btn-darkblue"
+                               onclick="getChannelInfor('infor','{$val.topic_id}','topic')"><i class="fa fa-edit"></i>编辑</a>
+                            <a class="btn btn-sm btn-danger"
+                               onclick="updateData('../Topic/deltedMethod','{$val.topic_id}')"><i
+                                    class="fa fa-trash-o"></i>删除</a>
+                        </td>
+                    </tr>
+                    <?php }?>
+
+
+                    <?php
+                    if(count($result)==0){
+                ?>
+                    <tr>
+                        <td colspan="5" align="center">暂无符合的数据</td>
+                    </tr>
+                    <?php }?>
+                </table>
+                <input type="hidden" class="form-control hide" id="page" value="1"/>
+                <input type="hidden" class="form-control hide" name="publish_time" id="publishtime"/>
+                <input type="hidden" id="subname"/>
+
+
+            </div>
+        </div>
+    </section>
+
+
+    <div class="addQA" id="addDIV" style="display:none ;">
+        <div class="addMouule" style="left: 29%;width: 60%; position: absolute;top: 5%;">
+            <section class="panel">
+                <header class="panel-heading">
+                    新建话题
+                    <a class="fa fa-times close" onclick="addLayer('addDIV','close')"></a>
+                </header>
+
+                <form id="addForm" class="form-horizontal form-bordered">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">话题名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" placeholder="请输入话题名称" name="title" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">话题描述</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="5" name="desc" placeholder="请输入话题描述"></textarea>
+                        </div>
+                    </div>
+
+
+                </form>
+                <div class="form-group">
+                    <div class="btn btn-primary buttonLayout"
+                         onclick="submitNewChanne('addForm','addTopic','topic')">&nbsp;保&nbsp;&nbsp;存
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="meng"></div>
+    </div>
+    </div>
+
+    </section>
+    <script src="__JS__/childe.js"></script>
+    <script>
+        $(document).ready(function () {
+            //  thumbnailStatus();
+            $("#subname").val("topic");
+        })
+
+    </script>
+</block>
+
+

@@ -56,4 +56,8 @@ class QuestionController extends BaseController
 
     }
 
+    public function getCommot(){
+        $map["answer_id"] = I("id");
+    }
+
 }
