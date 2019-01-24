@@ -1,7 +1,45 @@
+
+<?php foreach($answer as $list){ ?>
 <div class="media">
     <div class="media-body">
-        <a onclick="update()" class="btn btn-primary btn-xs pull-right reply">下架</a>
-        <h4>回答1</h4>
-        <small class="text-muted">回答时间：{$val.publish_time}</small>
+
+        <div class="pull-right">
+        <?php if($list["comment"]>0){ ?>
+
+            <button id="show_comment_{$list.answer_id}" onclick="getCommot('getComment','{$list.answer_id}')" class="btn btn-primary btn-xs "><i class="fa fa-eye"></i>查看评论</button>
+
+            <button id="hide_comment_{$list.answer_id}" onclick="getDivStatus('comment','{$list.answer_id}','close')"style="display: none" class=" btn btn-primary btn-xs "><i class="fa fa-eye-slash"></i>收起评论</button>
+
+        <?php } ?>
+        <button onclick="updateCommot('updateAnswer','{$list.answer_id}')" class="btn btn-warning btn-xs"><i class="fa fa-times"></i>下架</button>
+        </div>
+        <a class="pull-left" href="#">
+            <img class="media-object thumbnail" src="{$imgurl}{$list.photo}" alt="">
+        </a>
+        <h4>{$list.user_name}</h4>
+        <div style="margin-left: 20px">
+        <p class="rich_content">{$list.rich_content}</p>
+        <small class="text-muted">评论时间：{$list.publish_time}</small>
+        <small class="text-muted">评论数：{$list.comment}</small>
+        <small class="text-muted">浏览数：{$list.pv}</small>
+        <small class="text-muted">赞同数：{$list.praise}</small>
+        <div class="comment{$list.answer_id}"  style="margin-left: 20px;display: none">
+        </div>
+        </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".rich_content img").each(function () {
+            var val=$(this).attr("src");
+            if(val.indexOf("http://")<0)
+            {
+                $(this).attr("src","http://47.92.75.8:8080/jrqgfile"+val);
+            }
+        })
+    })
+
+</script>
+<?php } ?>

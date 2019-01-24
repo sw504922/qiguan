@@ -4730,7 +4730,14 @@ div.error label.error:before {
 .eidtImg{
     width: 150px;
 }
+.rich_content img{
+    width: 150px;
+}
+
 .blef{
     background: #efefef;
     border: 1px solid #efefef;
+}
+.answearea .media:last-child{
+    border-bottom: 0;
 }

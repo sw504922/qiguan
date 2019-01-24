@@ -7,14 +7,14 @@
 ?>
 <li class="media">
     <div class="media-body">
-        <a onclick="getCommot('{$val.msg_id}')" class="btn btn-primary btn-xs pull-right"><i class="fa fa-eye"></i>查看评论</a>
+        <a id="show_answer_{$val.msg_id}" onclick="getCommot('getAnswer','{$val.msg_id}')" class="btn btn-primary btn-xs pull-right"><i class="fa fa-eye"></i>查看评论</a>
+        <a id="hide_answer_{$val.msg_id}" onclick="getDivStatus('answer','{$val.msg_id}','close')"  style="display: none" class=" btn btn-primary btn-xs pull-right"><i class="fa fa-eye-slash"></i>收起评论</a>
         <h4>{$key+1}、{$val.title}</h4>
         <small class="text-muted">新闻时间：{$val.publish_time}</small>
-        <small class="text-muted">赞同数：{$val.praise}</small>
-        <small class="text-muted">浏览数：{$val.pv}</small>
-        <small class="text-muted">评论数：{$val.comment}</small>
 
-        <div class="answer{$val.msg_id}"  style="margin-left: 20px;display: none">
+        <small class="text-muted">评论数：{$val.cnt}</small>
+
+        <div class="answer{$val.msg_id} answearea"  style="margin-left: 20px;display: none">
         </div>
     </div>
 
@@ -25,7 +25,9 @@
 </ul>
 </div>
 <?php
-    if(count($result)==0){
+    if(count($resultCount)==0){
+    $pageCount=0;
+    $resultCount=0
 ?>
 
 <div>暂无符合的数据</div>

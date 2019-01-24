@@ -25,5 +25,6 @@ return array(
 
     'replaceYPath'=>'/qiguan/discover/',
     'newsurl'=>'http://47.92.75.8:8080//jr//jrqg/stream/streamContent/',
+    'imgurl'=>'http://47.92.75.8:8080/jrqgfile',
 
 );

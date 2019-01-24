@@ -56,8 +56,48 @@ class QuestionController extends BaseController
 
     }
 
-    public function getCommot(){
-        $map["answer_id"] = I("id");
+    public function getAnswer(){
+        $answer_id= I("id");
+        $AnswerInfoModel = new AnswerInfoModel();
+        $result=$AnswerInfoModel->getAnswerData($answer_id);
+        $this->answer = $result;
+        $this->imgurl = C("imgurl");
+        $data = $this->fetch("Question/get_answer");
+        $this->ajaxReturn($data);
     }
 
+    public function getComment(){
+        $answer_id= I("id");
+        $AnswerInfoModel = new AnswerInfoModel();
+        $result=$AnswerInfoModel->getCommentData($answer_id);
+
+        $this->comment = $result;
+        $this->imgurl = C("imgurl");
+        $data = $this->fetch("Question/get_comment");
+        $this->ajaxReturn($data);
+    }
+
+
+    public function updateAnswer(){
+        $map["answer_id"]= I("id");
+        $arr["status"]=1;
+        $model=M("answer_info");
+        $model->where($map)->save($arr);
+    }
+
+    public function updateComment(){
+        $map["comment_id"]= I("id");
+        $arr["status"]=0;
+        $model=M("answer_comment");
+        $answer_id=$model->where($map)->select();
+
+        $wap["answer_id"]=$answer_id[0]["answer_id"];
+        $answerModel=M("answer_info");
+        $comment=$answerModel->where($wap)->select();
+        $wrr["comment"]=$comment[0]["comment"]-1;
+
+        $model->where($map)->save($arr);
+
+        $answerModel->where($wap)->save($wrr);
+    }
 }

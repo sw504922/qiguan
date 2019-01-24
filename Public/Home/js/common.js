@@ -516,22 +516,57 @@ function updateRank(myId,thatId,myRank,thatRank) {
 }
 
 
-function getCommot(id,status) {
+function getCommot(target,id,status) {
+    if(target=="getComment"){
+        cls="comment";
+    }else{
+        cls="answer";
+    }
     if(status=="close"){
-        $(".answer"+id).hide();
+        $(cls+id).hide();
     }else {
         $.ajax({
             type: "GET",
-            url: "getCommot",
+            url: target,
             data: {
                 id: id,
             },
             dataType: "json",
             success: function (data) {
-                $(".answer"+id).show();
-                $(".answer"+id).html(data);
+
+                $("."+cls+id).show();
+                $("."+cls+id).html(data);
+                setBackHeight();
+                getDivStatus(cls,id,"")
             }
         });
     }
+
+}
+function getDivStatus(firtst,second,status) {
+    if(status=="close"){
+        $("#show_"+firtst+"_"+second).show();
+        $("#hide_"+firtst+"_"+second).hide();
+        $("."+firtst+second).hide();
+    }else{
+        $("#hide_"+firtst+"_"+second).show();
+        $("#show_"+firtst+"_"+second).hide();
+    }
+
+}
+
+function updateCommot(target,id) {
+
+        $.ajax({
+            type: "GET",
+            url: target,
+            data: {
+                id: id,
+            },
+            dataType: "json",
+            success: function (data) {
+               window.location.reload();
+            }
+        });
 
 }

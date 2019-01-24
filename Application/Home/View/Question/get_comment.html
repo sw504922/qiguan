@@ -1,0 +1,31 @@
+
+<?php foreach($comment as $values){ ?>
+<div class="media">
+    <div class="media-body">
+
+        <div class="pull-right">
+            <button onclick="updateCommot('updateComment','{$values.comment_id}')" class="btn btn-warning btn-xs"><i class="fa fa-times"></i>下架</button>
+        </div>
+        <a class="pull-left" href="#">
+            <img class="media-object thumbnail" src="{$imgurl}{$values.photo}" alt="">
+        </a>
+        <h4>用户:{$values.user_name}</h4>
+        <p>{$values.final_content}</p>
+        <small class="text-muted">回答时间：{$values.publish_time}</small>
+
+        <small class="text-muted">赞同数：{$values.praise}</small>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".rich_content img").each(function () {
+            var val=$(this).attr("src");
+            if(val.indexOf("http://")<0)
+            {
+                $(this).attr("src","http://47.92.75.8:8080/jrqgfile"+val);
+            }
+        })
+    })
+
+</script>
+<?php } ?>
